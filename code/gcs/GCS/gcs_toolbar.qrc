@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/gcs_tb/icons">
+        <file alias="uav.png">gcs_mtb_uav_icon.png</file>
+        <file alias="ugv.png">gcs_mtb_ugv_icon.png</file>
+        <file alias="map.png">images/gcs_mtb_map_icon.png</file>
+        <file alias="payload.png">images/gcs_mtb_payload_icon.png</file>
+        <file alias="settings.png">images/gcs_mtb_settings_icon.png</file>
+        <file alias="uav.png">images/gcs_mtb_uav_icon.png</file>
+        <file alias="ugv.png">images/gcs_mtb_ugv_icon.png</file>
+        <file alias="waypoint.png">images/gcs_mtb_waypoint_icon.png</file>
+        <file alias="zone.png">images/gcs_mtb_zone_icon.png</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="map_icon.png">images/gcs_mtb_map_icon.png</file>
+        <file alias="payload_icon.png">images/gcs_mtb_payload_icon.png</file>
+        <file alias="settings_icon.png">images/gcs_mtb_settings_icon.png</file>
+        <file alias="uav_icon.png">images/gcs_mtb_uav_icon.png</file>
+        <file alias="ugv_icon.png">images/gcs_mtb_ugv_icon.png</file>
+        <file alias="waypoint_icon.png">images/gcs_mtb_waypoint_icon.png</file>
+        <file alias="zone_icon.png">images/gcs_mtb_zone_icon.png</file>
+    </qresource>
+</RCC>
