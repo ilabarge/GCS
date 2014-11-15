@@ -9,6 +9,7 @@ WaypointGUI::WaypointGUI(QWidget *parent, Vehicle22* vech) :
         1 edit
         2 erase
     */
+    //Initialize and set up buttons & mouse over
     mainLayout = new QGridLayout();
     mainLayout->setMargin( 0 );
     WaypointB = new QPushButton();
@@ -28,6 +29,7 @@ WaypointGUI::WaypointGUI(QWidget *parent, Vehicle22* vech) :
     type = new QLineEdit();
     type->setToolTip("Type");
 
+    //Create and set labels for user input
     vIDLabel = new QLabel("VehicleID");
     wIDLabel = new QLabel("WaypointID");
     typeLabel = new QLabel("Type");
@@ -36,6 +38,7 @@ WaypointGUI::WaypointGUI(QWidget *parent, Vehicle22* vech) :
     altLabel = new QLabel("Alt");
     headingLabel = new QLabel("Heading");
 
+    //Add widgets to layout
     mainLayout->addWidget(WaypointB,1,0);
     mainLayout->addWidget(vIDLabel, 1, 1);
     mainLayout->addWidget(vehicle,1,2);
@@ -52,6 +55,7 @@ WaypointGUI::WaypointGUI(QWidget *parent, Vehicle22* vech) :
     mainLayout->addWidget(headingLabel,1,13);
     mainLayout->addWidget(heading,1,14);
 
+    //Set Widget layout
     setLayout( mainLayout );
     connect(WaypointB,SIGNAL(clicked()),this,SLOT(send_waypoint()));
     v = vech;
