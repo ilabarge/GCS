@@ -21,7 +21,7 @@ public:
     explicit WaypointGUI(QWidget *parent = 0, Vehicle22 *vech = 0);
 
 signals:
-    void waypoint(int);
+    void waypoint(int,int,int,float,float,float);
 
 public slots:
     void send_waypoint();

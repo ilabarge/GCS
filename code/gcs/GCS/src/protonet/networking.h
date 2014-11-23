@@ -40,7 +40,7 @@ public slots:
     void send_vehicle_auth_request(int);
     void send_telemetry_command(int);
     void send_targeting(float,float,float);
-    void send_waypoint(int, int, int, double, double, double);
+    void send_waypoint(int, int, int, float, float, float);
 
     //Passes target found from vehicle
     void newTarget(float,float);

@@ -58,6 +58,8 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
 //Vehicle waypoint
 void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt)
 {
+    qDebug() << vehicle;
+    qDebug() << pos;
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
@@ -70,14 +72,15 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
      * Note the waypoints added only correspond to the waypoints that the GCS has sent, not any new wapyoints
      * that the platform may add
      */
-    Waypoint22 *w = new Waypoint22(vehicle,type,lat,longi,alt,0);
+    Waypoint22 *w = new Waypoint22(pos,type,lat,longi,alt,0);
     for(int i = 0; i < vList->length(); i++)
     {
         if(vList->at(i)->getVehicleID() == vehicle)
         {
            int size = vList->at(i)->waypoints.size();
-           //qDebug() << "dest size: " << size;
-           //qDebug() << "Waypoint id: " << w->getID();
+           qDebug() << "dest size: " << size;
+           qDebug() << "Waypoint id: " << w->getID();
+           qDebug() << "Type: " << w->getType();
            if((type == 0) && ((w->getID()) == (size)))
            {
                mutex.lock();
@@ -101,6 +104,20 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
           //work
           if((w->getID()) < size)
           {
+              if(type == 0)
+              {
+                  mutex.lock();
+                  vList->at(i)->insertWaypoint(pos,w, vList->at(i)->getColor());
+                  mutex.unlock();
+                  node->send_vehicle_waypoint_command(vehicle,x,vehicle,
+                                                     (int32_t)(w->getLatitude()*1E7),
+                                                     (int32_t)(w->getLongitude()*1E7),
+                                                     /* Note should be 1E6 for it to work*/
+                                                      (int32_t)(w->getAltitude()*1E6),
+                                                      0,
+                                                     w->getID(),
+                                                     w->getType());
+              }
               //qDebug() << "type" << type;
               if(type == 1)
               {

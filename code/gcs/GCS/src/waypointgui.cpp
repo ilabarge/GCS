@@ -73,7 +73,9 @@ void WaypointGUI::send_waypoint()
     mutex.lock();
     v->appendWaypoint(w, Qt::green );
     mutex.unlock();
-    emit waypoint(vehicle->text().toInt());
+    qDebug() << "Vehicle" << vehicle->text();
+    qDebug() << "id" << id->text();
+    emit waypoint(vehicle->text().toInt(),id->text().toInt(),type->text().toInt(),latitude->text().toFloat(),longitude->text().toFloat(),altitude->text().toFloat());
 }
 
 void WaypointGUI::coordDesignated(double lat, double lon){

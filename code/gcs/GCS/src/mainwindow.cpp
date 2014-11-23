@@ -35,14 +35,14 @@ MainWindow::MainWindow(QWidget* parent) :
     v69->setColor(Qt::cyan);
     v69->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
 
-    v42 = new Vehicle22(42, 0, 0,
+    v2 = new Vehicle22(2, 0, 0,
                0, 0, 0,
                0, 0, 0,
                0, 0, 0,
                0, 0, 0,
                0, 0, 0);
-    v42->setColor(Qt::green);
-    v42->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
+    v2->setColor(Qt::green);
+    v2->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
 
     v101 = new Vehicle22(101, 0, 0,
                0, 0, 0,
@@ -239,7 +239,7 @@ void MainWindow::initNetworking(){
     vList22->append(vehicle);
     vList22->append(v46);
     vList22->append(v69);
-    vList22->append(v42);
+    vList22->append(v2);
     vList22->append(v101);
     vList22->append(v102);
 
@@ -295,14 +295,14 @@ void MainWindow::update_vehicle_queue()
                mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
                mv->rotateVehicleGraphic(*v69, v69->getHeading());
            }
-           if(vehicle_ID == 42)
+           if(vehicle_ID == 2)
            {
 //               qDebug() << (std::to_string(v3->getLatitude())).c_str();
 //               qDebug() << (std::to_string(v3->getLongitude())).c_str();
-//               qDebug() << v42->getPoint().x() << " " << v42->getPoint().y();
-                v42->setPoint(mv->decimalDegreesToPoint(vList22->at(i)->getLatitude() , vList22->at(i)->getLongitude()));
-                mv->moveVehicleGraphic(*v42, EsriRuntimeQt::Point(v42->getPoint().x(), v42->getPoint().y()));
-                v42->setAngle(v42->getZVelocity());
+//               qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
+                v2->setPoint(mv->decimalDegreesToPoint(vList22->at(i)->getLatitude() , vList22->at(i)->getLongitude()));
+                mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
+                v2->setAngle(v2->getZVelocity());
             }
            if(vehicle_ID == 101)
            {
@@ -362,13 +362,13 @@ void MainWindow::mapReady(){
     connect(v69, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
     connect(v69, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
 
-//    qDebug() << "Adding v42";
-    mv->addGraphicToLayer( v42->getGraphic() );
-//    qDebug() << "Graphic " << v42->getGraphic().isEmpty();
-//    qDebug() << "Added " << v42->getGraphicID();
-    connect(v42, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
-    connect(v42, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
-    connect(v42, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
+//    qDebug() << "Adding v2";
+    mv->addGraphicToLayer( v2->getGraphic() );
+//    qDebug() << "Graphic " << v2->getGraphic().isEmpty();
+//    qDebug() << "Added " << v2->getGraphicID();
+    connect(v2, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
+    connect(v2, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
+    connect(v2, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
 
 //    qDebug() << "Adding v101";
     mv->addGraphicToLayer( v101->getGraphic() );
@@ -469,19 +469,19 @@ void MainWindow::keyPressEvent(QKeyEvent* event){
             mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
             break;
         case Qt::Key_S:
-            v42->setPoint(EsriRuntimeQt::Point(v42->getPoint().x(), v42->getPoint().y() - 100000));
-            mv->moveVehicleGraphic(*v42, EsriRuntimeQt::Point(v42->getPoint().x(), v42->getPoint().y()));
+            v2->setPoint(EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y() - 100000));
+            mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
             break;
         case Qt::Key_W:
             v46->setPoint(EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y() + 100000));
             mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
             break;
         case Qt::Key_D:
-            v42->setPoint(EsriRuntimeQt::Point(v42->getPoint().x() + 100000, v42->getPoint().y()));
-            mv->moveVehicleGraphic(*v42, EsriRuntimeQt::Point(v42->getPoint().x(), v42->getPoint().y()));
+            v2->setPoint(EsriRuntimeQt::Point(v2->getPoint().x() + 100000, v2->getPoint().y()));
+            mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
             break;
         case Qt::Key_I:
-            mv->rotateVehicleGraphic(*v42, 45);
+            mv->rotateVehicleGraphic(*v2, 45);
             break;
         default:
             //Do nothing
