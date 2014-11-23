@@ -143,9 +143,9 @@ FORMS += \
     forms/gcs_toolbar.ui
 
 RESOURCES += \
-    gcs_sidebar/src/icons.qrc \
-    gcs_toolbar.qrc \
-    resources.qrc
+    images/sidebar_icons.qrc \
+    images/Toolbar.qrc \
+    images/resources.qrc
 
 #Fixes qdatedime.h error
 DEFINES+= NOMINMAX\

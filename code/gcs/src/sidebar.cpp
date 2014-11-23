@@ -7,17 +7,17 @@ sideBar::sideBar(QWidget *parent) : QWidget(parent)
      satellite = new toggleButton();
      opspace = new toggleButton();
      target = new toggleButton();
-     uav -> setIcon(QIcon(":/icons/icon/UAVon.png"));
+     uav -> setIcon(QIcon(":/icon/UAVon.png"));
      uav -> setIconSize(QSize(65,65));
-     ugv -> setIcon(QIcon(":/icons/icon/ugvOn.png"));
+     ugv -> setIcon(QIcon(":/icon/ugvOn.png"));
      ugv -> setIconSize(QSize(65,65));
-     waypoint -> setIcon(QIcon(":/icons/icon/waypointOn.png"));
+     waypoint -> setIcon(QIcon(":/icon/waypointOn.png"));
      waypoint -> setIconSize(QSize(65,65));
-     satellite -> setIcon(QIcon(":/icons/icon/satelliteOn.png"));
+     satellite -> setIcon(QIcon(":/icon/satelliteOn.png"));
      satellite -> setIconSize(QSize(65,65));
-     target -> setIcon(QIcon(":/icons/icon/targetOn.png"));
+     target -> setIcon(QIcon(":/icon/targetOn.png"));
      target -> setIconSize(QSize(65,65));
-     opspace -> setIcon(QIcon(":/icons/icon/opspaceOn.png"));
+     opspace -> setIcon(QIcon(":/icon/opspaceOn.png"));
      opspace -> setIconSize(QSize(65,65));
      QGridLayout *mainLayout = new QGridLayout;
      mainLayout ->setContentsMargins(0,0,0,0);
@@ -41,13 +41,13 @@ void sideBar::uavToggle()
 {
     if(uav -> checkVisibility())
     {
-        uav -> setIcon(QIcon(":/icons/icon/UAVon.png"));
+        uav -> setIcon(QIcon(":/icon/UAVon.png"));
         uav -> setIconSize(QSize(65,65));
         emit uavOn(true);
     }
     else
     {
-        uav -> setIcon(QIcon(":/icons/icon/UAVoff.png"));
+        uav -> setIcon(QIcon(":/icon/UAVoff.png"));
         uav -> setIconSize(QSize(65,65));
         emit uavOn(false);
     }
@@ -57,12 +57,12 @@ void sideBar::ugvToggle()
 {
     if(ugv -> checkVisibility())
     {
-        ugv -> setIcon(QIcon(":/icons/icon/ugvOn.png"));
+        ugv -> setIcon(QIcon(":/icon/ugvOn.png"));
         emit ugvOn(true);
     }
     else
     {
-        ugv -> setIcon(QIcon(":/icons/icon/ugvOff.png"));
+        ugv -> setIcon(QIcon(":/icon/ugvOff.png"));
         emit ugvOn(false);
     }
 }
@@ -71,12 +71,12 @@ void sideBar::satelliteToggle()
 {
     if(satellite -> checkVisibility())
     {
-        satellite -> setIcon(QIcon(":/icons/icon/satelliteOn.png"));
+        satellite -> setIcon(QIcon(":/icon/satelliteOn.png"));
         emit satelliteOn(true);
     }
     else
     {
-        satellite -> setIcon(QIcon(":/icons/icon/satelliteOff.png"));
+        satellite -> setIcon(QIcon(":/icon/satelliteOff.png"));
         emit satelliteOn(false);
     }
 }
@@ -85,12 +85,12 @@ void sideBar::targetToggle()
 {
     if(target -> checkVisibility())
     {
-        target -> setIcon(QIcon(":/icons/icon/targetOn.png"));
+        target -> setIcon(QIcon(":/icon/targetOn.png"));
         emit targetOn(true);
     }
     else
     {
-        target -> setIcon(QIcon(":/icons/icon/targetOff.png"));
+        target -> setIcon(QIcon(":/icon/targetOff.png"));
         emit targetOn(false);
     }
 }
@@ -99,12 +99,12 @@ void sideBar::waypointToggle()
 {
     if(waypoint -> checkVisibility())
     {
-        waypoint -> setIcon(QIcon(":/icons/icon/waypointOn.png"));
+        waypoint -> setIcon(QIcon(":/icon/waypointOn.png"));
         emit waypointOn(true);
     }
     else
     {
-        waypoint -> setIcon(QIcon(":/icons/icon/waypointOff.png"));
+        waypoint -> setIcon(QIcon(":/icon/waypointOff.png"));
         emit waypointOn(false);
     }
 }
@@ -113,12 +113,12 @@ void sideBar::opspaceToggle()
 {
     if(opspace -> checkVisibility())
     {
-        opspace -> setIcon(QIcon(":/icons/icon/opspaceOn.png"));
+        opspace -> setIcon(QIcon(":/icon/opspaceOn.png"));
         emit opspaceOn(true);
     }
     else
     {
-        opspace -> setIcon(QIcon(":/icons/icon/opspaceOff.png"));
+        opspace -> setIcon(QIcon(":/icon/opspaceOff.png"));
         emit opspaceOn(false);
     }
 }
