@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icon/opspaceOff.png</file>
+        <file>icon/opspaceOn.png</file>
+        <file>icon/satelliteOff.png</file>
+        <file>icon/satelliteOn.png</file>
+        <file>icon/targetOff.png</file>
+        <file>icon/targetOn.png</file>
+        <file>icon/UAVoff.png</file>
+        <file>icon/UAVon.png</file>
+        <file>icon/ugvOff.png</file>
+        <file>icon/ugvOn.png</file>
+        <file>icon/waypointOff.png</file>
+        <file>icon/waypointOn.png</file>
+    </qresource>
+</RCC>
