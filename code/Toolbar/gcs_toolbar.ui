@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Calvin Huang</author>
+ <comment>GCS Toolbar Widget</comment>
+ <class>GcsToolbar</class>
+ <widget class="QWidget" name="GcsToolbar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>680</width>
+    <height>145</height>
+   </rect>
+  </property>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>680</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuViews">
+    <property name="title">
+     <string>Views</string>
+    </property>
+    <widget class="QMenu" name="menuUAV_View">
+     <property name="title">
+      <string>UAV View</string>
+     </property>
+     <addaction name="actionCPP_UAV"/>
+     <addaction name="actionCPP_UAV2"/>
+     <addaction name="actionSLO_UAV"/>
+    </widget>
+    <widget class="QMenu" name="menuUGV_View">
+     <property name="title">
+      <string>UGV View</string>
+     </property>
+     <addaction name="actionCPP_UGV"/>
+     <addaction name="actionSLO_UGV"/>
+    </widget>
+    <addaction name="actionMap_View"/>
+    <addaction name="menuUAV_View"/>
+    <addaction name="menuUGV_View"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuActions">
+    <property name="title">
+     <string>Actions</string>
+    </property>
+    <addaction name="actionZoning"/>
+    <addaction name="actionWaypoints"/>
+    <addaction name="separator"/>
+    <addaction name="actionPayload"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionSettings"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menuViews"/>
+   <addaction name="menuActions"/>
+   <addaction name="menuSettings"/>
+  </widget>
+  <action name="actionMap_View">
+   <property name="icon">
+    <iconset theme="default" resource="gcs_toolbar.qrc">
+     <normaloff>:/gcs_tb/icons/map.png</normaloff>:/gcs_tb/icons/map.png</iconset>
+   </property>
+   <property name="text">
+    <string>Map View</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionPayload">
+   <property name="icon">
+    <iconset resource="gcs_toolbar.qrc">
+     <normaloff>:/gcs_tb/icons/payload.png</normaloff>:/gcs_tb/icons/payload.png</iconset>
+   </property>
+   <property name="text">
+    <string>Deploy Payload</string>
+   </property>
+  </action>
+  <action name="actionZoning">
+   <property name="icon">
+    <iconset resource="gcs_toolbar.qrc">
+     <normaloff>:/gcs_tb/icons/zone.png</normaloff>:/gcs_tb/icons/zone.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit Zones</string>
+   </property>
+  </action>
+  <action name="actionWaypoints">
+   <property name="icon">
+    <iconset resource="gcs_toolbar.qrc">
+     <normaloff>:/gcs_tb/icons/waypoint.png</normaloff>:/gcs_tb/icons/waypoint.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit Waypoints</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="gcs_toolbar.qrc">
+     <normaloff>:/gcs_tb/icons/settings.png</normaloff>:/gcs_tb/icons/settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionCPP_UAV">
+   <property name="text">
+    <string>CPP UAV</string>
+   </property>
+  </action>
+  <action name="actionSLO_UAV">
+   <property name="text">
+    <string>SLO UAV</string>
+   </property>
+  </action>
+  <action name="actionCPP_UGV">
+   <property name="text">
+    <string>CPP UGV</string>
+   </property>
+  </action>
+  <action name="actionSLO_UGV">
+   <property name="text">
+    <string>SLO UGV</string>
+   </property>
+  </action>
+  <action name="actionCPP_UAV2">
+   <property name="text">
+    <string>CPP UAV2</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="gcs_toolbar.qrc"/>
+ </resources>
+ <connections/>
+</ui>
