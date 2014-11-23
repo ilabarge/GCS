@@ -108,6 +108,7 @@ MainWindow::MainWindow(QWidget* parent) :
 //    mainLayout->addWidget(way,3,0);
 //    mainLayout->addWidget(Authorize,4,0);
 
+    //Set up baisic C&C gui layout
     QGridLayout* base = new QGridLayout();
     base->addWidget(Authorize,0,0);
     base->addWidget(Telemetry,0,1);
@@ -115,6 +116,7 @@ MainWindow::MainWindow(QWidget* parent) :
     base->addWidget(targeting,1,0);
     mainLayout->addLayout(base,2,0);
 
+    //Set up UGV gui layout
     QGridLayout* UGVLayout = new QGridLayout();
     QGridLayout* joyLayout = new QGridLayout();
     joyLayout->addWidget(UGV_JOYSTICK,0,0);
@@ -122,6 +124,7 @@ MainWindow::MainWindow(QWidget* parent) :
     UGVLayout->addLayout(joyLayout,0,0);
     UGVLayout->addWidget(UGV_States,1,0);
 
+    //Set up UAV status label
     QLabel* uavStatLabel = new QLabel();
     uavStatLabel->setText("CPP UAV STATUS");
 
@@ -132,13 +135,14 @@ MainWindow::MainWindow(QWidget* parent) :
     UAVStatus->addWidget(uavStatLabel,0,0,Qt::AlignCenter);
     UAVStatus->addWidget(uavStatusLabel,0,1,Qt::AlignCenter);
 
-
+    //Set up Manual UGV drop
     ugvDrop = new QPushButton();
     ugvDrop->setText("UGV notify of drop");
     QGridLayout* dropCMDs = new QGridLayout();
     dropCMDs->addWidget(sendcmd,0,0);
     dropCMDs->addWidget(ugvDrop,0,1);
 
+    //Set up basic UAV layout
     QGridLayout* UAVLayout = new QGridLayout();
     UAVLayout->addLayout(UAVStatus,0,0);
     UAVLayout->addWidget(UAV_Payload,1,0);
@@ -167,14 +171,45 @@ MainWindow::MainWindow(QWidget* parent) :
     //update targets
     connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
 
-    //Test GUI
+    //Map Interation
+    //Sets coordinate positions for waypoint baised off of click on map
+    connect(mv, SIGNAL(coordDesignated(double,double)), way, SLOT(coordDesignated(double,double)));
+
+
+    //C&C GUI
+    //General Vehicle
+    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
+    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
+    connect(way,SIGNAL(waypoint(int, int, int, float,float,float)),network,SLOT(send_waypoint(int, int, int, float,float,float)));
+
+    //Manual Targeting
+    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
+
+    //UAV
+    //Drop
+    connect(sendcmd,SIGNAL(clicked()),this,SLOT(UDrop()));
+    connect(ugvDrop,SIGNAL(clicked()),this,SLOT(UGVDrop()));
+    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
+
+    //Payload
+    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
+    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
+
+    //UGV
+    //JOYSTICK
     connect(UGV_JOYSTICK,SIGNAL(clicked()),network,SLOT(start_UGV_Joystick()));
     connect(UGV_JOYSTICKSTOP,SIGNAL(clicked()),network,SLOT(stop_UGV_Joystick()));
-    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
-    connect(way,SIGNAL(waypoint(int)),network,SLOT(send_waypoint(int)));
-    connect(mv, SIGNAL(coordDesignated(double,double)), way, SLOT(coordDesignated(double,double)));
-    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
-    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
+
+    //UGV
+    //STATE CHANGE
+    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
+    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
+    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
+
+    //MOTOR states
+    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
+    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
+    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
 
     //Connect sidebar to map view layers
     connect(sb, SIGNAL(uavOn(bool)), mv, SLOT(uavLayerOn(bool)));
@@ -183,24 +218,6 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(sb, SIGNAL(waypointOn(bool)), mv, SLOT(waypointLayerOn(bool)));
     connect(sb, SIGNAL(opspaceOn(bool)), mv, SLOT(opspaceLayerOn(bool)));
     connect(sb, SIGNAL(targetOn(bool)), mv, SLOT(targetLayerOn(bool)));
-
-    //UAV Drop
-    connect(sendcmd,SIGNAL(clicked()),this,SLOT(UDrop()));
-    connect(ugvDrop,SIGNAL(clicked()),this,SLOT(UGVDrop()));
-    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
-    //UAV Payload
-    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
-    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
-
-    //UGV STATES
-    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
-    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
-    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
-
-    //UGV MOTOR states
-    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
-    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
-    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
 }
 
 void MainWindow::initMap(){
@@ -309,12 +326,13 @@ void MainWindow::update_vehicle_queue()
 //Updates the displayed targets.
 void MainWindow::update_targets(Target* t)
 {
-    //qDebug() << "Latitude is:" << t->getLatitude();
-    //qDebug() << "Longitude is:" << t->getLongitude();
+    qDebug() << "Latitude is:" << t->getLatitude();
+    qDebug() << "Longitude is:" << t->getLongitude();
     //t->setGraphic(Qt::red,EsriRuntimeQt::SimpleMarkerSymbolStyle::Cross,t->getLatitude()*10000000,t->getLongitude()*10000000,10);
     //t->setGraphicID(mv->addGraphicToLayer(t->getGraphic()));
 }
 
+//Manually drop UAV and alert UGV of drop
 void MainWindow::UDrop()
 {
     emit drop(69);
@@ -369,6 +387,36 @@ void MainWindow::mapReady(){
     //mv->addGraphicToLayer( v69->getGraphic() );
 
 }
+
+/**
+ * @brief MainWindow::addVehicle Add a new vehicle to our list of observable vehicles
+ * @param vech vehicle ID number
+ * @param type type of vehicle
+ */
+void MainWindow::addVehicle(int vech, int type)
+{
+    /*0 - default
+      1 - UAV
+      2 - UGV */
+    Vehicle22 *v = new Vehicle22();
+    v->setVehicleID(vech);
+    v->setVehicleType(type);
+    switch(vech)
+    {
+        case 1:
+            v->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
+            break;
+
+        case 2:
+            v->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
+            break;
+
+        default:
+            break;
+    }
+    vList22->append(v);
+}
+
 
 void MainWindow::vStatus(int vech, int mode)
 {

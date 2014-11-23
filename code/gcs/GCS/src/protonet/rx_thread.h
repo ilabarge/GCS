@@ -44,17 +44,17 @@ private:
     boolean send;
 public slots:
     void process();
-    void send_ping();
+    void send_ping(int id);
 
     //Communicates vehicle updating
     void update_vech_queue();
 
     //Protonet send messages
     void send_vehicle_auth_request(int);
-    void send_vehicle_waypoint(int);
+    void send_vehicle_waypoint(int, int, int, float, float, float);
     void send_telemetry_command(int);
-    void send_targeting(int);
-    void send_manTargeting(float,float,float);
+    void send_targeting(int, float, float, float);
+    void send_manTargeting(double,double,double);
     void target_added(Target*);
 
     //target recieved

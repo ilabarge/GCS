@@ -14,8 +14,11 @@ setLayout( mainLayout );
 connect(Telemetry,SIGNAL(clicked()),this,SLOT(send_telemetry()));
 }
 
+/**
+ * @brief TelemetryGUI::send_telemetry Emits signal that contains the value of the vehicle ID to start telemetry
+ */
 void TelemetryGUI::send_telemetry()
 {
-emit telemetry(telemetryInput->text().toInt());
+    emit telemetry(telemetryInput->text().toInt());
 }
 

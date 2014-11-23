@@ -14,8 +14,10 @@ VehicleAuthorizationGUI::VehicleAuthorizationGUI(QWidget *parent) :
     connect(Authorization,SIGNAL(clicked()),this,SLOT(send_authorization()));
 
 }
-
+/**
+ * @brief VehicleAuthorizationGUI::send_authorization Emits signal containing the vehicle ID to ask for authorization
+ */
 void VehicleAuthorizationGUI::send_authorization()
 {
-emit authorize(vehicle->text().toInt());
+    emit authorize(vehicle->text().toInt());
 }
