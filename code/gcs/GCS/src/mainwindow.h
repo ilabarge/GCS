@@ -95,7 +95,7 @@ private:
 
     QVector<Vehicle22*> *vList22;
     Waypoint22 *w22, *w23, *w24;
-    Vehicle22 *v46, *v69, *v42, *v101, *v102;
+    Vehicle22 *v46, *v69, *v2, *v101, *v102;
 
     QPushButton* sendcmd;
     QPushButton* ugvDrop;

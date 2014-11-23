@@ -24,8 +24,7 @@ void networking::invokeThread(NodeQueue* q, QVector<Vehicle22*>* v, TargetList* 
     connect(this,SIGNAL(ping(int)),rx,SLOT(send_ping(int)));
 
     //Send waypoint command
-    connect(this,SIGNAL(waypoint(int vehicle, int pos, int type, float lat, float longi, float alt)), rx,SLOT(send_vehicle_waypoint(int, int, int, float, float, float)));
-
+    connect(this,SIGNAL(waypoint(int, int, int, float, float , float )), rx,SLOT(send_vehicle_waypoint(int, int, int, float, float, float)));
     //Vehicle Telemetry Command
     //Begin the telemetry stream from vehicle
     connect(this,SIGNAL(telemetry_command(int)),rx,SLOT(send_telemetry_command(int)));
@@ -91,7 +90,7 @@ void networking::send_ping(int id){ emit ping(id); }
 void networking::update_vehicle_queue() { emit update_queue(); }
 
 //Sending waypoint
-void networking::send_waypoint(int vehicle, int pos, int type, double lat, double longi, double alt){ emit waypoint( vehicle, pos, type, lat, longi,alt); }
+void networking::send_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt){ emit waypoint( vehicle, pos, type, lat, longi,alt); }
 
 void networking::send_vehicle_auth_request(int i){ emit vehicle_auth_request(i);}
 
@@ -111,7 +110,7 @@ void networking::arm(int x) { emit armUAV(x); }
 void networking::disarm(int x) { emit disarmUAV(x); }
 
 //targeting
-void networking::target(float lat, float longi, float alt) {emit manTargeting(lat,longi,alt);}
+void networking::target(float lat, float longi, float alt) {emit manTargeting((double)lat,(double)longi,(double)alt);}
 
 void networking::newTarget(float lat,float longi) { emit vTarget(lat,longi);}
 
