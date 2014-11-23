@@ -67,7 +67,7 @@ void WaypointGUI::send_waypoint()
                          type->text().toInt(),
                          latitude->text().toDouble(),
                          longitude->text().toDouble(),
-                         altitude->text().toInt(),
+                         altitude->text().toFloat(),
                          0);
 
     mutex.lock();

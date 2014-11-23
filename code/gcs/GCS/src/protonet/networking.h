@@ -27,56 +27,64 @@ public:
     void invokeThread(NodeQueue* q,QVector<Vehicle22*>* v, TargetList* tgt, uint8_t node_id, uint16_t self_port, uint16_t dest_port);
 
 public slots:
-    void send_ping();
     void update_vehicle_queue();
-    void network_serial_set(QString);
     void update_target_disp(Target*);
 
-    //Test GUI
-    void send_waypoint(int);
+    //Basic Protonet
+    void send_ping(int);
+
+    //Protonet Setup
+    void network_serial_set(QString);
+
+    //General commands
     void send_vehicle_auth_request(int);
     void send_telemetry_command(int);
-    void send_targeting(int);
-    void start_UGV_Joystick();
-    void stop_UGV_Joystick();
+    void send_targeting(float,float,float);
+    void send_waypoint(int, int, int, double, double, double);
 
+    //Passes target found from vehicle
     void newTarget(float,float);
+    //targeting manual
+    void target(float,float,float);
 
-    //UAV drop
+    //UAV commands
+    //Drop
     void UDrop(int);
 
-    //UAV arm/disarm
+    //Arm/disarm
     void arm(int);
     void disarm(int);
 
-    //UGV states
+    //vehcile status (UAV)
+    void vStatus(int, int);
+
+    //UGV commands
+    //Joystick
+    void start_UGV_Joystick();
+    void stop_UGV_Joystick();
+
+    //States
     void ManualToAuto();
     void AutoToManual();
     void Reset();
 
-    //UGV Motor states
+    //Motor states
     void DisableMotor();
     void EnableMotor();
     void ToggleMotor();
 
-    //vehcile status
-    void vStatus(int, int);
-
-    //targeting
-    void target(float,float,float);
-
 signals:
-    void ping();
+    void ping(int);
     void update_queue();
     void network_set_serial(QString);
 
     void newTarget(Target*);
 
-    //TEST GUI
-    void waypoint(int);
+    //Emit values for specific commands
+    void waypoint(int, int, int, float, float, float);
     void vehicle_auth_request(int);
     void telemetry_command(int);
-    void targeting(int);
+    void targeting(float,float,float);
 
     //targeting
     void manTargeting(float,float,float);
@@ -90,7 +98,10 @@ signals:
     void armUAV(int);
     void disarmUAV(int);
 
-    //UGV Joystick
+    //Vehicle states (UAV)
+    void vehicleStatus(int,int);
+
+    //UGV Joystick   
     void UGV_joystick_stop();
     void UGV_joystick_start();
 
@@ -101,9 +112,6 @@ signals:
     void DisableM(); //disable motor
     void ToggleM(); //toggle motor
     void EnableM(); //enable motor
-
-    //Vehicle states
-    void vehicleStatus(int,int);
 
 private:
     rx_thread* rx;

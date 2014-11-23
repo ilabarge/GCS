@@ -99,6 +99,10 @@ private:
 
     QPushButton* sendcmd;
     QPushButton* ugvDrop;
+
+    //Dynamic Vehicle addition
+    void addVehicle(int,int);
+
 private slots:
     void update_vehicle_queue();
     void update_targets(Target*);

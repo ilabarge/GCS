@@ -35,14 +35,14 @@ rx_thread::~rx_thread() {
 }
 
 //------------ User Commands -------------
-void rx_thread::send_ping()
+void rx_thread::send_ping(int id)
 {
     //qDebug() << "send ping";
     //Use vehicle type as id
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_ping(vp->at(0)->getVehicleType(),x);
+    node->send_ping(id,x);
 }
 
 //Vech authorization request
@@ -52,34 +52,30 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_authorization_request(vehicle,x,vehicle,
-                                             //vp->at(0)->getVehicleType(),x,
-                                             //vp->at(0)->getVehicleType(),
-                                             100,1,0);
+    node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
 }
 
 //Vehicle waypoint
-void rx_thread::send_vehicle_waypoint(int vehicle)
+void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt)
 {
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    int pos = vList->at(0)->waypoints.size() -1;
-   //send t to vehicle
     //For Testing purposes
     //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)4*1E7,(int32_t)-8*1E7,(int32_t)4*1E7,0,0,2);
     //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)-3*1E7,(int32_t)9*1E7,(int32_t)3*1E7,0,1,0);
     //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)-4*1E7,(int32_t)5*1E7,(int32_t)1*1E7,0,2,2);
-   Waypoint22 *w = vList->at(0)->getWaypoint(pos);
-   //update vehicle localy to have t
-   printf("%f\n",w->getAltitude());
-   printf("%d\n", (int32_t)(vList->at(0)->getWaypoint(pos)->getAltitude()));//*1E7));
-   for(int i = 0; i < vList->length(); i++)
-   {
-       if(vList->at(i)->getVehicleID() == vehicle)
-       {
+
+    /*
+     * Note the waypoints added only correspond to the waypoints that the GCS has sent, not any new wapyoints
+     * that the platform may add
+     */
+    Waypoint22 *w = new Waypoint22(vehicle,type,lat,longi,alt,0);
+    for(int i = 0; i < vList->length(); i++)
+    {
+        if(vList->at(i)->getVehicleID() == vehicle)
+        {
            int size = vList->at(i)->waypoints.size();
-           int type = vList->at(0)->getWaypoint(pos)->getType();
            //qDebug() << "dest size: " << size;
            //qDebug() << "Waypoint id: " << w->getID();
            if((type == 0) && ((w->getID()) == (size)))
@@ -88,12 +84,13 @@ void rx_thread::send_vehicle_waypoint(int vehicle)
                vList->at(i)->appendWaypoint(w, vList->at(i)->getColor() );
                mutex.unlock();
                node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                  (int32_t)(vList->at(0)->getWaypoint(pos)->getLatitude()*1E7),
-                                                  (int32_t)(vList->at(0)->getWaypoint(pos)->getLongitude()*1E7),
-                                                  (int32_t)(vList->at(0)->getWaypoint(pos)->getAltitude()),//*1E7),
+                                                  (int32_t)(w->getLatitude()*1E7),
+                                                  (int32_t)(w->getLongitude()*1E7),
+                                                  /* Note should be 1E6 for it to work*/
+                                                   (int32_t)(w->getAltitude()*1E6),
                                                    0,
-                                                  vList->at(0)->getWaypoint(pos)->getID(),
-                                                  vList->at(0)->getWaypoint(pos)->getType());
+                                                  w->getID(),
+                                                  w->getType());
 
            }
            else if((type == 0) && ((w->getID()) != (size - 1)))
@@ -124,12 +121,12 @@ void rx_thread::send_vehicle_waypoint(int vehicle)
               if((type == 1) || (type == 2))
               {
                   node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                     (int32_t)(vList->at(0)->getWaypoint(pos)->getLatitude()*1E7),
-                                                     (int32_t)(vList->at(0)->getWaypoint(pos)->getLongitude()*1E7),
-                                                     (int32_t)(vList->at(0)->getWaypoint(pos)->getAltitude()*1E3),
+                                                     (int32_t)(w->getLatitude()*1E7),
+                                                     (int32_t)(w->getLongitude()*1E7),
+                                                     (int32_t)(w)->getAltitude(),
                                                       0,
-                                                     vList->at(0)->getWaypoint(pos)->getType(),
-                                                     vList->at(0)->getWaypoint(pos)->getID());
+                                                     w->getType(),
+                                                     w->getID());
               }
           }
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
@@ -147,13 +144,10 @@ void rx_thread::send_telemetry_command(int vehicle)
     // 3 heartbeat stream
 
     //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);   
-    node->send_vehicle_telemetry_command(vehicle,vehicle,
-                                           //vp->at(0)->getVehicleType(),
-                                           //vp->at(0)->getVehicleType(),
-                                           0,1);
+    node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
 }
 
-void rx_thread::send_targeting(int vehicle)
+void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 {
     //Target id = 1, Payload ID = 1
     QDateTime local(QDateTime::currentDateTime());
@@ -163,16 +157,16 @@ void rx_thread::send_targeting(int vehicle)
     //target type?
     node->send_target_designation_command(vehicle, x,
                                           vehicle, 1, 1, 0,
-                                          vp->at(0)->waypoints.at(vp->at(0)->waypoints.size() -1)->getLatitude(),
-                                          vp->at(0)->waypoints.at(vp->at(0)->waypoints.size() -1)->getLongitude(),
-                                          vp->at(0)->waypoints.at(vp->at(0)->waypoints.size() -1)->getAltitude());
+                                          lat,
+                                          longi,
+                                          alt);
     //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
 //emit target recieved out to main window
 void rx_thread::target(float lat,float longi) { emit sendTarget(lat,longi);}
 
-void rx_thread::send_manTargeting(float latitude,float longitude, float altitude)
+void rx_thread::send_manTargeting(double latitude, double longitude, double altitude)
 {
     //Target id = 1, Payload ID = 1
     QDateTime local(QDateTime::currentDateTime());
@@ -408,7 +402,6 @@ void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, veh
    //Behavior in case the GCS is not authorized?
    //v->at(i)->setAuthorizedServices(vehicle.authorization_services);
    //v->at(i)->setGrantedServices(vehicle.granted_services);
-
    //Sets vehicle update value to true
    mutex.unlock();
    //Debug
@@ -515,6 +508,7 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     //heading 1E6
     //everything else strieght
     printf("===============\n");
+
     mutex.lock();
     //Setting variables
     vp->at(i)->setAltitude(position.altitude);
@@ -576,7 +570,8 @@ void* target_designation_command_callback(int8_t, proto_header_t, target_designa
       //                        ((float)target.longitude)/1E7,
         //                      target.altitude,
           //                    target.payload_ID,target.target_ID,target.target_type));
-    //send target to UAV
+
+    //Send recieved target command to uav
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
@@ -586,6 +581,7 @@ void* target_designation_command_callback(int8_t, proto_header_t, target_designa
                                           ((float)target.latitude)/1E7,
                                           ((float)target.longitude)/1E7,
                                           target.altitude);
+    //???
     nq->targetRec(((float)target.latitude)/1E7,
                   ((float)target.longitude)/1E7);
     return 0;
