@@ -104,20 +104,6 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
           //work
           if((w->getID()) < size)
           {
-              if(type == 0)
-              {
-                  mutex.lock();
-                  vList->at(i)->insertWaypoint(pos,w, vList->at(i)->getColor());
-                  mutex.unlock();
-                  node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                     (int32_t)(w->getLatitude()*1E7),
-                                                     (int32_t)(w->getLongitude()*1E7),
-                                                     /* Note should be 1E6 for it to work*/
-                                                      (int32_t)(w->getAltitude()*1E6),
-                                                      0,
-                                                     w->getID(),
-                                                     w->getType());
-              }
               //qDebug() << "type" << type;
               if(type == 1)
               {
