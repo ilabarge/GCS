@@ -87,7 +87,7 @@ MainWindow::MainWindow(QWidget* parent) :
     UGV_JOYSTICKSTOP = new QPushButton();
     UGV_JOYSTICKSTOP->setText("Stop Joystick Control");
     Telemetry = new TelemetryGUI();
-    way = new WaypointGUI(NULL,vList22->at(0));
+    way = new WaypointGUI(NULL,(vList22->set(0)));
     Authorize = new VehicleAuthorizationGUI();
     UGV_States = new UGV_state();
     UAV_Payload = new UAVPayload();
@@ -127,7 +127,7 @@ MainWindow::MainWindow(QWidget* parent) :
     //Set up UAV status label
     QLabel* uavStatLabel = new QLabel();
     uavStatLabel->setText("CPP UAV STATUS");
-
+   
     uavStatusLabel = new QLabel();
     uavStatusLabel->setText("UNKNOWN");
 
@@ -142,7 +142,7 @@ MainWindow::MainWindow(QWidget* parent) :
     dropCMDs->addWidget(sendcmd,0,0);
     dropCMDs->addWidget(ugvDrop,0,1);
 
-    //Set up basic UAV layout
+    //Set up basic UAV layout with C&C commands
     QGridLayout* UAVLayout = new QGridLayout();
     UAVLayout->addLayout(UAVStatus,0,0);
     UAVLayout->addWidget(UAV_Payload,1,0);
@@ -235,7 +235,7 @@ void MainWindow::initNetworking(){
     Vehicle22 *vehicle = new Vehicle22();
     vehicle->setVehicleType(46);
 
-    vList22 = new QVector<Vehicle22*>();
+    vList22 = new vehicle_list();
     vList22->append(vehicle);
     vList22->append(v46);
     vList22->append(v69);
@@ -269,15 +269,15 @@ void MainWindow::update_vehicle_queue()
    }
    int vehicle_ID = vUpdate->dequeue();
 
-   for(int i = 1; i < vList22->size(); i++){
-       if(vList22->at(i)->getVehicleID() == vehicle_ID)
+   for(int i = 1; i < vList22->length(); i++){
+       if(vList22->set(i)->getVehicleID() == vehicle_ID)
        {
            //Temporary code=========================
            if(vehicle_ID == 46)
            {
 //               v46->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
                //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
-               v46->setPoint(mv->decimalDegreesToPoint(vList22->at(i)->getLatitude() , vList22->at(i)->getLongitude()));
+               v46->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
                mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
                v46->setAngle(v46->getZVelocity());
            }
@@ -290,7 +290,7 @@ void MainWindow::update_vehicle_queue()
                //qDebug() << vList22->at(i)->getLatitude() << " " << vList22->at(i)->getLongitude() << v2->getHeading();
 
                //v1->setPoint(mv->decimalDegreesToPoint(34.0575057, -117.8204004));
-               v69->setPoint(mv->decimalDegreesToPoint(vList22->at(i)->getLatitude() , vList22->at(i)->getLongitude()));
+               v69->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
                //qDebug() << v69->getPoint().x() << " " << v69->getPoint().y();
                mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
                mv->rotateVehicleGraphic(*v69, v69->getHeading());
@@ -300,21 +300,21 @@ void MainWindow::update_vehicle_queue()
 //               qDebug() << (std::to_string(v3->getLatitude())).c_str();
 //               qDebug() << (std::to_string(v3->getLongitude())).c_str();
 //               qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
-                v2->setPoint(mv->decimalDegreesToPoint(vList22->at(i)->getLatitude() , vList22->at(i)->getLongitude()));
+                v2->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
                 mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
                 v2->setAngle(v2->getZVelocity());
             }
            if(vehicle_ID == 101)
            {
                //printf("%f %f\n",v101->getLatitude(), v101->getLongitude());
-               v101->setPoint(mv->decimalDegreesToPoint(vList22->at(i)->getLatitude() , vList22->at(i)->getLongitude()));
+               v101->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
                mv->moveVehicleGraphic(*v101, EsriRuntimeQt::Point(v101->getPoint().x(), v101->getPoint().y()));
                v101->setAngle(v101->getHeading());
            }
            if(vehicle_ID == 102)
            {
                //printf("%f %f\n",v102->getLatitude(), v102->getLongitude());
-               v102->setPoint(mv->decimalDegreesToPoint(vList22->at(i)->getLatitude() , vList22->at(i)->getLongitude()));
+               v102->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
                mv->moveVehicleGraphic(*v102, EsriRuntimeQt::Point(v102->getPoint().x(), v102->getPoint().y()));
                v102->setAngle(v102->getHeading());
            }
@@ -395,6 +395,7 @@ void MainWindow::mapReady(){
  */
 void MainWindow::addVehicle(int vech, int type)
 {
+    //TODO: graphics!!!!!!1
     /*0 - default
       1 - UAV
       2 - UGV */

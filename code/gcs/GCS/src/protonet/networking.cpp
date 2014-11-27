@@ -1,6 +1,6 @@
 #include "networking.h"
 
-void networking::invokeThread(NodeQueue* q, QVector<Vehicle22*>* v, TargetList* tgt,uint8_t node_id, uint16_t self_port, uint16_t dest_port)
+void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uint8_t node_id, uint16_t self_port, uint16_t dest_port)
 {
     //create new thread
     network_thread = new QThread;
@@ -78,7 +78,7 @@ void networking::invokeThread(NodeQueue* q, QVector<Vehicle22*>* v, TargetList* 
     network_thread->start();
 }
 
-networking::networking(QVector<Vehicle22*>* v, NodeQueue *q, TargetList* targ)
+networking::networking(vehicle_list* v, NodeQueue *q, TargetList* targ)
 {
     //qDebug() << "Invoking thread with: " << port;
     invokeThread(q,v,targ,1, 7991, 7990);

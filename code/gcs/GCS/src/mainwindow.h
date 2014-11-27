@@ -29,6 +29,7 @@
 #include "MapSymbol22.h"
 #include "Waypoint22.h"
 #include "Vehicle22.h"
+#include "vehicle_list.h"
 
 //GUI Testing headers
 #include "telemetrygui.h"
@@ -93,7 +94,7 @@ private:
     //Database
     DataDaemon* database;
 
-    QVector<Vehicle22*> *vList22;
+    vehicle_list *vList22;
     Waypoint22 *w22, *w23, *w24;
     Vehicle22 *v46, *v69, *v2, *v101, *v102;
 
