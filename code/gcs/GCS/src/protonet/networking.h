@@ -18,6 +18,8 @@
 #include "nodequeue.h"
 #include "targetlist.h"
 #include "vehicle_list.h"
+
+
 class networking : public QObject
 {
     Q_OBJECT

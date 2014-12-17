@@ -15,6 +15,7 @@ vehicle_list::vehicle_list(QObject *parent) : QObject(parent)
 Vehicle22* vehicle_list::at(int vechID)
 {
     int ndx = indexOf(vechID);
+    qDebug() << vechID;
     //If vehicle not found
     if(ndx == 0)
     {

@@ -109,14 +109,20 @@ MainWindow::MainWindow(QWidget* parent) :
 //    mainLayout->addWidget(Authorize,4,0);
 
     //Set up baisic C&C gui layout
+    //Gridlayout to group widgets as one
+    //Gridlayout : base to have the commands
     QGridLayout* base = new QGridLayout();
+    //Add the widgets that have the commands
     base->addWidget(Authorize,0,0);
     base->addWidget(Telemetry,0,1);
     base->addWidget(way,0,2);
     base->addWidget(targeting,1,0);
+    //Add those commands to the mainLayout
     mainLayout->addLayout(base,2,0);
 
     //Set up UGV gui layout
+    //Gridlayout : UGV to group UGV commands
+    //Gridlayout : joyLaout to group the Joystick commands
     QGridLayout* UGVLayout = new QGridLayout();
     QGridLayout* joyLayout = new QGridLayout();
     joyLayout->addWidget(UGV_JOYSTICK,0,0);
@@ -124,40 +130,60 @@ MainWindow::MainWindow(QWidget* parent) :
     UGVLayout->addLayout(joyLayout,0,0);
     UGVLayout->addWidget(UGV_States,1,0);
 
-    //Set up UAV status label
+    //Creates label for UAV status
     QLabel* uavStatLabel = new QLabel();
+    //Sets text for label
     uavStatLabel->setText("CPP UAV STATUS");
    
+    //Create label to display UAV status
     uavStatusLabel = new QLabel();
+    //Sets text for status as "UNKNOWN"
     uavStatusLabel->setText("UNKNOWN");
 
+    //Create a gridlayout : UAVStatus to hold the UGV status label and dipslay
     QGridLayout* UAVStatus = new QGridLayout();
+    //Add uavstatus label and display to gridlayout
     UAVStatus->addWidget(uavStatLabel,0,0,Qt::AlignCenter);
     UAVStatus->addWidget(uavStatusLabel,0,1,Qt::AlignCenter);
 
-    //Set up Manual UGV drop
+    //Create Button for UGV drop notification
     ugvDrop = new QPushButton();
+    //Set Text for button
     ugvDrop->setText("UGV notify of drop");
+    //Create gridlayout : dropCMDs for the drop commands
     QGridLayout* dropCMDs = new QGridLayout();
+    //Add widgets to gridlayout
     dropCMDs->addWidget(sendcmd,0,0);
     dropCMDs->addWidget(ugvDrop,0,1);
 
     //Set up basic UAV layout with C&C commands
+    //Create gridlayout : UAVLayout for UAV commands
     QGridLayout* UAVLayout = new QGridLayout();
+    //Add UAV status, and dropCMDs layouts and UAV_payload widget
     UAVLayout->addLayout(UAVStatus,0,0);
     UAVLayout->addWidget(UAV_Payload,1,0);
     UAVLayout->addLayout(dropCMDs,2,0);
 
+    //Set up Layout for vehicle comands
+    //Create gridlayout : VehicleLayout for commands
     QGridLayout* VehicleLayout = new QGridLayout();
+    //Create Label for UAV commands
     QLabel* uavLabel = new QLabel();
+    //Set text for label
     uavLabel->setText("UAV commands");
 
+    //Create Label for UGV commands
     QLabel* ugvLabel = new QLabel();
+    //Set Text for label
     ugvLabel->setText("UGV commands");
+    //Set Alignments for the labels to be the center
+    //Have the UAV label be on the left col and the UGV to be on the right col
     VehicleLayout->addWidget(uavLabel,0,0,Qt::AlignCenter);
     VehicleLayout->addWidget(ugvLabel,0,1,Qt::AlignCenter);
+    //Add the layouts to the layout
     VehicleLayout->addLayout(UAVLayout,1,0);
     VehicleLayout->addLayout(UGVLayout,1,1);
+    //Add the layout to the mainLayout
     mainLayout->addLayout(VehicleLayout,3,0);
 
     QWidget* centralWidget = new QWidget();
@@ -232,9 +258,11 @@ void MainWindow::initMap(){
 void MainWindow::initNetworking(){
 
     //Setting up networking
+    //Create and set up vehicle list
     Vehicle22 *vehicle = new Vehicle22();
     vehicle->setVehicleType(46);
 
+    //Statically add specified vehicles to list
     vList22 = new vehicle_list();
     vList22->append(vehicle);
     vList22->append(v46);
@@ -418,7 +446,11 @@ void MainWindow::addVehicle(int vech, int type)
     vList22->append(v);
 }
 
-
+/**
+ * @brief MainWindow::vStatus Displayes vehcile status
+ * @param vech vehicle type
+ * @param mode current mode of vehicle
+ */
 void MainWindow::vStatus(int vech, int mode)
 {
     switch(mode)

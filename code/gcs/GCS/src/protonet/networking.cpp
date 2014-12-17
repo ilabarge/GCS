@@ -110,7 +110,7 @@ void networking::arm(int x) { emit armUAV(x); }
 void networking::disarm(int x) { emit disarmUAV(x); }
 
 //targeting
-void networking::target(float lat, float longi, float alt) {emit manTargeting((double)lat,(double)longi,(double)alt);}
+void networking::target(float lat, float longi, float alt) {emit manTargeting(lat,longi,alt);}
 
 void networking::newTarget(float lat,float longi) { emit vTarget(lat,longi);}
 
