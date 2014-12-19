@@ -91,11 +91,14 @@ void WaypointGUI::send_waypoint()
                          0);
 
     mutex.lock();
-    v->appendWaypoint(w, Qt::green );
+    //old way of appending waypoint
+    //v->appendWaypoint(w, Qt::green );
     mutex.unlock();
     qDebug() << "Vehicle" << vehicle->text();
     qDebug() << "id" << id->text();
     emit waypoint(vehicle->text().toInt(),id->text().toInt(),type->text().toInt(),latitude->text().toFloat(),longitude->text().toFloat(),altitude->text().toFloat());
+    //we will append the waypoint in mainwindow.cpp
+    emit addWaypoint(id->text().toInt(),w);
 }
 /**
  * @brief WaypointGUI::coordDesignated Adds waypoint to display

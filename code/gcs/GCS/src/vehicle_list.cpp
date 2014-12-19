@@ -2,8 +2,6 @@
 
 vehicle_list::vehicle_list(QObject *parent) : QObject(parent)
 {
-    vlist = new std::vector<Vehicle22*>();
-    pos = new std::vector<int>();
 }
 
 /**
@@ -14,18 +12,19 @@ vehicle_list::vehicle_list(QObject *parent) : QObject(parent)
  */
 Vehicle22* vehicle_list::at(int vechID)
 {
-    int ndx = indexOf(vechID);
-    qDebug() << vechID;
-    //If vehicle not found
-    if(ndx == 0)
-    {
-      qDebug() << "No such vehicle";
-      //Notify user
-      emit incorrect(vechID);
-      return 0;
-    }
-      else
-        return vlist->at(ndx);
+//    int ndx = indexOf(vechID);
+//    qDebug() << vechID;
+//    //If vehicle not found
+//    if(ndx == 0)
+//    {
+//      qDebug() << "No such vehicle";
+//      //Notify user
+//      emit incorrect(vechID);
+//      return 0;
+//    }
+//      else
+//        return vlist->at(ndx);
+    return vlist.at(vechID);
 }
 
 /**
@@ -36,20 +35,23 @@ Vehicle22* vehicle_list::at(int vechID)
  */
 Vehicle22 *vehicle_list::set(int vechID)
 {
-    int ndx = indexOf(vechID);
-    //If vehicle not found
-    if(ndx == 0)
-    {
-      qDebug() << "No such vehicle";
-      //Notify user
-      emit incorrect(vechID);
-      return 0;
-    }
-    else
-    {
-        emit update(vechID);
-        return vlist->at(ndx);
-    }
+//    int ndx = indexOf(vechID);
+//    //If vehicle not found
+//    if(ndx == 0)
+//    {
+//      qDebug() << "No such vehicle";
+//      //Notify user
+//      emit incorrect(vechID);
+//      return 0;
+//    }
+//    else
+//    {
+//        //We emit an update when we update information
+//        emit update(vechID);
+//        return vlist->at(ndx);
+//    }
+    emit update(vechID);
+    return vlist.at(vechID);
 }
 
 /**
@@ -58,15 +60,15 @@ Vehicle22 *vehicle_list::set(int vechID)
  */
 void vehicle_list::append(Vehicle22 *vech)
 {
-    vlist->push_back(vech);
+    vlist.push_back(vech);
     int val = vech->getVehicleID();
-    pos->push_back(val);
+    pos.push_back(val);
     return;
 }
 
 int vehicle_list::length()
 {
-    return vlist->size();
+    return vlist.size();
 }
 /**
  * @brief vehicle_list::indexOf Returns the value of the index of the vehicle
@@ -76,11 +78,21 @@ int vehicle_list::length()
 int vehicle_list::indexOf(int id)
 {
     int p = 0;
-    for(std::vector<int>::iterator it = pos->begin(); it!= pos->end(); ++it)
+    for(std::vector<int>::iterator it = pos.begin(); it!= pos.end(); ++it)
     {
         if(id == *it)
             return p;
         p++;
+        qDebug() << p;
     }
     return -1;
+}
+
+/**
+ * @brief vehicle_list::list Returns pointer to list for access
+ * @return Pointer to the vehicle list
+ */
+std::vector<Vehicle22*> vehicle_list::list()
+{
+    return vlist;
 }

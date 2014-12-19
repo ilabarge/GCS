@@ -58,8 +58,10 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
 //Vehicle waypoint
 void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt)
 {
-    qDebug() << vehicle;
+    /*
+     * qDebug() << vehicle;
     qDebug() << pos;
+     */
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
@@ -75,13 +77,17 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
     Waypoint22 *w = new Waypoint22(pos,type,lat,longi,alt,0);
     for(int i = 0; i < vList->length(); i++)
     {
-        if(vList->set(i)->getVehicleID() == vehicle)
+        if(vList->at(i)->getVehicleID() == vehicle)
         {
-           int size = vList->set(i)->waypoints.size();
+           int size = vList->at(i)->waypoints.size();
            qDebug() << "dest size: " << size;
            qDebug() << "Waypoint id: " << w->getID();
            qDebug() << "Type: " << w->getType();
-           if((type == 0) && ((w->getID()) == (size)))
+           //qDebug() << "list size: " <<size;
+           //If we are adding to an empty list or to the end of a list
+           //Note that we are using 1 based indexing
+           //Thus if we have size 1 our end of list would be a waypoint ID of 2
+           if((size == 0 && type == 0) || ((type == 0) && ((w->getID()) == (size + 1))))
            {
                mutex.lock();
                vList->set(i)->appendWaypoint(w, vList->set(i)->getColor() );
@@ -94,9 +100,9 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
                                                    0,
                                                   w->getID(),
                                                   w->getType());
-
            }
-           else if((type == 0) && ((w->getID()) != (size - 1)))
+           //If we have added further past the "end" of the list we ignore
+           else if((type == 0) && ((w->getID()) > (size + 1)))
            {
                //qDebug() << "added t past end of list!!";
            }
@@ -151,6 +157,7 @@ void rx_thread::send_telemetry_command(int vehicle)
     node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
 }
 
+//Send targeting informaiton to vehicle
 void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 {
     //Target id = 1, Payload ID = 1
@@ -170,6 +177,7 @@ void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 //emit target recieved out to main window
 void rx_thread::target(float lat,float longi) { emit sendTarget(lat,longi);}
 
+//Send manual targeting to UAV (static ID)
 void rx_thread::send_manTargeting(double latitude, double longitude, double altitude)
 {
     //Target id = 1, Payload ID = 1
@@ -238,6 +246,7 @@ void rx_thread::stop_UGV_Joystick()
     emit endUGVJoystick();
 }
 
+//Emit vehicle status to be displayed in GUI
 void rx_thread::vechStat(int vech, int status){  emit vechStatus(vech, status); }
 
 //Adjusting network settings

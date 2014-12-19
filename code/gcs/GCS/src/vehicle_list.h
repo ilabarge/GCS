@@ -12,6 +12,7 @@ public:
     Vehicle22 *at(int);
     Vehicle22 *set(int);
     QVector<int> getList();
+    std::vector<Vehicle22 *> list();
     void append(Vehicle22 *);
     int length();
 
@@ -21,8 +22,8 @@ signals:
     void incorrect(int);
 
 private:
-    std::vector<Vehicle22*> *vlist;
-    std::vector<int> *pos;
+    std::vector<Vehicle22*> vlist;
+    std::vector<int> pos;
     int indexOf(int);
 };
 
