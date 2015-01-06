@@ -50,7 +50,6 @@ Vehicle22 *vehicle_list::set(int vechID)
 //        emit update(vechID);
 //        return vlist->at(ndx);
 //    }
-    emit update(vechID);
     return vlist.at(vechID);
 }
 
@@ -66,10 +65,15 @@ void vehicle_list::append(Vehicle22 *vech)
     return;
 }
 
+/**
+ * @brief vehicle_list::length Returns the length of the vehicle list
+ * @return value of the length of the list
+ */
 int vehicle_list::length()
 {
     return vlist.size();
 }
+
 /**
  * @brief vehicle_list::indexOf Returns the value of the index of the vehicle
  * @param id ID to find index
@@ -95,4 +99,13 @@ int vehicle_list::indexOf(int id)
 std::vector<Vehicle22*> vehicle_list::list()
 {
     return vlist;
+}
+
+/**
+ * @brief vehicle_list::update Emits the update to notify of the change of the vehicle at position
+ * @param position The position of the vehicle to update
+ */
+void vehicle_list::updateVech(int position)
+{
+    emit update(position);
 }

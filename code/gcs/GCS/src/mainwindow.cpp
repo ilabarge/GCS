@@ -207,7 +207,6 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
     connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
     connect(way,SIGNAL(waypoint(int, int, int, float,float,float)),network,SLOT(send_waypoint(int, int, int, float,float,float)));
-    connect(way,SIGNAL(addWaypoint(int,Waypoint22*)),this,SLOT(addWaypoint(int,Waypoint22*)));
     //Manual Targeting
     connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
 
@@ -491,23 +490,6 @@ void MainWindow::vStatus(int vech, int mode)
      * }
      */
 
-}
-
-/**
- * @brief MainWindow::addWaypoint Adds a waypoint to a vehicle ID
- * @param id ID of vehicle
- * @param way Waypoint to add
- */
-void MainWindow::addWaypoint(int id, Waypoint22 *way)
-{
-//    for(int i = 1; i < vList22->length(); i++){
-//        if(vList22->at(i)->getVehicleID()== id){
-//            qDebug() << "Test1";
-//            //vList22->at(i)->appendWaypoint(way,Qt::green);
-//            qDebug() << "Test2";
-//            return;
-//        }
-//    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event){

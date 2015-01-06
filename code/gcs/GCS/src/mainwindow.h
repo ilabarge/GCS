@@ -115,7 +115,7 @@ private slots:
 
     //Target
     void addTarget(float lat, float lon);
-    void addWaypoint(int,Waypoint22*);
+    //void addWaypoint(int,Waypoint22*);
 //    void removeTarget(int gID);
 
 signals:

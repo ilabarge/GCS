@@ -14,6 +14,7 @@ public:
     QVector<int> getList();
     std::vector<Vehicle22 *> list();
     void append(Vehicle22 *);
+    void updateVech(int);
     int length();
 
 signals:
