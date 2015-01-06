@@ -55,6 +55,7 @@ SOURCES += \
     src/uavpayload.cpp \
     src/InternetTest.cpp \
     src/protonet/Joystick.cpp \
+    src/vehicle_list.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -138,6 +139,7 @@ HEADERS += \
     src/uavpayload.h \
     src/InternetTest.h \
     src/protonet/Joystick.h \
+    src/vehicle_list.h
 
 FORMS += \
     forms/gcs_toolbar.ui

@@ -14,7 +14,6 @@ public:
     bool checkVisibility();
      ~toggleButton();
 
-
 signals:
     void toggled();
 

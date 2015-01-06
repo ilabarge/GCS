@@ -22,6 +22,7 @@ public:
 
 signals:
     void waypoint(int,int,int,float,float,float);
+    void addWaypoint(int,Waypoint22*);
 
 public slots:
     void send_waypoint();

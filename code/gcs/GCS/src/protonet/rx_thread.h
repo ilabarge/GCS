@@ -21,12 +21,13 @@
 #include "nodequeue.h"
 #include "joystickinput.h"
 #include "targetlist.h"
+#include "vehicle_list.h"
 
 class rx_thread : public QObject
 {
     Q_OBJECT
 public:
-    rx_thread(uint8_t, uint16_t, uint16_t, QVector<Vehicle22*>*, NodeQueue*, TargetList*);
+    rx_thread(uint8_t, uint16_t, uint16_t, vehicle_list*, NodeQueue*, TargetList*);
     rx_thread();
     void print_port();
     ~rx_thread();
@@ -40,7 +41,7 @@ private:
     protonet::node *node;
     QThread *joystick_thread;
     JoystickInput *joystick;
-    QVector<Vehicle22*>* vList;
+    vehicle_list* vList;
     boolean send;
 public slots:
     void process();

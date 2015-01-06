@@ -24,7 +24,8 @@ public:
             double xAccel,    double yAccel,    double rollRate,
             double pitchRate, double yawrate,   double velocity,
             double roll,      double pitch,     double yaw);
-
+    //Copy Constructor
+    Vehicle22(const Vehicle22&);
     /* BEGIN SETTERS */
     void setVehicleID(int vehicleID);
     void setVehicleType(int vehicleType);

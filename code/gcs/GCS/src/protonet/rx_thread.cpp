@@ -1,13 +1,13 @@
 #include "rx_thread.h"
 
 TargetList* targetList;
-QVector<Vehicle22*>* vp;
+vehicle_list* vp;
 QMutex mutex;
 protonet::node *np;
 NodeQueue *nq;
 
 // ------- CONSTRUCTOR -------
-rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, QVector<Vehicle22*>* v, NodeQueue *q, TargetList* tgt){
+rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, vehicle_list* v, NodeQueue *q, TargetList* tgt){
     // you could copy data from constructor arguments to internal variables here.
     this->node_id = node_id;
     this->self_port = self_port;
@@ -58,8 +58,10 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
 //Vehicle waypoint
 void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt)
 {
-    qDebug() << vehicle;
+    /*
+     * qDebug() << vehicle;
     qDebug() << pos;
+     */
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
@@ -73,6 +75,7 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
      * that the platform may add
      */
     Waypoint22 *w = new Waypoint22(pos,type,lat,longi,alt,0);
+    //ZZZ Rewrite to that we call vList->set(vehicleID)
     for(int i = 0; i < vList->length(); i++)
     {
         if(vList->at(i)->getVehicleID() == vehicle)
@@ -81,10 +84,13 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
            qDebug() << "dest size: " << size;
            qDebug() << "Waypoint id: " << w->getID();
            qDebug() << "Type: " << w->getType();
-           if((type == 0) && ((w->getID()) == (size)))
+           //If we are adding to an empty list or to the end of a list
+           //Note that we are using 1 based indexing
+           //Thus if we have size 1 our end of list would be a waypoint ID of 2
+           if((size == 0 && type == 0) || ((type == 0) && ((w->getID()) == (size + 1))))
            {
                mutex.lock();
-               vList->at(i)->appendWaypoint(w, vList->at(i)->getColor() );
+               vList->set(i)->appendWaypoint(w, vList->set(i)->getColor() );
                mutex.unlock();
                node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                   (int32_t)(w->getLatitude()*1E7),
@@ -94,9 +100,9 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
                                                    0,
                                                   w->getID(),
                                                   w->getType());
-
            }
-           else if((type == 0) && ((w->getID()) != (size - 1)))
+           //If we have added further past the "end" of the list we ignore
+           else if((type == 0) && ((w->getID()) > (size + 1)))
            {
                //qDebug() << "added t past end of list!!";
            }
@@ -104,37 +110,24 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
           //work
           if((w->getID()) < size)
           {
-              if(type == 0)
-              {
-                  mutex.lock();
-                  vList->at(i)->insertWaypoint(pos,w, vList->at(i)->getColor());
-                  mutex.unlock();
-                  node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                     (int32_t)(w->getLatitude()*1E7),
-                                                     (int32_t)(w->getLongitude()*1E7),
-                                                     /* Note should be 1E6 for it to work*/
-                                                      (int32_t)(w->getAltitude()*1E6),
-                                                      0,
-                                                     w->getID(),
-                                                     w->getType());
-              }
+              //Case of editing
               //qDebug() << "type" << type;
               if(type == 1)
               {
                   //qDebug() << "edited t";
                   mutex.lock();
-                  vList->at(i)->insertWaypoint(w->getID(), w, Qt::green );
+                  vList->set(i)->insertWaypoint(w->getID(), w, Qt::green );
                   mutex.unlock();
               }
-
+              //Case of removing
               else if(type == 2)
               {
                   //qDebug() << "removed t";
                   mutex.lock();
-                  vList->at(i)->removeWaypoint(w->getID());
+                  vList->set(i)->removeWaypoint(w->getID());
                   mutex.unlock();
               }
-
+              //Reguardless of either editing or removing we must send command
               if((type == 1) || (type == 2))
               {
                   node->send_vehicle_waypoint_command(vehicle,x,vehicle,
@@ -146,7 +139,7 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
                                                      w->getID());
               }
           }
-        //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
+        //qDebug() << "Dest size after Waypoint command" << vList->set(i)->waypoints.size();
        }
    }
 }
@@ -164,6 +157,7 @@ void rx_thread::send_telemetry_command(int vehicle)
     node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
 }
 
+//Send targeting informaiton to vehicle
 void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 {
     //Target id = 1, Payload ID = 1
@@ -183,6 +177,7 @@ void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 //emit target recieved out to main window
 void rx_thread::target(float lat,float longi) { emit sendTarget(lat,longi);}
 
+//Send manual targeting to UAV (static ID)
 void rx_thread::send_manTargeting(double latitude, double longitude, double altitude)
 {
     //Target id = 1, Payload ID = 1
@@ -251,6 +246,7 @@ void rx_thread::stop_UGV_Joystick()
     emit endUGVJoystick();
 }
 
+//Emit vehicle status to be displayed in GUI
 void rx_thread::vechStat(int vech, int status){  emit vechStatus(vech, status); }
 
 //Adjusting network settings
@@ -336,8 +332,8 @@ void rx_thread::EnableMotor()
 // -------- CHECKING VEHICLE --------
 int checkVehicles(uint32_t vehicle_ID)
 {
-    for(int i = 1; i < vp->size(); i++){
-        if(vp->at(i)->getVehicleID() == vehicle_ID){
+    for(int i = 1; i < vp->length(); i++){
+        if(vp->at(i)->getVehicleID()== vehicle_ID){
             return i;
         }
     }
@@ -380,10 +376,11 @@ void* enter_callback(int8_t id, proto_header_t header, enter_t enter, protonet::
 void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::node* node)
 {
    printf("got ping");
+   qDebug() << "got ping";
    //qDebug() << "Ping timestamp:" << ping.timestamp << endl;
    //qDebug() << "Sending pong response." << endl;
    //send a pong as a reply
-   //np->send_pong(header.node_src_id);
+   node->send_pong(header.node_src_id,0);
    return 0;
 }
 
@@ -456,10 +453,11 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
 
     //Setting variables
     //(vp + vehicleIndex)->setVehicleID(status.vehicle_ID);
-    vp->at(i)->setState(status.vehicle_state);
-    vp->at(i)->setMode(status.vehicle_mode);
+    vp->set(i)->setState(status.vehicle_state);
+    vp->set(i)->setMode(status.vehicle_mode);
     //Sets vehicle update value to true
     mutex.unlock();
+    vp->update(i);
     nq->enqueue(header.node_src_id);
     if(header.node_src_id == 69)
     {
@@ -489,22 +487,24 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     printf("===============");
     mutex.lock();
     /*
-    inertial.east_accel(); Unused?
+     * Unused
+    inertial.east_accel();
     inertial.east_speed();
     inertial.north_accel();
     inertial.north_speed();
     */
     inertial.vertical_accel; //Missing?
     inertial.vertical_speed; //Missing?
-    vp->at(i)->setRoll(inertial.roll);
-    vp->at(i)->setRollRate(inertial.roll_rate);
-    vp->at(i)->setHeading(inertial.heading);
-    vp->at(i)->setAltitude(inertial.altitude);
-    vp->at(i)->setLatitude(((float)inertial.latitude)/1E7);
-    vp->at(i)->setLongitude(((float)inertial.longitude)/1E7);
-    vp->at(i)->setPitch(inertial.pitch);
-    vp->at(i)->setPitchRate(inertial.pitch_rate);
+    vp->set(i)->setRoll(inertial.roll);
+    vp->set(i)->setRollRate(inertial.roll_rate);
+    vp->set(i)->setHeading(inertial.heading);
+    vp->set(i)->setAltitude(inertial.altitude/1E6);
+    vp->set(i)->setLatitude(((float)inertial.latitude)/1E7);
+    vp->set(i)->setLongitude(((float)inertial.longitude)/1E7);
+    vp->set(i)->setPitch(inertial.pitch);
+    vp->set(i)->setPitchRate(inertial.pitch_rate);
     mutex.unlock();
+//    //vp->update(i);
     nq->enqueue(header.node_src_id);
     return 0;
 }
@@ -512,7 +512,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
 void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle_global_position_t position, protonet::node* node_ptr)
 {
     //Finds index of vehicle
-    //qDebug() << "globalpos";
+    qDebug() << "globalpos";
     int i = checkVehicles(header.node_src_id);
     if(i == -1){
         return 0; //Bad ID
@@ -521,21 +521,22 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     printf("==============\nGlobal position\n");
     printf("longitude: %f\n",((float)position.longitude)/1E7);  //137
     printf("latitude: %f\n", ((float)position.latitude)/1E7);
-    printf("altitude: %d\n",position.altitude);
+    printf("altitude: %d\n",position.altitude/1E6);
     //heading 1E6
     //everything else strieght
     printf("===============\n");
 
     mutex.lock();
     //Setting variables
-    vp->at(i)->setAltitude(position.altitude);
-    vp->at(i)->setLongitude(((float)position.longitude)/1E7);
-    vp->at(i)->setLatitude(((float)position.latitude)/1E7);
-    vp->at(i)->setXVelocity(position.x_speed);
-    vp->at(i)->setYVelocity(position.y_speed);
-    vp->at(i)->setZVelocity(position.z_speed);
-    vp->at(i)->setHeading(((float)position.heading)/1E6);
+    vp->set(i)->setAltitude(position.altitude/1E6);
+    vp->set(i)->setLongitude(((float)position.longitude)/1E7);
+    vp->set(i)->setLatitude(((float)position.latitude)/1E7);
+    vp->set(i)->setXVelocity(position.x_speed);
+    vp->set(i)->setYVelocity(position.y_speed);
+    vp->set(i)->setZVelocity(position.z_speed);
+    vp->set(i)->setHeading(((float)position.heading)/1E6);
     mutex.unlock();
+    vp->update(i);
     nq->enqueue(header.node_src_id);
     //Call database update in thread?
     //int checkLong = vp->at(i)->ts.at(0)->getLongitude() - vp->at(i)->getLatitude();
@@ -565,10 +566,11 @@ void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_
     //qDebug() << "attitude";
     mutex.lock();
     //Setting variables
-    vp->at(i)->setPitch(attitude.pitch);
-    vp->at(i)->setRoll(attitude.roll);
-    vp->at(i)->setYaw(attitude.yaw);
+    vp->set(i)->setPitch(attitude.pitch);
+    vp->set(i)->setRoll(attitude.roll);
+    vp->set(i)->setYaw(attitude.yaw);
     mutex.unlock();
+    vp->update(i);
     nq->enqueue(header.node_src_id);
     /*
     qDebug() << "Vehicle ID:" << attitude.vehicle_ID << "Timestamp:" << attitude.timestamp;

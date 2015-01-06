@@ -5,15 +5,18 @@
 targetingGUI::targetingGUI(QWidget *parent) :
     QWidget(parent)
 {
-    //Initialize and set up user input and buttons
+    //Create layout
     mainLayout = new QGridLayout();
+    //Create button to send information
     targets = new QPushButton();
+    //Label button
     targets->setText("Send Target");
+    //Create user inputs for latitude, longitude and altitude
     latitude = new QLineEdit();
     longitude = new QLineEdit();
     altitude = new QLineEdit();
 
-    //Creates and sets labels
+    //Creates labels for the inputs for the user
     QLabel* lat = new QLabel();
     lat->setText("Latitude");
     QLabel* longi = new QLabel();
@@ -21,7 +24,7 @@ targetingGUI::targetingGUI(QWidget *parent) :
     QLabel* alt = new QLabel();
     alt->setText("Altitude");
 
-    //Labels mouse overs
+    //Labels mouse overs for user input
     latitude->setToolTip("Latitude");
     longitude->setToolTip("Longitude");
     altitude->setToolTip("Altitude");
@@ -38,11 +41,13 @@ targetingGUI::targetingGUI(QWidget *parent) :
     //Set widget layout
     setLayout(mainLayout);
 
-    //If button is pressed, we emit
+    //If button is pressed, we activate the slot which sends the values stored in the user input
     connect(targets,SIGNAL(clicked()),this,SLOT(targetsend()));
 }
 
-//Upon button press, we send the entered latitude, longitude and altitude as a signal
+/**
+ * @brief targetingGUI::targetsend Upon button press, we send the entered latitude, longitude and altitude as a signal
+ */
 void targetingGUI::targetsend()
 {
     emit target(latitude->text().toFloat(),longitude->text().toFloat(),altitude->text().toFloat());
