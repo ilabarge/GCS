@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/images">
-        <file>images/map_ico_uav-01.png</file>
-        <file>images/map_ico_uav-02.png</file>
-        <file>images/map_ico_ugv-01.png</file>
-        <file>images/map_ico_ugv-02.png</file>
-    </qresource>
-</RCC>
