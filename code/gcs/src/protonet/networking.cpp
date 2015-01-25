@@ -1,5 +1,13 @@
 #include "networking.h"
-
+/**
+ * @brief networking::invokeThread Creates thread for protonet messages
+ * @param q NODE QUEUE (will need to remove after transfer to new signal is complete)
+ * @param v vehicle list
+ * @param tgt Holds targets
+ * @param node_id  GCS NODE ID (1)
+ * @param self_port UDP port to recieve protonet messages
+ * @param dest_port UDP port to send protonet messages
+ */
 void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uint8_t node_id, uint16_t self_port, uint16_t dest_port)
 {
     //create new thread
@@ -80,7 +88,9 @@ void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uin
 
     network_thread->start();
 }
-
+/**
+ * @brief networking::networking creates the thread to handle protonet messages
+ */
 networking::networking(vehicle_list* v, NodeQueue *q, TargetList* targ)
 {
     //qDebug() << "Invoking thread with: " << port;
@@ -94,7 +104,7 @@ void networking::send_ping(int id){ emit ping(id); }
 void networking::update_vehicle_queue() { emit update_queue(); }
 
 //Update Vehicle at position given
-void networking::updateVech(int pos) {emit updateVehicle(pos); }
+void networking::updateVech(int pos) {emit updateVechicle(pos); }
 
 //Sending waypoint
 void networking::send_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt){ emit waypoint( vehicle, pos, type, lat, longi,alt); }

@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget* parent) :
     mainLayout = new QGridLayout;
     mainLayout->setMargin( 0 );
 
+   //Statically initialize vehicles
     v46 =  new Vehicle22(46, 0, 0,
                0, 0, 0,
                0, 0, 0,
@@ -24,7 +25,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v46->setColor(Qt::green);
-    v46->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
+    v46->setGraphic( ":/map_ico_ugv-01.png", 0, 0, 50, 50 );
 
     v69 =  new Vehicle22(69, 0, 0,
                0, 0, 0,
@@ -33,7 +34,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v69->setColor(Qt::cyan);
-    v69->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
+    v69->setGraphic( ":/map_ico_uav-01.png", 0, 0, 50, 50 );
 
     v2 = new Vehicle22(2, 0, 0,
                0, 0, 0,
@@ -42,7 +43,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v2->setColor(Qt::green);
-    v2->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
+    v2->setGraphic( ":/map_ico_uav-01.png", 0, 0, 50, 50 );
 
     v101 = new Vehicle22(101, 0, 0,
                0, 0, 0,
@@ -51,7 +52,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v101->setColor(Qt::yellow);
-    v101->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
+    v101->setGraphic( ":/map_ico_uav-02.png", 0, 0, 50, 50 );
 
     v102 = new Vehicle22(102, 0, 0,
                0, 0, 0,
@@ -60,7 +61,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v102->setColor(Qt::magenta);
-    v102->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
+    v102->setGraphic( ":/map_ico_uav-02.png", 0, 0, 50, 50 );
 
     //Initialize Map
     initMap();
@@ -103,10 +104,6 @@ MainWindow::MainWindow(QWidget* parent) :
 
     //Temp locations & gui!!!!!!
     mainLayout->addWidget(quitButton,4,0);
-
-//    mainLayout->addWidget(Telemetry,2,0);
-//    mainLayout->addWidget(way,3,0);
-//    mainLayout->addWidget(Authorize,4,0);
 
     //Set up baisic C&C gui layout
     //Gridlayout to group widgets as one
@@ -197,6 +194,9 @@ MainWindow::MainWindow(QWidget* parent) :
     //update targets
     connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
 
+    //TEST METHOD FOR NEW SIGNAL
+    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
+
     //Map Interation
     //Sets coordinate positions for waypoint baised off of click on map
     connect(mv, SIGNAL(coordDesignated(double,double)), way, SLOT(coordDesignated(double,double)));
@@ -254,6 +254,26 @@ void MainWindow::initMap(){
     mainLayout->addWidget( mv->m_mapGraphicsView, 1, 0 );
 }
 
+//Test slot for new signal
+void MainWindow::updateVech(int pos)
+{
+    //qDebug() << "Update at pos " << pos;
+    int vehicle_ID = vList22->set(pos)->getVehicleID();
+    qDebug() << "ID is" << vehicle_ID;
+    //Temporary code=========================
+    if(vehicle_ID == 2)
+    {
+        qDebug() << "vehicle 2";
+//       qDebug() << (std::to_string(v3->getLatitude())).c_str();
+//       qDebug() << (std::to_string(v3->getLongitude())).c_str();
+//       qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
+         v2->setPoint(mv->decimalDegreesToPoint(vList22->set(pos)->getLatitude() , vList22->set(pos)->getLongitude()));
+         mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
+         v2->setAngle(v2->getZVelocity());
+     }
+    emit update_vehicle(vehicle_ID);
+}
+
 void MainWindow::initNetworking(){
 
     //Setting up networking
@@ -263,7 +283,6 @@ void MainWindow::initNetworking(){
 
     //Statically add specified vehicles to list
     vList22 = new vehicle_list();
-    //vList22->append(vehicle);
     vList22->append(v46);
     vList22->append(v69);
     vList22->append(v2);
@@ -288,6 +307,7 @@ void MainWindow::initWidgets(){
 
 }
 
+//OLD CODE NEED TO CHANGE TO FIT TO NEW SIGNAL
 void MainWindow::update_vehicle_queue()
 {
    if(vUpdate->isEmpty())
@@ -371,9 +391,6 @@ void MainWindow::UGVDrop()
 }
 
 void MainWindow::mapReady(){
-//    //TODO: Ghosting?
-//    //v2->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
-//    //v2->setGraphicID(mv->addGraphicToLayer( v2->getGraphic() ));
 
 //    qDebug() << "Adding v46";
     mv->addGraphicToLayer( v46->getGraphic() );
@@ -408,10 +425,6 @@ void MainWindow::mapReady(){
     connect(v102, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
     connect(v102, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
     connect(v102, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
-
-    //TODO: Ghosting?
-    //v69->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
-    //mv->addGraphicToLayer( v69->getGraphic() );
 
 }
 

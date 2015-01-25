@@ -29,7 +29,7 @@ void rx_thread::update_vech_queue() { emit update_queue();}
 
 void rx_thread::print_port() {  qDebug() << serial_port; }
 
-void rx_thread::update(int pos) {emit updateVech(pos);}
+void rx_thread::update(int pos) { emit updateVech(pos);}
 // ------- DECONSTRUCTOR -------
 rx_thread::~rx_thread() {
     qDebug() << "Rx Deconstrutor";
@@ -518,6 +518,7 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     qDebug() << "globalpos";
     int i = checkVehicles(header.node_src_id);
     if(i == -1){
+        qDebug() << "bad id " << header.node_src_id;
         return 0; //Bad ID
     }
     //Debug prints

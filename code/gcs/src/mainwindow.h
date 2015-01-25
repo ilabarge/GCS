@@ -113,6 +113,9 @@ private slots:
     void UDrop();
     void UGVDrop();
 
+    //Test Slot for new signal
+    void updateVech(int);
+
     //Target
     void addTarget(float lat, float lon);
     //void addWaypoint(int,Waypoint22*);
