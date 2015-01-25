@@ -21,12 +21,15 @@ rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, ve
     connect(q,SIGNAL(vechStat(int,int)),this,SLOT(vechStat(int,int)));
     connect(targetList,SIGNAL(newTarget(Target*)),this,SLOT(target_added(Target*)));
     connect(q,SIGNAL(target(float,float)),this,SLOT(target(float,float)));
+    //Connect for callback for new vehicle list
+    connect(v,SIGNAL(update(int)),this,SLOT(update(int)));
 }
 
 void rx_thread::update_vech_queue() { emit update_queue();}
 
 void rx_thread::print_port() {  qDebug() << serial_port; }
 
+void rx_thread::update(int pos) {emit updateVech(pos);}
 // ------- DECONSTRUCTOR -------
 rx_thread::~rx_thread() {
     qDebug() << "Rx Deconstrutor";
@@ -504,7 +507,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     vp->set(i)->setPitch(inertial.pitch);
     vp->set(i)->setPitchRate(inertial.pitch_rate);
     mutex.unlock();
-//    //vp->update(i);
+    vp->update(i);
     nq->enqueue(header.node_src_id);
     return 0;
 }

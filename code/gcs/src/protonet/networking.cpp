@@ -33,8 +33,11 @@ void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uin
     //To allow C&C over vehicle
     connect(this,SIGNAL(vehicle_auth_request(int)),rx,SLOT(send_vehicle_auth_request(int)));
 
-    //Update vehicle update queue
+    //Update vehicle update queue (OLD NEED TO REMOVE DEPENDENCY)
     connect(rx,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
+
+    //New Vehicle Information recieved
+    connect(rx,SIGNAL(updateVech(int)),this,SLOT(updateVech(int)));
 
     //Update the location of the target found
     connect(rx,SIGNAL(newTarget(Target*)),this,SLOT(update_target_disp(Target*)));
@@ -87,7 +90,11 @@ networking::networking(vehicle_list* v, NodeQueue *q, TargetList* targ)
 //Network send message signal/slots
 void networking::send_ping(int id){ emit ping(id); }
 
+//Update Vehicle (OLD NEED TO REMOVE DEPENDENCY)
 void networking::update_vehicle_queue() { emit update_queue(); }
+
+//Update Vehicle at position given
+void networking::updateVech(int pos) {emit updateVehicle(pos); }
 
 //Sending waypoint
 void networking::send_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt){ emit waypoint( vehicle, pos, type, lat, longi,alt); }

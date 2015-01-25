@@ -32,6 +32,9 @@ public slots:
     void update_vehicle_queue();
     void update_target_disp(Target*);
 
+    //Update Vehicle at position
+    void updateVech(int);
+
     //Basic Protonet
     void send_ping(int);
 
@@ -79,8 +82,10 @@ signals:
     void ping(int);
     void update_queue();
     void network_set_serial(QString);
-
     void newTarget(Target*);
+
+    //Update Vehicle at position
+    void updateVechicle(int);
 
     //Emit values for specific commands
     void waypoint(int, int, int, float, float, float);

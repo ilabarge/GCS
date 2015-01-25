@@ -43,6 +43,7 @@ private:
     JoystickInput *joystick;
     vehicle_list* vList;
     boolean send;
+
 public slots:
     void process();
     void send_ping(int id);
@@ -87,7 +88,7 @@ public slots:
 
     //Changing Networking Settings
     void setNetworkSerial(QString);
-
+    void update(int);
 
 signals:
     void finished();
@@ -99,6 +100,9 @@ signals:
     void newTarget(Target*);
     void vechStatus(int,int);
     void sendTarget(float,float);
+
+    //Has value of position of vech
+    void updateVech(int);
 };
 
 #endif // RX_THREAD_H
