@@ -89,7 +89,7 @@ void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uin
     network_thread->start();
 }
 /**
- * @brief networking::networking creates the thread to handle protonet messages
+ * @brief networking::networking invokes the thread to handle protonet messages
  */
 networking::networking(vehicle_list* v, NodeQueue *q, TargetList* targ)
 {
@@ -109,6 +109,7 @@ void networking::updateVech(int pos) {emit updateVechicle(pos); }
 //Sending waypoint
 void networking::send_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt){ emit waypoint( vehicle, pos, type, lat, longi,alt); }
 
+//Send vehicle authorization request to vehicle i
 void networking::send_vehicle_auth_request(int i){ emit vehicle_auth_request(i);}
 
 //Send telemetry command
