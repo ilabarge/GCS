@@ -29,7 +29,7 @@ void rx_thread::update_vech_queue() { emit update_queue();}
 
 void rx_thread::print_port() {  qDebug() << serial_port; }
 
-void rx_thread::update(int pos) { emit updateVech(pos);}
+void rx_thread::update(int vechID) { emit updateVech(vechID);}
 // ------- DECONSTRUCTOR -------
 rx_thread::~rx_thread() {
     qDebug() << "Rx Deconstrutor";
@@ -405,8 +405,10 @@ void* vehicle_authorization_request_callback(int8_t id, proto_header_t header, v
 void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, vehicle_authorization_reply_t vehicle, protonet::node* node_ptr)
 {
    printf("Got Vehicle Authorization Reply");
-   int i = checkVehicles(header.node_src_id);
-   if(i == -1){
+   int ID = header.node_src_id;
+   //Is the vehicle id in list?
+   if(!(vp->inList(ID))){
+       qDebug() << "bad id " << ID;
        return 0; //Bad ID
    }
    //Begin setting reply information
@@ -431,9 +433,10 @@ void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, veh
 void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_system_status_t status, protonet::node* node_ptr)
 {
     printf("=============\nsystem status\n");
-    //Finds index of vehicle
-    int i = checkVehicles(header.node_src_id);
-    if(i == -1){
+    int ID = header.node_src_id;
+    //Is the vehicle id in list?
+    if(!(vp->inList(ID))){
+        qDebug() << "bad id " << ID;
         return 0; //Bad ID
     }
     printf("state: %d  mode: %d\n",status.vehicle_state,status.vehicle_mode);
@@ -456,11 +459,11 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
 
     //Setting variables
     //(vp + vehicleIndex)->setVehicleID(status.vehicle_ID);
-    vp->set(i)->setState(status.vehicle_state);
-    vp->set(i)->setMode(status.vehicle_mode);
+    vp->set(ID)->setState(status.vehicle_state);
+    vp->set(ID)->setMode(status.vehicle_mode);
     //Sets vehicle update value to true
     mutex.unlock();
-    vp->update(i);
+    vp->update(header.node_src_id);
     nq->enqueue(header.node_src_id);
     if(header.node_src_id == 69)
     {
@@ -478,11 +481,11 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
 
 void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_inertial_state_t inertial, protonet::node* node_ptr)
 {
-    //Finds index of vehicle
-    int i = checkVehicles(header.node_src_id);
-    if(i == -1){
+    int ID = header.node_src_id;
+    //Is the vehicle id in list?
+    if(!(vp->inList(ID))){
+        qDebug() << "bad id " << ID;
         return 0; //Bad ID
-        //vp->append(Vehicle(hea));
     }
     printf("==========\ninternal State\n");
     printf("longitude: %f\n",((float)inertial.longitude)/1E7);
@@ -498,27 +501,27 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     */
     inertial.vertical_accel; //Missing?
     inertial.vertical_speed; //Missing?
-    vp->set(i)->setRoll(inertial.roll);
-    vp->set(i)->setRollRate(inertial.roll_rate);
-    vp->set(i)->setHeading(inertial.heading);
-    vp->set(i)->setAltitude(inertial.altitude/1E6);
-    vp->set(i)->setLatitude(((float)inertial.latitude)/1E7);
-    vp->set(i)->setLongitude(((float)inertial.longitude)/1E7);
-    vp->set(i)->setPitch(inertial.pitch);
-    vp->set(i)->setPitchRate(inertial.pitch_rate);
+    vp->set(ID)->setRoll(inertial.roll);
+    vp->set(ID)->setRollRate(inertial.roll_rate);
+    vp->set(ID)->setHeading(inertial.heading);
+    vp->set(ID)->setAltitude(inertial.altitude/1E6);
+    vp->set(ID)->setLatitude(((float)inertial.latitude)/1E7);
+    vp->set(ID)->setLongitude(((float)inertial.longitude)/1E7);
+    vp->set(ID)->setPitch(inertial.pitch);
+    vp->set(ID)->setPitchRate(inertial.pitch_rate);
     mutex.unlock();
-    vp->update(i);
+    vp->update(header.node_src_id);
     nq->enqueue(header.node_src_id);
     return 0;
 }
 
 void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle_global_position_t position, protonet::node* node_ptr)
 {
-    //Finds index of vehicle
-    qDebug() << "globalpos";
-    int i = checkVehicles(header.node_src_id);
-    if(i == -1){
-        qDebug() << "bad id " << header.node_src_id;
+    qDebug() << "globalpos" << header.node_src_id;
+    int ID = header.node_src_id;
+    //Is the vehicle id in list?
+    if(!(vp->inList(ID))){
+        qDebug() << "bad id " << ID;
         return 0; //Bad ID
     }
     //Debug prints
@@ -532,15 +535,15 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
 
     mutex.lock();
     //Setting variables
-    vp->set(i)->setAltitude(position.altitude/1E6);
-    vp->set(i)->setLongitude(((float)position.longitude)/1E7);
-    vp->set(i)->setLatitude(((float)position.latitude)/1E7);
-    vp->set(i)->setXVelocity(position.x_speed);
-    vp->set(i)->setYVelocity(position.y_speed);
-    vp->set(i)->setZVelocity(position.z_speed);
-    vp->set(i)->setHeading(((float)position.heading)/1E6);
+    vp->set(ID)->setAltitude(position.altitude/1E6);
+    vp->set(ID)->setLongitude(((float)position.longitude)/1E7);
+    vp->set(ID)->setLatitude(((float)position.latitude)/1E7);
+    vp->set(ID)->setXVelocity(position.x_speed);
+    vp->set(ID)->setYVelocity(position.y_speed);
+    vp->set(ID)->setZVelocity(position.z_speed);
+    vp->set(ID)->setHeading(((float)position.heading)/1E6);
     mutex.unlock();
-    vp->update(i);
+    vp->update(header.node_src_id);
     nq->enqueue(header.node_src_id);
     //Call database update in thread?
     //int checkLong = vp->at(i)->ts.at(0)->getLongitude() - vp->at(i)->getLatitude();
@@ -563,18 +566,20 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
 void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_t attitude, protonet::node* node_ptr)
 {
     //Finds index of vehicle
-    int i = checkVehicles(header.node_src_id);
-    if(i == -1){
+    int ID = header.node_src_id;
+    //Is the vehicle id in list?
+    if(!(vp->inList(ID))){
+        qDebug() << "bad id " << ID;
         return 0; //Bad ID
     }
     //qDebug() << "attitude";
     mutex.lock();
     //Setting variables
-    vp->set(i)->setPitch(attitude.pitch);
-    vp->set(i)->setRoll(attitude.roll);
-    vp->set(i)->setYaw(attitude.yaw);
+    vp->set(ID)->setPitch(attitude.pitch);
+    vp->set(ID)->setRoll(attitude.roll);
+    vp->set(ID)->setYaw(attitude.yaw);
     mutex.unlock();
-    vp->update(i);
+    vp->update(header.node_src_id);
     nq->enqueue(header.node_src_id);
     /*
     qDebug() << "Vehicle ID:" << attitude.vehicle_ID << "Timestamp:" << attitude.timestamp;

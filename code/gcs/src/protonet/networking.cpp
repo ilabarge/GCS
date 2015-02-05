@@ -103,8 +103,8 @@ void networking::send_ping(int id){ emit ping(id); }
 //Update Vehicle (OLD NEED TO REMOVE DEPENDENCY)
 void networking::update_vehicle_queue() { emit update_queue(); }
 
-//Update Vehicle at position given
-void networking::updateVech(int pos) {emit updateVechicle(pos); }
+//Update Vehicle with given ID
+void networking::updateVech(int ID) {emit updateVechicle(ID); }
 
 //Sending waypoint
 void networking::send_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt){ emit waypoint( vehicle, pos, type, lat, longi,alt); }

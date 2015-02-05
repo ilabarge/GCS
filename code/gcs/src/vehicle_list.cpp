@@ -12,19 +12,18 @@ vehicle_list::vehicle_list(QObject *parent) : QObject(parent)
  */
 Vehicle22* vehicle_list::at(int vechID)
 {
-//    int ndx = indexOf(vechID);
-//    qDebug() << vechID;
-//    //If vehicle not found
-//    if(ndx == 0)
-//    {
-//      qDebug() << "No such vehicle";
-//      //Notify user
-//      emit incorrect(vechID);
-//      return 0;
-//    }
-//      else
-//        return vlist->at(ndx);
-    return vlist.at(vechID);
+    int ndx = indexOf(vechID);
+    qDebug() << "at vechID" << vechID;
+    //If vehicle not found
+    if(ndx == -1)
+    {
+      qDebug() << "No such vehicle" << vechID;
+      //Notify user
+      emit incorrect(vechID);
+      return 0;
+    }
+      else
+        return vlist.at(ndx);
 }
 
 /**
@@ -35,22 +34,46 @@ Vehicle22* vehicle_list::at(int vechID)
  */
 Vehicle22 *vehicle_list::set(int vechID)
 {
-//    int ndx = indexOf(vechID);
-//    //If vehicle not found
-//    if(ndx == 0)
-//    {
-//      qDebug() << "No such vehicle";
-//      //Notify user
-//      emit incorrect(vechID);
-//      return 0;
-//    }
-//    else
-//    {
-//        //We emit an update when we update information
-//        emit update(vechID);
-//        return vlist->at(ndx);
-//    }
-    return vlist.at(vechID);
+    qDebug() << "SET";
+    int ndx = indexOf(vechID);
+    //If vehicle not found
+    if(ndx == -1)
+    {
+      qDebug() << "No such vehicle" << vechID;
+      //Notify user
+      emit incorrect(vechID);
+      return 0;
+    }
+    else
+    {
+        //We emit an update when we update information
+        //emit update(vechID);
+        return vlist.at(ndx);
+    }
+}
+
+/**
+ * @brief vehicle_list::set Returns a pointer to the vehicle
+ * @param vechID ID of the vehicle we want
+ * @return the values of vehicle whose id we have, notifies user if incorrect
+ * id was given
+ */
+Vehicle22 *vehicle_list::get(int vechID)
+{
+    qDebug() << "GET";
+    int ndx = indexOf(vechID);
+    //If vehicle not found
+    if(ndx == -1)
+    {
+      qDebug() << "No such vehicle" << vechID;
+      //Notify user
+      //emit incorrect(vechID);
+      return 0;
+    }
+    else
+    {
+        return vlist.at(ndx);
+    }
 }
 
 /**
@@ -62,6 +85,7 @@ void vehicle_list::append(Vehicle22 *vech)
     vlist.push_back(vech);
     int val = vech->getVehicleID();
     pos.push_back(val);
+    qDebug() << "Adding vehicle ID" << val;
     return;
 }
 
@@ -82,12 +106,23 @@ int vehicle_list::length()
 int vehicle_list::indexOf(int id)
 {
     int p = 0;
-    for(std::vector<int>::iterator it = pos.begin(); it!= pos.end(); ++it)
+    qDebug() << "Looking for vehcile ID " << id;
+//    for(std::vector<int>::iterator it = pos.begin(); it!= pos.end(); ++it)
+//    {
+//        if(id == *it)
+//            return p;
+//        p++;
+//        qDebug() << p;
+//    }
+    for(std::vector<Vehicle22*>::iterator it = vlist.begin(); it!= vlist.end(); ++it)
     {
-        if(id == *it)
+        if(id == (*it)->getVehicleID())
+        {
+            qDebug() << "FOUND POSITION FOR ID " << id << "," << p;
             return p;
+        }
+        //qDebug() <<  "ID" << (*it)->getVehicleID() << "pos " << p;
         p++;
-        qDebug() << p;
     }
     return -1;
 }
@@ -105,7 +140,23 @@ std::vector<Vehicle22*> vehicle_list::list()
  * @brief vehicle_list::update Emits the update to notify of the change of the vehicle at position
  * @param position The position of the vehicle to update
  */
-void vehicle_list::updateVech(int position)
+void vehicle_list::updateVech(int vechID)
 {
-    emit update(position);
+    emit update(vechID);
+}
+
+
+bool vehicle_list::inList(int ID)
+{
+    qDebug() << "vehicle_list: IS" << ID << "INLIST?";
+    for(std::vector<Vehicle22*>::iterator it = vlist.begin(); it!= vlist.end(); ++it)
+    {
+        if(ID == (*it)->getVehicleID())
+        {
+            qDebug() << ID << "IS IN LIST";
+            return true;
+        }
+        //qDebug() <<  "ID" << (*it)->getVehicleID() << "pos " << p;
+    }
+    return false;
 }

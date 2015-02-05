@@ -255,10 +255,11 @@ void MainWindow::initMap(){
 }
 
 //Test slot for new signal
-void MainWindow::updateVech(int pos)
+void MainWindow::updateVech(int ID)
 {
     //qDebug() << "Update at pos " << pos;
-    int vehicle_ID = vList22->set(pos)->getVehicleID();
+
+    int vehicle_ID = ID;
     qDebug() << "ID is" << vehicle_ID;
     //Temporary code=========================
     if(vehicle_ID == 2)
@@ -267,7 +268,7 @@ void MainWindow::updateVech(int pos)
 //       qDebug() << (std::to_string(v3->getLatitude())).c_str();
 //       qDebug() << (std::to_string(v3->getLongitude())).c_str();
 //       qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
-         v2->setPoint(mv->decimalDegreesToPoint(vList22->set(pos)->getLatitude() , vList22->set(pos)->getLongitude()));
+         v2->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
          mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
          v2->setAngle(v2->getZVelocity());
      }
@@ -307,67 +308,67 @@ void MainWindow::initWidgets(){
 
 }
 
-//OLD CODE NEED TO CHANGE TO FIT TO NEW SIGNAL
+//REMOVE ALL OLD QUEUE SYSTEM, USE AS REFERENCE TO CHANGE GRAPHICS
 void MainWindow::update_vehicle_queue()
 {
-   if(vUpdate->isEmpty())
-   {
-       qDebug() << "Queue is empty";
-   }
-   int vehicle_ID = vUpdate->dequeue();
+//   if(vUpdate->isEmpty())
+//   {
+//       qDebug() << "Queue is empty";
+//   }
+//   int vehicle_ID = vUpdate->dequeue();
 
-   for(int i = 1; i < vList22->length(); i++){
-       if(vList22->set(i)->getVehicleID() == vehicle_ID)
-       {
-           //Temporary code=========================
-           if(vehicle_ID == 46)
-           {
-//               v46->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
-               //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
-               v46->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
-               mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
-               v46->setAngle(v46->getZVelocity());
-           }
-           if(vehicle_ID == 69)
-           {
-               /*Moved graphic due to twin images appearing if placed in origonal spot*/
-//               v69->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
-               //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
-               //qDebug() << v69->getLatitude() << " " << v69->getLongitude()<< " " << v69->getHeading();
-               //qDebug() << vList22->at(i)->getLatitude() << " " << vList22->at(i)->getLongitude() << v2->getHeading();
+//   for(int i = 1; i < vList22->length(); i++){
+//       if(vList22->set(i)->getVehicleID() == vehicle_ID)
+//       {
+//           //Temporary code=========================
+//           if(vehicle_ID == 46)
+//           {
+////               v46->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
+//               //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
+//               v46->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
+//               mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
+//               v46->setAngle(v46->getZVelocity());
+//           }
+//           if(vehicle_ID == 69)
+//           {
+//               /*Moved graphic due to twin images appearing if placed in origonal spot*/
+////               v69->setGraphic( ":/images/uav_icon.png", 0, 0, 50, 50 );
+//               //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
+//               //qDebug() << v69->getLatitude() << " " << v69->getLongitude()<< " " << v69->getHeading();
+//               //qDebug() << vList22->at(i)->getLatitude() << " " << vList22->at(i)->getLongitude() << v2->getHeading();
 
-               //v1->setPoint(mv->decimalDegreesToPoint(34.0575057, -117.8204004));
-               v69->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
-               //qDebug() << v69->getPoint().x() << " " << v69->getPoint().y();
-               mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
-               mv->rotateVehicleGraphic(*v69, v69->getHeading());
-           }
-           if(vehicle_ID == 2)
-           {
-//               qDebug() << (std::to_string(v3->getLatitude())).c_str();
-//               qDebug() << (std::to_string(v3->getLongitude())).c_str();
-//               qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
-                v2->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
-                mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
-                v2->setAngle(v2->getZVelocity());
-            }
-           if(vehicle_ID == 101)
-           {
-               //printf("%f %f\n",v101->getLatitude(), v101->getLongitude());
-               v101->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
-               mv->moveVehicleGraphic(*v101, EsriRuntimeQt::Point(v101->getPoint().x(), v101->getPoint().y()));
-               v101->setAngle(v101->getHeading());
-           }
-           if(vehicle_ID == 102)
-           {
-               //printf("%f %f\n",v102->getLatitude(), v102->getLongitude());
-               v102->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
-               mv->moveVehicleGraphic(*v102, EsriRuntimeQt::Point(v102->getPoint().x(), v102->getPoint().y()));
-               v102->setAngle(v102->getHeading());
-           }
-       }
-   }
-   emit update_vehicle(vehicle_ID);
+//               //v1->setPoint(mv->decimalDegreesToPoint(34.0575057, -117.8204004));
+//               v69->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
+//               //qDebug() << v69->getPoint().x() << " " << v69->getPoint().y();
+//               mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
+//               mv->rotateVehicleGraphic(*v69, v69->getHeading());
+//           }
+//           if(vehicle_ID == 2)
+//           {
+////               qDebug() << (std::to_string(v3->getLatitude())).c_str();
+////               qDebug() << (std::to_string(v3->getLongitude())).c_str();
+////               qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
+//                v2->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
+//                mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
+//                v2->setAngle(v2->getZVelocity());
+//            }
+//           if(vehicle_ID == 101)
+//           {
+//               //printf("%f %f\n",v101->getLatitude(), v101->getLongitude());
+//               v101->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
+//               mv->moveVehicleGraphic(*v101, EsriRuntimeQt::Point(v101->getPoint().x(), v101->getPoint().y()));
+//               v101->setAngle(v101->getHeading());
+//           }
+//           if(vehicle_ID == 102)
+//           {
+//               //printf("%f %f\n",v102->getLatitude(), v102->getLongitude());
+//               v102->setPoint(mv->decimalDegreesToPoint(vList22->set(i)->getLatitude() , vList22->set(i)->getLongitude()));
+//               mv->moveVehicleGraphic(*v102, EsriRuntimeQt::Point(v102->getPoint().x(), v102->getPoint().y()));
+//               v102->setAngle(v102->getHeading());
+//           }
+//       }
+//   }
+//   emit update_vehicle(vehicle_ID);
 }
 
 //Updates the displayed targets.
@@ -502,7 +503,6 @@ void MainWindow::vStatus(int vech, int mode)
      *       uavStatusLabel->setText("Ready");
      * }
      */
-
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event){

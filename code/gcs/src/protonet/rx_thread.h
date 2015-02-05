@@ -101,8 +101,9 @@ signals:
     void vechStatus(int,int);
     void sendTarget(float,float);
 
-    //Has value of position of vech
+    //Has value of ID of vech
     void updateVech(int);
+
 };
 
 #endif // RX_THREAD_H

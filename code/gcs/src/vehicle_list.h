@@ -11,15 +11,18 @@ public:
     explicit vehicle_list(QObject *parent = 0);
     Vehicle22 *at(int);
     Vehicle22 *set(int);
+    Vehicle22 *get(int);
     QVector<int> getList();
     std::vector<Vehicle22 *> list();
     void append(Vehicle22 *);
     void updateVech(int);
     int length();
+    bool inList(int);
 
 signals:
     //Vehicle id to update
     void update(int);
+    //Incorect vehicle ID
     void incorrect(int);
 
 private:

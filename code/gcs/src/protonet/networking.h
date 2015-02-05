@@ -32,7 +32,7 @@ public slots:
     void update_vehicle_queue();
     void update_target_disp(Target*);
 
-    //Update Vehicle at position
+    //Update Vehicle with ID
     void updateVech(int);
 
     //Basic Protonet
