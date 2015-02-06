@@ -10,20 +10,19 @@ vehicle_list::vehicle_list(QObject *parent) : QObject(parent)
  * @return the values of vehicle whose id we have, notifies user if incorrect
  * id was given
  */
-Vehicle22* vehicle_list::at(int vechID)
+Vehicle22* vehicle_list::at(int pos)
 {
-    int ndx = indexOf(vechID);
-    qDebug() << "at vechID" << vechID;
+    qDebug() << "at vechID" << pos;
     //If vehicle not found
-    if(ndx == -1)
+    if(pos < 0 || pos > vlist.size() - 1)
     {
-      qDebug() << "No such vehicle" << vechID;
+      qDebug() << "No such vehicle at pos" << pos;
       //Notify user
-      emit incorrect(vechID);
+      //emit incorrectPos(pos);
       return 0;
     }
       else
-        return vlist.at(ndx);
+        return vlist.at(pos);
 }
 
 /**
