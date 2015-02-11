@@ -119,7 +119,7 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
               {
                   //qDebug() << "edited t";
                   mutex.lock();
-                  vList->set(i)->insertWaypoint(w->getID(), w, Qt::green );
+                  vList->set(i)->insertWaypoint(w->getID() -1, w, Qt::green );
                   mutex.unlock();
               }
               //Case of removing
@@ -127,7 +127,7 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
               {
                   //qDebug() << "removed t";
                   mutex.lock();
-                  vList->set(i)->removeWaypoint(w->getID());
+                  vList->set(i)->removeWaypoint(w->getID()-1);
                   mutex.unlock();
               }
               //Reguardless of either editing or removing we must send command
