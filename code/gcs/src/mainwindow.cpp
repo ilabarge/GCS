@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget* parent) :
     UGV_JOYSTICKSTOP = new QPushButton();
     UGV_JOYSTICKSTOP->setText("Stop Joystick Control");
     Telemetry = new TelemetryGUI();
-    way = new WaypointGUI(NULL,(vList22->set(0)));
+    way = new WaypointGUI();
     Authorize = new VehicleAuthorizationGUI();
     UGV_States = new UGV_state();
     UAV_Payload = new UAVPayload();

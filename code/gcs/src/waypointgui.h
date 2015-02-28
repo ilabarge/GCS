@@ -18,7 +18,7 @@ class WaypointGUI : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WaypointGUI(QWidget *parent = 0, Vehicle22 *vech = 0);
+    explicit WaypointGUI(QWidget *parent = 0);
 
 signals:
     void waypoint(int,int,int,float,float,float);
@@ -29,6 +29,9 @@ public slots:
     void coordDesignated(double lat, double lon);
 
 private:
+    void initGUIElements();
+    void setGUIElementText();
+    void addGUIElementToLayout();
     QGridLayout* mainLayout;
     QLineEdit* vehicle;
     QLineEdit* latitude;
