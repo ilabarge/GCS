@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QGridLayout>
+#include <QLabel>
 
 class targetingGUI : public QWidget
 {
@@ -20,11 +21,17 @@ public slots:
     void targetsend();
 
 private:
+   void initGUIElements();
+   void setGUIElementText();
+   void addGUIElementToLayout();
    QGridLayout* mainLayout;
    QPushButton* targets;
    QLineEdit* latitude;
    QLineEdit* longitude;
    QLineEdit* altitude;
+   QLabel* lat;
+   QLabel* longi;
+   QLabel* alt;
 
 };
 
