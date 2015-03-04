@@ -65,6 +65,7 @@ void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat,
      * qDebug() << vehicle;
     qDebug() << pos;
      */
+    qDebug() << "Send waypoint";
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();

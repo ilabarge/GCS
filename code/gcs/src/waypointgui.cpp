@@ -13,7 +13,6 @@ WaypointGUI::WaypointGUI(QWidget *parent) :
     mainLayout = new QGridLayout();
     //Set margins
     mainLayout->setMargin( 0 );
-
     initGUIElements();
     setGUIElementText();
     addGUIElementToLayout();
