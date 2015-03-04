@@ -32,7 +32,7 @@ void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uin
     connect(this,SIGNAL(ping(int)),rx,SLOT(send_ping(int)));
 
     //Send waypoint command
-    connect(this,SIGNAL(waypoint(int, int, int, float, float , float )), rx,SLOT(send_vehicle_waypoint(int, int, int, float, float, float)));
+    connect(this,SIGNAL(waypoint(Waypoint22*, int)), rx,SLOT(send_vehicle_waypoint(Waypoint22*, int)));
     //Vehicle Telemetry Command
     //Begin the telemetry stream from vehicle
     connect(this,SIGNAL(telemetry_command(int)),rx,SLOT(send_telemetry_command(int)));
@@ -107,7 +107,7 @@ void networking::update_vehicle_queue() { emit update_queue(); }
 void networking::updateVech(int ID) {emit updateVechicle(ID); }
 
 //Sending waypoint
-void networking::send_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt){ emit waypoint( vehicle, pos, type, lat, longi,alt); }
+void networking::send_waypoint(Waypoint22* w, int id){ emit waypoint(w, id); }
 
 //Send vehicle authorization request to vehicle i
 void networking::send_vehicle_auth_request(int i){ emit vehicle_auth_request(i);}

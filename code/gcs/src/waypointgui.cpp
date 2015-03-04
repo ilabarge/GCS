@@ -30,14 +30,14 @@ void WaypointGUI::send_waypoint()
                          type->text().toInt(),
                          latitude->text().toDouble(),
                          longitude->text().toDouble(),
-                         altitude->text().toFloat(),
+                         altitude->text().toInt(),
                          0);
-    qDebug() << "Vehicle" << vehicle->text();
-    qDebug() << "id" << id->text();
-    emit waypoint(vehicle->text().toInt(),id->text().toInt(),type->text().toInt(),latitude->text().toFloat(),longitude->text().toFloat(),altitude->text().toFloat());
-    //we will append the waypoint in mainwindow.cpp
-    emit addWaypoint(id->text().toInt(),w);
+
+    mutex.lock();
+    mutex.unlock();
+    emit waypoint(w, vehicle->text().toInt());
 }
+
 /**
  * @brief WaypointGUI::coordDesignated Adds waypoint to display
  * @param lat Latitude of waypoint

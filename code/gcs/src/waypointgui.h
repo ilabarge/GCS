@@ -21,7 +21,7 @@ public:
     explicit WaypointGUI(QWidget *parent = 0);
 
 signals:
-    void waypoint(int,int,int,float,float,float);
+    void waypoint(Waypoint22*,int);
     void addWaypoint(int,Waypoint22*);
 
 public slots:

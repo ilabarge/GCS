@@ -59,91 +59,81 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
 }
 
 //Vehicle waypoint
-void rx_thread::send_vehicle_waypoint(int vehicle, int pos, int type, float lat, float longi, float alt)
+void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
 {
-    /*
-     * qDebug() << vehicle;
-    qDebug() << pos;
-     */
-    qDebug() << "Send waypoint";
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
+     int vehicle = id;
+    //send t to vehicle
     //For Testing purposes
     //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)4*1E7,(int32_t)-8*1E7,(int32_t)4*1E7,0,0,2);
     //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)-3*1E7,(int32_t)9*1E7,(int32_t)3*1E7,0,1,0);
     //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)-4*1E7,(int32_t)5*1E7,(int32_t)1*1E7,0,2,2);
-
-    /*
-     * Note the waypoints added only correspond to the waypoints that the GCS has sent, not any new wapyoints
-     * that the platform may add
-     */
-    Waypoint22 *w = new Waypoint22(pos,type,lat,longi,alt,0);
-    //ZZZ Rewrite to that we call vList->set(vehicleID)
-    for(int i = 0; i < vList->length(); i++)
-    {
-        if(vList->at(i)->getVehicleID() == vehicle)
-        {
+   //update vehicle localy to have t
+   qDebug() << "vehicle ID " << id;
+   qDebug() << "waypoint type" << waypoint->getType();
+   for(int i = 0; i < vList->length(); i++)
+   {
+       qDebug() << "at vehicle: " <<  vList->at(i)->getVehicleID();
+       if(vList->at(i)->getVehicleID() == vehicle)
+       {
            int size = vList->at(i)->waypoints.size();
+           int type = waypoint->getType();
            qDebug() << "dest size: " << size;
-           qDebug() << "Waypoint id: " << w->getID();
-           qDebug() << "Type: " << w->getType();
-           //If we are adding to an empty list or to the end of a list
-           //Note that we are using 1 based indexing
-           //Thus if we have size 1 our end of list would be a waypoint ID of 2
-           if((size == 0 && type == 0) || ((type == 0) && ((w->getID()) == (size + 1))))
+           qDebug() << "Waypoint id: " << waypoint->getID();
+           if((type == 0) && ((waypoint->getID() - 1) == (size)))
            {
                mutex.lock();
-               vList->set(i)->appendWaypoint(w, vList->set(i)->getColor() );
+               vList->at(i)->appendWaypoint(waypoint, vList->at(i)->getColor() );
                mutex.unlock();
                node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                  (int32_t)(w->getLatitude()*1E7),
-                                                  (int32_t)(w->getLongitude()*1E7),
-                                                  /* Note should be 1E6 for it to work*/
-                                                   (int32_t)(w->getAltitude()*1E6),
+                                                  (int32_t)(waypoint->getLatitude()*1E7),
+                                                  (int32_t)(waypoint->getLongitude()*1E7),
+                                                  (int32_t)(waypoint->getAltitude()),//*1E7),
                                                    0,
-                                                  w->getID(),
-                                                  w->getType());
+                                                  waypoint->getID(),
+                                                  waypoint->getType());
+
            }
-           //If we have added further past the "end" of the list we ignore
-           else if((type == 0) && ((w->getID()) > (size + 1)))
+           else if((type == 0) && ((waypoint->getID()) > (size)))
            {
                //qDebug() << "added t past end of list!!";
            }
           //this condition must be true for editing and removing t to
           //work
-          if((w->getID()) < size)
+          if((waypoint->getID()) < size)
           {
-              //Case of editing
               //qDebug() << "type" << type;
               if(type == 1)
               {
                   //qDebug() << "edited t";
                   mutex.lock();
-                  vList->set(i)->insertWaypoint(w->getID() -1, w, Qt::green );
+                  vList->at(i)->removeWaypoint(waypoint->getID() -1);
+                  vList->at(i)->insertWaypoint(waypoint->getID() - 1, waypoint, Qt::green );
                   mutex.unlock();
               }
-              //Case of removing
+
               else if(type == 2)
               {
                   //qDebug() << "removed t";
                   mutex.lock();
-                  vList->set(i)->removeWaypoint(w->getID()-1);
+                  vList->at(i)->removeWaypoint(waypoint->getID() - 1);
                   mutex.unlock();
               }
-              //Reguardless of either editing or removing we must send command
+
               if((type == 1) || (type == 2))
               {
                   node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                     (int32_t)(w->getLatitude()*1E7),
-                                                     (int32_t)(w->getLongitude()*1E7),
-                                                     (int32_t)(w)->getAltitude(),
+                                                     (int32_t)(waypoint->getLatitude()*1E7),
+                                                     (int32_t)(waypoint->getLongitude()*1E7),
+                                                     (int32_t)(waypoint->getAltitude()*1E3),
                                                       0,
-                                                     w->getType(),
-                                                     w->getID());
+                                                     waypoint->getType(),
+                                                     waypoint->getID());
               }
           }
-        //qDebug() << "Dest size after Waypoint command" << vList->set(i)->waypoints.size();
+        //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
        }
    }
 }

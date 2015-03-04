@@ -53,7 +53,7 @@ public slots:
 
     //Protonet send messages
     void send_vehicle_auth_request(int);
-    void send_vehicle_waypoint(int, int, int, float, float, float);
+    void send_vehicle_waypoint(Waypoint22*,int);
     void send_telemetry_command(int);
     void send_targeting(int, float, float, float);
     void send_manTargeting(double,double,double);

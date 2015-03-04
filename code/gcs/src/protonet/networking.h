@@ -45,7 +45,7 @@ public slots:
     void send_vehicle_auth_request(int);
     void send_telemetry_command(int);
     void send_targeting(float,float,float);
-    void send_waypoint(int, int, int, float, float, float);
+    void send_waypoint(Waypoint22*,int);
 
     //Passes target found from vehicle
     void newTarget(float,float);
@@ -88,7 +88,7 @@ signals:
     void updateVechicle(int);
 
     //Emit values for specific commands
-    void waypoint(int, int, int, float, float, float);
+    void waypoint(Waypoint22*, int);
     void vehicle_auth_request(int);
     void telemetry_command(int);
     void targeting(float,float,float);

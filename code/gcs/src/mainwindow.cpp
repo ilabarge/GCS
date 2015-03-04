@@ -206,7 +206,7 @@ MainWindow::MainWindow(QWidget* parent) :
     //General Vehicle
     connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
     connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
-    connect(way,SIGNAL(waypoint(int, int, int, float,float,float)),network,SLOT(send_waypoint(int, int, int, float,float,float)));
+    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
     //Manual Targeting
     connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
 
