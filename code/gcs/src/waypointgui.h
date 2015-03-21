@@ -32,6 +32,7 @@ private:
     void initGUIElements();
     void setGUIElementText();
     void addGUIElementToLayout();
+    void connectElements();
     QGridLayout* mainLayout;
     QLineEdit* vehicle;
     QLineEdit* latitude;

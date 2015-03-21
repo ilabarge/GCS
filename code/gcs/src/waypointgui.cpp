@@ -19,7 +19,7 @@ WaypointGUI::WaypointGUI(QWidget *parent) :
     //Set Widget layout
     setLayout( mainLayout );
     //Connect button press to send information for waypoint
-    connect(WaypointB,SIGNAL(clicked()),this,SLOT(send_waypoint()));
+    connectElements();
 }
 /**
  * @brief WaypointGUI::send_waypoint sends waypoint baised off of user input from text fields
@@ -115,4 +115,9 @@ void WaypointGUI::addGUIElementToLayout()
     mainLayout->addWidget(altitude,1,12);
     mainLayout->addWidget(headingLabel,1,13);
     mainLayout->addWidget(heading,1,14);
+}
+
+void WaypointGUI::connectElements()
+{
+    connect(WaypointB,SIGNAL(clicked()),this,SLOT(send_waypoint()));
 }
