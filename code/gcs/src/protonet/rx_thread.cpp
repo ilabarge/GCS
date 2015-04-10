@@ -56,6 +56,7 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
+    emit messageConfirm(QString("Sent vehicle authorization request to ID" + vehicle));
 }
 
 //Vehicle waypoint
@@ -95,6 +96,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                   waypoint->getID(),
                                                   waypoint->getType());
 
+               emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
            }
            else if((type == 0) && ((waypoint->getID()) > (size)))
            {
@@ -131,6 +133,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                       0,
                                                      waypoint->getType(),
                                                      waypoint->getID());
+              emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
               }
           }
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
@@ -149,6 +152,7 @@ void rx_thread::send_telemetry_command(int vehicle)
 
     //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);   
     node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
+    emit messageConfirm(QString("Sent Telemetry Command to ID" + vehicle));
 }
 
 //Send targeting informaiton to vehicle
@@ -231,6 +235,7 @@ void rx_thread::start_UGV_Joystick()
 {
     joystick->send = true;
     emit startUGVJoystick();
+    emit messageConfirm(QString("Begin UGV joystick control"));
 }
 
 //Stop Joystick commands
@@ -238,6 +243,7 @@ void rx_thread::stop_UGV_Joystick()
 {
     joystick->send = false;
     emit endUGVJoystick();
+    emit messageConfirm(QString("End UGV joystick control"));
 }
 
 //Emit vehicle status to be displayed in GUI

@@ -81,6 +81,8 @@ MainWindow::MainWindow(QWidget* parent) :
     //Initialize database
     initDatabase();
 
+    consolelog = new ConsoleLog();
+
     //Add widgets to screen
     //Temp icons, make more pretty!!
     UGV_JOYSTICK = new QPushButton();
@@ -183,6 +185,7 @@ MainWindow::MainWindow(QWidget* parent) :
     //Add the layout to the mainLayout
     mainLayout->addLayout(VehicleLayout,3,0);
 
+    mainLayout->addWidget(consolelog,3,1);
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout( mainLayout );
     setCentralWidget( centralWidget );
@@ -243,6 +246,11 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(sb, SIGNAL(waypointOn(bool)), mv, SLOT(waypointLayerOn(bool)));
     connect(sb, SIGNAL(opspaceOn(bool)), mv, SLOT(opspaceLayerOn(bool)));
     connect(sb, SIGNAL(targetOn(bool)), mv, SLOT(targetLayerOn(bool)));
+
+    //Connect message display for console log
+    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
+    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
+    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
 }
 
 void MainWindow::initMap(){

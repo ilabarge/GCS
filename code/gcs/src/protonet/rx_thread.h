@@ -104,6 +104,9 @@ signals:
     //Has value of ID of vech
     void updateVech(int);
 
+    void message(QString);
+    void messageAlert(QString);
+    void messageConfirm(QString);
 };
 
 #endif // RX_THREAD_H

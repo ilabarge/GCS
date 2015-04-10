@@ -19,7 +19,6 @@
 #include "targetlist.h"
 #include "vehicle_list.h"
 
-
 class networking : public QObject
 {
     Q_OBJECT
@@ -78,6 +77,11 @@ public slots:
     void EnableMotor();
     void ToggleMotor();
 
+    //Messages for Console Log
+    void messageSlot(QString);
+    void messageAlertSlot(QString);
+    void messageConfirmSlot(QString);
+
 signals:
     void ping(int);
     void update_queue();
@@ -119,6 +123,11 @@ signals:
     void DisableM(); //disable motor
     void ToggleM(); //toggle motor
     void EnableM(); //enable motor
+
+    //Messages for console log
+    void message(QString);
+    void messageAlert(QString);
+    void messageConfirm(QString);
 
 private:
     rx_thread* rx;

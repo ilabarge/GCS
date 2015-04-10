@@ -30,6 +30,7 @@
 #include "Waypoint22.h"
 #include "Vehicle22.h"
 #include "vehicle_list.h"
+#include "consolelog.h"
 
 //GUI Testing headers
 #include "telemetrygui.h"
@@ -87,6 +88,8 @@ private:
     QLabel* uavStatusLabel;
     QLabel* uavModeLabel;
     targetingGUI* targeting;
+
+    ConsoleLog* consolelog;
     //Networking
     networking *network;
     NodeQueue* vUpdate;

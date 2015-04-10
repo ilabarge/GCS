@@ -86,6 +86,11 @@ void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uin
     //Updating netowrk set up
     connect(this,SIGNAL(network_set_serial(QString)),rx,SLOT(setNetworkSerial(QString)));
 
+    //Console log messages
+    connect(rx,SIGNAL(message(QString)),this,SLOT(messageSlot(QString)));
+    connect(rx,SIGNAL(messageAlert(QString)),this,SLOT(messageAlertSlot(QString)));
+    connect(rx,SIGNAL(messageConfirm(QString)),this,SLOT(messageConfirmSlot(QString)));
+
     network_thread->start();
 }
 /**
@@ -159,6 +164,13 @@ void networking::ToggleMotor() { emit ToggleM(); }
 
 //Vehicle state
 void networking::vStatus(int vech, int state) { emit vehicleStatus(vech, state);}
+
+//Message console log
+void networking::messageSlot(QString messageString) { emit message(messageString); }
+
+void networking::messageAlertSlot(QString messageString) { emit messageAlert(messageString); }
+
+void networking::messageConfirmSlot(QString messageString) { emit messageConfirm(messageString); }
 
 networking::~networking()
 {
