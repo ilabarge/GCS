@@ -96,6 +96,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                   waypoint->getID(),
                                                   waypoint->getType());
 
+               emit message(QString("Added waypoint"));
                emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
            }
            else if((type == 0) && ((waypoint->getID()) > (size)))
@@ -104,16 +105,29 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
            }
           //this condition must be true for editing and removing t to
           //work
-          if((waypoint->getID()) < size)
+          if((waypoint->getID()) <= size)
           {
               //qDebug() << "type" << type;
               if(type == 1)
               {
                   //qDebug() << "edited t";
-                  mutex.lock();
-                  vList->at(i)->removeWaypoint(waypoint->getID() -1);
-                  vList->at(i)->insertWaypoint(waypoint->getID() - 1, waypoint, Qt::green );
-                  mutex.unlock();
+                 if(waypoint->getID() == size)
+                 {
+                     mutex.lock();
+                     vList->at(i)->removeWaypoint(waypoint->getID() -1);
+                     vList->at(i)->appendWaypoint(waypoint, Qt::green );
+                     mutex.unlock();
+                     emit message(QString("Edited waypoint at first position"));
+                 }
+                 else
+                 {
+                     mutex.lock();
+                     vList->at(i)->removeWaypoint(waypoint->getID() -1);
+                     vList->at(i)->insertWaypoint(waypoint->getID() - 1, waypoint, Qt::green );
+                     mutex.unlock();
+                     emit message(QString("Edited waypoint"));
+                 }
+
               }
 
               else if(type == 2)
@@ -122,6 +136,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                   mutex.lock();
                   vList->at(i)->removeWaypoint(waypoint->getID() - 1);
                   mutex.unlock();
+                  emit message(QString("Removed Waypoint"));
               }
 
               if((type == 1) || (type == 2))
@@ -133,7 +148,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                       0,
                                                      waypoint->getType(),
                                                      waypoint->getID());
-              emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
+                   emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
               }
           }
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
