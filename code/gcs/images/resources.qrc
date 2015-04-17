@@ -4,5 +4,6 @@
         <file>map_ico_uav_02.png</file>
         <file>map_ico_ugv_01.png</file>
         <file>map_ico_ugv_02.png</file>
+        <file>map_ico_uav_01.bmp</file>
     </qresource>
 </RCC>

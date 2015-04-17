@@ -55,8 +55,10 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
+    mutex.lock();
     node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
     emit messageConfirm(QString("Sent vehicle authorization request to ID" + vehicle));
+    mutex.unlock();
 }
 
 //Vehicle waypoint
@@ -87,7 +89,6 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
            {
                mutex.lock();
                vList->at(i)->appendWaypoint(waypoint, vList->at(i)->getColor() );
-               mutex.unlock();
                node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                   (int32_t)(waypoint->getLatitude()*1E7),
                                                   (int32_t)(waypoint->getLongitude()*1E7),
@@ -98,10 +99,12 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
 
                emit message(QString("Added waypoint"));
                emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
+               mutex.unlock();
+
            }
            else if((type == 0) && ((waypoint->getID()) > (size)))
            {
-               //qDebug() << "added t past end of list!!";
+               emit messageAlert(QString("added t past end of list!!"));
            }
           //this condition must be true for editing and removing t to
           //work
@@ -141,6 +144,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
 
               if((type == 1) || (type == 2))
               {
+                  mutex.lock();
                   node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                      (int32_t)(waypoint->getLatitude()*1E7),
                                                      (int32_t)(waypoint->getLongitude()*1E7),
@@ -149,6 +153,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                      waypoint->getType(),
                                                      waypoint->getID());
                    emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
+                  mutex.unlock();
               }
           }
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
@@ -165,9 +170,11 @@ void rx_thread::send_telemetry_command(int vehicle)
     // 2 position stream
     // 3 heartbeat stream
 
-    //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);   
+    //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);
+    mutex.lock();
     node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
     emit messageConfirm(QString("Sent Telemetry Command to ID" + vehicle));
+    mutex.unlock();
 }
 
 //Send targeting informaiton to vehicle
@@ -274,13 +281,13 @@ void rx_thread::setNetworkSerial(QString serial)
 
     //Set link_id to 0
     int8_t link_id(0);
-
+    mutex.lock();
     //Add serial at link id, baud rate, serial port
     node->add_serial(&link_id, 9600, serialp);
 
     //Establish serial
     node->establish_serial(link_id,1);
-
+    mutex.unlock();
     qDebug() << "node serial set is: " << serialp;
 }
 

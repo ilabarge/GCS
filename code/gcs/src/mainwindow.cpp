@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v46->setColor(Qt::green);
-    v46->setGraphic( ":/map_ico_ugv-01.png", 0, 0, 50, 50 );
+    v46->setGraphic( ":/map_ico_ugv_01.png", 0, 0, 50, 50 );
+
 
     v69 =  new Vehicle22(69, 0, 0,
                0, 0, 0,
@@ -34,7 +35,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v69->setColor(Qt::cyan);
-    v69->setGraphic( ":/map_ico_uav-01.png", 0, 0, 50, 50 );
+    v69->setGraphic( ":/map_ico_uav_01.bmp", 0, 0, 50, 50 );
 
     v2 = new Vehicle22(2, 0, 0,
                0, 0, 0,
@@ -43,7 +44,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v2->setColor(Qt::green);
-    v2->setGraphic( ":/map_ico_uav-01.png", 0, 0, 50, 50 );
+    //v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
 
     v101 = new Vehicle22(101, 0, 0,
                0, 0, 0,
@@ -52,7 +53,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v101->setColor(Qt::yellow);
-    v101->setGraphic( ":/map_ico_uav-02.png", 0, 0, 50, 50 );
+    //v101->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
 
     v102 = new Vehicle22(102, 0, 0,
                0, 0, 0,
@@ -61,7 +62,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v102->setColor(Qt::magenta);
-    v102->setGraphic( ":/map_ico_uav-02.png", 0, 0, 50, 50 );
+    //v102->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
 
     //Initialize Map
     initMap();

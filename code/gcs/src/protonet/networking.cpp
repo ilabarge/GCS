@@ -141,7 +141,9 @@ void networking::newTarget(float lat,float longi) { emit vTarget(lat,longi);}
 void networking::update_target_disp(Target* target) { emit newTarget(target);}
 
 //Network update setup settings
-void networking::network_serial_set(QString serial) { emit network_set_serial(serial); }
+void networking::network_serial_set(QString serial) {
+    messageAlert(QString("Changing Serial Port to " + serial));
+    emit network_set_serial(serial); }
 
 //UGV joystick
 void networking::start_UGV_Joystick() { emit UGV_joystick_start();}
