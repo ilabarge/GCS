@@ -44,6 +44,7 @@ private:
     vehicle_list* vList;
     boolean send;
 
+    void hold();
 public slots:
     void process();
     void send_ping(int id);
