@@ -68,177 +68,23 @@ MainWindow::MainWindow(QWidget* parent) :
     initMap();
 
     //Initialize widgets
-    quitButton = new QPushButton( this );
-    quitButton->setText( "Quit" );
+    initWidgets();
 
-    serialSelect = new SerialPortSelect( this );
-    sb = new sideBar(this);
-    mtb = new GcsToolbar( this );
-    connect(this,SIGNAL(destroyed()), mtb, SLOT(close()));
-
-    //Initialize networking AFTER all GUI has been created
+    //Start the networking
     initNetworking();
 
     //Initialize database
     initDatabase();
 
-    consolelog = new ConsoleLog();
-
-    //Add widgets to screen
-    //Temp icons, make more pretty!!
-    UGV_JOYSTICK = new QPushButton();
-    UGV_JOYSTICK->setText("Start Joystick Control");
-    UGV_JOYSTICKSTOP = new QPushButton();
-    UGV_JOYSTICKSTOP->setText("Stop Joystick Control");
-    Telemetry = new TelemetryGUI();
-    way = new WaypointGUI();
-    Authorize = new VehicleAuthorizationGUI();
-    UGV_States = new UGV_state();
-    UAV_Payload = new UAVPayload();
-    targeting = new targetingGUI();
-
-    sendcmd = new QPushButton();
-    sendcmd->setText("Drop payload");
-
-    //mainLayout->addWidget( quitButton, 2, 0 );
-    mainLayout->addWidget( sb, 1, 0, Qt::AlignCenter|Qt::AlignRight );
-    mainLayout->addWidget( serialSelect, 1, 0, Qt::AlignTop|Qt::AlignRight);
-    mainLayout->addWidget( mtb, 1, 0, Qt::AlignCenter|Qt::AlignTop);
-
-    //Temp locations & gui!!!!!!
-    mainLayout->addWidget(quitButton,4,0);
-
-    //Set up baisic C&C gui layout
-    //Gridlayout to group widgets as one
-    //Gridlayout : base to have the commands
-    QGridLayout* base = new QGridLayout();
-    //Add the widgets that have the commands
-    base->addWidget(Authorize,0,0);
-    base->addWidget(Telemetry,0,1);
-    base->addWidget(way,0,2);
-    base->addWidget(targeting,1,0);
-    //Add those commands to the mainLayout
-    mainLayout->addLayout(base,2,0);
-
-    //Set up UGV gui layout
-    //Gridlayout : UGV to group UGV commands
-    //Gridlayout : joyLaout to group the Joystick commands
-    QGridLayout* UGVLayout = new QGridLayout();
-    QGridLayout* joyLayout = new QGridLayout();
-    joyLayout->addWidget(UGV_JOYSTICK,0,0);
-    joyLayout->addWidget(UGV_JOYSTICKSTOP,0,1);
-    UGVLayout->addLayout(joyLayout,0,0);
-    UGVLayout->addWidget(UGV_States,1,0);
-
-    //Creates label for UAV status
-    QLabel* uavStatLabel = new QLabel();
-    //Sets text for label
-    uavStatLabel->setText("CPP UAV STATUS");
-   
-    //Create label to display UAV status
-    uavStatusLabel = new QLabel();
-    //Sets text for status as "UNKNOWN"
-    uavStatusLabel->setText("UNKNOWN");
-
-    //Create a gridlayout : UAVStatus to hold the UGV status label and dipslay
-    QGridLayout* UAVStatus = new QGridLayout();
-    //Add uavstatus label and display to gridlayout
-    UAVStatus->addWidget(uavStatLabel,0,0,Qt::AlignCenter);
-    UAVStatus->addWidget(uavStatusLabel,0,1,Qt::AlignCenter);
-
-    //Create Button for UGV drop notification
-    ugvDrop = new QPushButton();
-    //Set Text for button
-    ugvDrop->setText("UGV notify of drop");
-    //Create gridlayout : dropCMDs for the drop commands
-    QGridLayout* dropCMDs = new QGridLayout();
-    //Add widgets to gridlayout
-    dropCMDs->addWidget(sendcmd,0,0);
-    dropCMDs->addWidget(ugvDrop,0,1);
-
-    //Set up basic UAV layout with C&C commands
-    //Create gridlayout : UAVLayout for UAV commands
-    QGridLayout* UAVLayout = new QGridLayout();
-    //Add UAV status, and dropCMDs layouts and UAV_payload widget
-    UAVLayout->addLayout(UAVStatus,0,0);
-    UAVLayout->addWidget(UAV_Payload,1,0);
-    UAVLayout->addLayout(dropCMDs,2,0);
-
-    //Set up Layout for vehicle comands
-    //Create gridlayout : VehicleLayout for commands
-    QGridLayout* VehicleLayout = new QGridLayout();
-    //Create Label for UAV commands
-    QLabel* uavLabel = new QLabel();
-    //Set text for label
-    uavLabel->setText("UAV commands");
-
-    //Create Label for UGV commands
-    QLabel* ugvLabel = new QLabel();
-    //Set Text for label
-    ugvLabel->setText("UGV commands");
-    //Set Alignments for the labels to be the center
-    //Have the UAV label be on the left col and the UGV to be on the right col
-    VehicleLayout->addWidget(uavLabel,0,0,Qt::AlignCenter);
-    VehicleLayout->addWidget(ugvLabel,0,1,Qt::AlignCenter);
-    //Add the layouts to the layout
-    VehicleLayout->addLayout(UAVLayout,1,0);
-    VehicleLayout->addLayout(UGVLayout,1,1);
-    //Add the layout to the mainLayout
-    mainLayout->addLayout(VehicleLayout,3,0);
-
-    mainLayout->addWidget(consolelog,3,1);
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout( mainLayout );
     setCentralWidget( centralWidget );
 
     showMaximized();
 
-    //mainwindow gui connect functions for networking
-    connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
-    //update targets
-    connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
-
-    //TEST METHOD FOR NEW SIGNAL
-    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
-
     //Map Interation
     //Sets coordinate positions for waypoint baised off of click on map
     connect(mv, SIGNAL(coordDesignated(double,double)), way, SLOT(coordDesignated(double,double)));
-
-
-    //C&C GUI
-    //General Vehicle
-    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
-    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
-    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
-    //Manual Targeting
-    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
-
-    //UAV
-    //Drop
-    connect(sendcmd,SIGNAL(clicked()),this,SLOT(UDrop()));
-    connect(ugvDrop,SIGNAL(clicked()),this,SLOT(UGVDrop()));
-    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
-
-    //Payload
-    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
-    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
-
-    //UGV
-    //JOYSTICK
-    connect(UGV_JOYSTICK,SIGNAL(clicked()),network,SLOT(start_UGV_Joystick()));
-    connect(UGV_JOYSTICKSTOP,SIGNAL(clicked()),network,SLOT(stop_UGV_Joystick()));
-
-    //UGV
-    //STATE CHANGE
-    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
-    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
-    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
-
-    //MOTOR states
-    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
-    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
-    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
 
     //Connect sidebar to map view layers
     connect(sb, SIGNAL(uavOn(bool)), mv, SLOT(uavLayerOn(bool)));
@@ -247,11 +93,6 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(sb, SIGNAL(waypointOn(bool)), mv, SLOT(waypointLayerOn(bool)));
     connect(sb, SIGNAL(opspaceOn(bool)), mv, SLOT(opspaceLayerOn(bool)));
     connect(sb, SIGNAL(targetOn(bool)), mv, SLOT(targetLayerOn(bool)));
-
-    //Connect message display for console log
-    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
-    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
-    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
 }
 
 void MainWindow::initMap(){
@@ -307,6 +148,57 @@ void MainWindow::initNetworking(){
                                    //lat, long
     connect(network, SIGNAL(vTarget(float,float)), this, SLOT( addTarget(float,float)));
     //connect(this,SIGNAL(update_vehicle(int)), vListGUI ,SLOT((int)));
+
+    initNetworkingConnects();
+}
+
+void MainWindow::initNetworkingConnects(){
+    //Set up connects for networking
+    connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
+    //update targets
+    connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
+
+    //TEST METHOD FOR NEW SIGNAL
+    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
+    //C&C GUI
+    //General Vehicle
+    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
+    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
+    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
+    //Manual Targeting
+    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
+
+    //UAV
+    //Drop
+    connect(sendcmd,SIGNAL(clicked()),this,SLOT(UDrop()));
+    connect(ugvDrop,SIGNAL(clicked()),this,SLOT(UGVDrop()));
+    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
+
+    //Payload
+    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
+    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
+
+    //UGV
+    //JOYSTICK
+    connect(UGV_JOYSTICK,SIGNAL(clicked()),network,SLOT(start_UGV_Joystick()));
+    connect(UGV_JOYSTICKSTOP,SIGNAL(clicked()),network,SLOT(stop_UGV_Joystick()));
+
+    //UGV
+    //STATE CHANGE
+    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
+    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
+    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
+
+    //MOTOR states
+    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
+    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
+    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
+
+
+    //Connect message display for console log
+    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
+    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
+    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
 }
 
 void MainWindow::initDatabase(){
@@ -315,6 +207,120 @@ void MainWindow::initDatabase(){
 
 void MainWindow::initWidgets(){
 
+    quitButton = new QPushButton( this );
+    quitButton->setText( "Quit" );
+
+    serialSelect = new SerialPortSelect( this );
+    sb = new sideBar(this);
+    mtb = new GcsToolbar( this );
+    connect(this,SIGNAL(destroyed()), mtb, SLOT(close()));
+
+    //Initialize networking AFTER all GUI has been created
+    consolelog = new ConsoleLog();
+
+    //Add widgets to screen
+    //Temp icons, make more pretty!!
+    UGV_JOYSTICK = new QPushButton();
+    UGV_JOYSTICK->setText("Start Joystick Control");
+    UGV_JOYSTICKSTOP = new QPushButton();
+    UGV_JOYSTICKSTOP->setText("Stop Joystick Control");
+    Telemetry = new TelemetryGUI();
+    way = new WaypointGUI();
+    Authorize = new VehicleAuthorizationGUI();
+    UGV_States = new UGV_state();
+    UAV_Payload = new UAVPayload();
+    targeting = new targetingGUI();
+
+    sendcmd = new QPushButton();
+    sendcmd->setText("Drop payload");
+
+    //mainLayout->addWidget( quitButton, 2, 0 );
+    mainLayout->addWidget( sb, 1, 0, Qt::AlignCenter|Qt::AlignRight );
+    mainLayout->addWidget( serialSelect, 1, 0, Qt::AlignTop|Qt::AlignRight);
+    mainLayout->addWidget( mtb, 1, 0, Qt::AlignCenter|Qt::AlignTop);
+
+    //Temp locations & gui!!!!!!
+    mainLayout->addWidget(quitButton,4,0);
+
+    //Set up baisic C&C gui layout
+    //Gridlayout to group widgets as one
+    //Gridlayout : base to have the commands
+    QGridLayout* base = new QGridLayout();
+    //Add the widgets that have the commands
+    base->addWidget(Authorize,0,0);
+    base->addWidget(Telemetry,0,1);
+    base->addWidget(way,0,2);
+    base->addWidget(targeting,1,0);
+    //Add those commands to the mainLayout
+    mainLayout->addLayout(base,2,0);
+
+    //Set up UGV gui layout
+    //Gridlayout : UGV to group UGV commands
+    //Gridlayout : joyLaout to group the Joystick commands
+    QGridLayout* UGVLayout = new QGridLayout();
+    QGridLayout* joyLayout = new QGridLayout();
+    joyLayout->addWidget(UGV_JOYSTICK,0,0);
+    joyLayout->addWidget(UGV_JOYSTICKSTOP,0,1);
+    UGVLayout->addLayout(joyLayout,0,0);
+    UGVLayout->addWidget(UGV_States,1,0);
+
+    //Creates label for UAV status
+    QLabel* uavStatLabel = new QLabel();
+    //Sets text for label
+    uavStatLabel->setText("CPP UAV STATUS");
+
+    //Create label to display UAV status
+    uavStatusLabel = new QLabel();
+    //Sets text for status as "UNKNOWN"
+    uavStatusLabel->setText("UNKNOWN");
+
+    //Create a gridlayout : UAVStatus to hold the UGV status label and dipslay
+    QGridLayout* UAVStatus = new QGridLayout();
+    //Add uavstatus label and display to gridlayout
+    UAVStatus->addWidget(uavStatLabel,0,0,Qt::AlignCenter);
+    UAVStatus->addWidget(uavStatusLabel,0,1,Qt::AlignCenter);
+
+    //Create Button for UGV drop notification
+    ugvDrop = new QPushButton();
+    //Set Text for button
+    ugvDrop->setText("UGV notify of drop");
+    //Create gridlayout : dropCMDs for the drop commands
+    QGridLayout* dropCMDs = new QGridLayout();
+    //Add widgets to gridlayout
+    dropCMDs->addWidget(sendcmd,0,0);
+    dropCMDs->addWidget(ugvDrop,0,1);
+
+    //Set up basic UAV layout with C&C commands
+    //Create gridlayout : UAVLayout for UAV commands
+    QGridLayout* UAVLayout = new QGridLayout();
+    //Add UAV status, and dropCMDs layouts and UAV_payload widget
+    UAVLayout->addLayout(UAVStatus,0,0);
+    UAVLayout->addWidget(UAV_Payload,1,0);
+    UAVLayout->addLayout(dropCMDs,2,0);
+
+    //Set up Layout for vehicle comands
+    //Create gridlayout : VehicleLayout for commands
+    QGridLayout* VehicleLayout = new QGridLayout();
+    //Create Label for UAV commands
+    QLabel* uavLabel = new QLabel();
+    //Set text for label
+    uavLabel->setText("UAV commands");
+
+    //Create Label for UGV commands
+    QLabel* ugvLabel = new QLabel();
+    //Set Text for label
+    ugvLabel->setText("UGV commands");
+    //Set Alignments for the labels to be the center
+    //Have the UAV label be on the left col and the UGV to be on the right col
+    VehicleLayout->addWidget(uavLabel,0,0,Qt::AlignCenter);
+    VehicleLayout->addWidget(ugvLabel,0,1,Qt::AlignCenter);
+    //Add the layouts to the layout
+    VehicleLayout->addLayout(UAVLayout,1,0);
+    VehicleLayout->addLayout(UGVLayout,1,1);
+    //Add the layout to the mainLayout
+    mainLayout->addLayout(VehicleLayout,3,0);
+
+    mainLayout->addWidget(consolelog,3,1);
 }
 
 //REMOVE ALL OLD QUEUE SYSTEM, USE AS REFERENCE TO CHANGE GRAPHICS

@@ -57,6 +57,9 @@ public:
     //Initialize networking
     void initNetworking();
 
+    //Initialize Connect funtions for network
+    void initNetworkingConnects();
+
     //Initialize database
     void initDatabase();
 
