@@ -93,6 +93,18 @@ private:
     targetingGUI* targeting;
 
     ConsoleLog* consolelog;
+
+    QPushButton command;
+    QPushButton control;
+    QGridLayout lowerBar;
+    QWidget lowerBarWidget;
+    QGridLayout command_box;
+    QGridLayout command_control;
+    //DUMMY PLACEHOLDERS
+    QPushButton vehicleList;
+    QPushButton attitude;
+    QPushButton vehicleInfo;
+
     //Networking
     networking *network;
     NodeQueue* vUpdate;
@@ -101,7 +113,6 @@ private:
     DataDaemon* database;
 
     vehicle_list *vList22;
-    Waypoint22 *w22, *w23, *w24;
     Vehicle22 *v46, *v69, *v2, *v101, *v102;
 
     QPushButton* sendcmd;

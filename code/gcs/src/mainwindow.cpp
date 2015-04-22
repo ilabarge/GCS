@@ -160,6 +160,7 @@ void MainWindow::initNetworkingConnects(){
 
     //TEST METHOD FOR NEW SIGNAL
     connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
+
     //C&C GUI
     //General Vehicle
     connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
@@ -201,6 +202,7 @@ void MainWindow::initNetworkingConnects(){
     connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
 }
 
+
 void MainWindow::initDatabase(){
     database = new DataDaemon();
 }
@@ -215,7 +217,6 @@ void MainWindow::initWidgets(){
     mtb = new GcsToolbar( this );
     connect(this,SIGNAL(destroyed()), mtb, SLOT(close()));
 
-    //Initialize networking AFTER all GUI has been created
     consolelog = new ConsoleLog();
 
     //Add widgets to screen
@@ -252,7 +253,7 @@ void MainWindow::initWidgets(){
     base->addWidget(way,0,2);
     base->addWidget(targeting,1,0);
     //Add those commands to the mainLayout
-    mainLayout->addLayout(base,2,0);
+    //mainLayout->addLayout(base,2,0);
 
     //Set up UGV gui layout
     //Gridlayout : UGV to group UGV commands
@@ -318,9 +319,23 @@ void MainWindow::initWidgets(){
     VehicleLayout->addLayout(UAVLayout,1,0);
     VehicleLayout->addLayout(UGVLayout,1,1);
     //Add the layout to the mainLayout
-    mainLayout->addLayout(VehicleLayout,3,0);
+    //mainLayout->addLayout(VehicleLayout,3,0);
 
-    mainLayout->addWidget(consolelog,3,1);
+    //mainLayout->addWidget(consolelog,3,1);
+    //NEW GUI BLOCKS
+
+    command_control.addWidget(&command,0,0);
+    command_control.addWidget(&control,0,1);
+
+    command_box.addLayout(&command_control,0,0);
+    command_box.addWidget(consolelog,1,0);
+
+    lowerBar.addWidget(&vehicleList,0,0);
+    lowerBar.addWidget(&attitude,0,1);
+    lowerBar.addWidget(&vehicleInfo,0,2);
+    lowerBar.addLayout(&command_box,0,3);
+    //lowerBarWidget.setLayout(&lowerBar);
+    mainLayout->addLayout(&lowerBar,2,0);
 }
 
 //REMOVE ALL OLD QUEUE SYSTEM, USE AS REFERENCE TO CHANGE GRAPHICS
@@ -571,5 +586,5 @@ void MainWindow::addTarget(float lat, float lon){
 /* END SLOTS */
 
 MainWindow::~MainWindow(){
-    //delete widget;?
+    qDebug() << "deconstructor";
 }
