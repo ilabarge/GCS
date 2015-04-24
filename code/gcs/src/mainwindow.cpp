@@ -131,20 +131,29 @@ MainWindow::MainWindow(QWidget* parent) :
     UGVLayout->addWidget(UGV_States,1,0);
 
     //Creates label for UAV status
-    QLabel* uavStatLabel = new QLabel();
+    QLabel* CPPuavStatLabel = new QLabel();
     //Sets text for label
-    uavStatLabel->setText("CPP UAV STATUS");
-   
+    CPPuavStatLabel->setText("CPP UAV STATUS");
     //Create label to display UAV status
-    uavStatusLabel = new QLabel();
+    CPPuavStatusLabel = new QLabel();
     //Sets text for status as "UNKNOWN"
-    uavStatusLabel->setText("UNKNOWN");
+    CPPuavStatusLabel->setText("UNKNOWN");
 
+    //Creates label for UAV status
+    QLabel* SLOuavStatLabel = new QLabel();
+    //Sets text for label
+    SLOuavStatLabel->setText("SLO UAV STATUS");
+    //Create label to display UAV status
+    SLOuavStatusLabel = new QLabel();
+    //Sets text for status as "UNKNOWN"
+    SLOuavStatusLabel->setText("UNKNOWN");
     //Create a gridlayout : UAVStatus to hold the UGV status label and dipslay
     QGridLayout* UAVStatus = new QGridLayout();
     //Add uavstatus label and display to gridlayout
-    UAVStatus->addWidget(uavStatLabel,0,0,Qt::AlignCenter);
-    UAVStatus->addWidget(uavStatusLabel,0,1,Qt::AlignCenter);
+    UAVStatus->addWidget(CPPuavStatLabel,0,0,Qt::AlignCenter);
+    UAVStatus->addWidget(CPPuavStatusLabel,0,1,Qt::AlignCenter);
+    UAVStatus->addWidget(SLOuavStatLabel,1,0,Qt::AlignCenter);
+    UAVStatus->addWidget(SLOuavStatusLabel,2,1,Qt::AlignCenter);
 
     //Create Button for UGV drop notification
     ugvDrop = new QPushButton();
@@ -475,33 +484,68 @@ void MainWindow::addVehicle(int vech, int type)
  */
 void MainWindow::vStatus(int vech, int mode)
 {
-    switch(mode)
-    {
-        case 0:
-            uavStatusLabel->setText("Startup");
-            break;
+    int SLO = 0;
+    int CPP = 69;
+    if(vech == SLO){
+        switch(mode)
+        {
+            case 0:
+                SLOuavStatusLabel->setText("Startup");
+                break;
 
-        case 1:
-            uavStatusLabel->setText("Manual Mode");
-            break;
-        case 2:
-            uavStatusLabel->setText("Assisted Mode");
-            break;
+            case 1:
+                SLOuavStatusLabel->setText("Manual Mode");
+                break;
+            case 2:
+                SLOuavStatusLabel->setText("Assisted Mode");
+                break;
 
-        case 3:
-            uavStatusLabel->setText("Autonomous Mode");
-            break;
+            case 3:
+                SLOuavStatusLabel->setText("Autonomous Mode");
+                break;
 
-        case 4:
-            uavStatusLabel->setText("Collision Avoidence Mode");
-            break;
+            case 4:
+                SLOuavStatusLabel->setText("Collision Avoidence Mode");
+                break;
 
-        case 5:
-             uavStatusLabel->setText("Seek & Destroy");
-             break;
+            case 5:
+                 SLOuavStatusLabel->setText("Seek & Destroy");
+                 break;
 
-        default:
-             uavStatusLabel->setText("Unknown Status Recieved");
+            default:
+                SLOuavStatusLabel->setText("Unknown Status Recieved");
+
+        }
+    }else{
+        switch(mode)
+        {
+            case 0:
+                CPPuavStatusLabel->setText("Startup");
+                break;
+
+            case 1:
+                CPPuavStatusLabel->setText("Manual Mode");
+                break;
+            case 2:
+                CPPuavStatusLabel->setText("Assisted Mode");
+                break;
+
+            case 3:
+                CPPuavStatusLabel->setText("Autonomous Mode");
+                break;
+
+            case 4:
+                CPPuavStatusLabel->setText("Collision Avoidence Mode");
+                break;
+
+            case 5:
+                 CPPuavStatusLabel->setText("Seek & Destroy");
+                 break;
+
+            default:
+                CPPuavStatusLabel->setText("Unknown Status Recieved");
+
+        }
     }
     /*
      * switch(status)

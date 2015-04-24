@@ -85,7 +85,8 @@ private:
     VehicleAuthorizationGUI *Authorize;
     UGV_state* UGV_States;
     UAVPayload* UAV_Payload;
-    QLabel* uavStatusLabel;
+    QLabel* CPPuavStatusLabel;
+    QLabel* SLOuavStatusLabel;
     QLabel* uavModeLabel;
     targetingGUI* targeting;
 
