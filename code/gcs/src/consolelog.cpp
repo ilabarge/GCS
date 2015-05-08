@@ -9,6 +9,8 @@ ConsoleLog::ConsoleLog(QWidget *parent)
     QPalette *palette = new QPalette();
     palette->setColor(QPalette::Base,Qt::black);
     log->setPalette(*palette);
+    log->setMaximumHeight(300);
+    log->setMaximumWidth(300);
     QGridLayout *logLayout = new QGridLayout();
     logLayout->addWidget(log,0,0);
     setLayout(logLayout);

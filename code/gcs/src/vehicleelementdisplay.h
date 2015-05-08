@@ -16,13 +16,17 @@ public:
     int getID();
     void setVehicle(Vehicle22*);
     void update();
+    void setText();
     ~VehicleElementDisplay();
 
 signals:
     void vechID(int);
 
 public slots:
-    void updateDisplay(int);
+    void updateDisplay(int vechID);
+
+private slots:
+    void vehicleClick();
 
 private:
     int id;

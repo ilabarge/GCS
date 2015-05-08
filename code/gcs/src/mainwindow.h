@@ -31,6 +31,7 @@
 #include "Vehicle22.h"
 #include "vehicle_list.h"
 #include "consolelog.h"
+#include "vehicleelementdisplay.h"
 
 //GUI Testing headers
 #include "telemetrygui.h"
@@ -88,22 +89,28 @@ private:
     VehicleAuthorizationGUI *Authorize;
     UGV_state* UGV_States;
     UAVPayload* UAV_Payload;
-    QLabel* uavStatusLabel;
     QLabel* uavModeLabel;
     targetingGUI* targeting;
 
     ConsoleLog* consolelog;
 
     QPushButton command;
+    QWidget commandLayoutWidget;
+    QWidget controlLayoutWidget;
     QPushButton control;
     QGridLayout lowerBar;
     QWidget lowerBarWidget;
     QGridLayout command_box;
     QGridLayout command_control;
     //DUMMY PLACEHOLDERS
-    QPushButton vehicleList;
+    //QPushButton vehicleList;
+    //VehicleElementDiplay vehicleList;
+    QGridLayout *vehicleList;
+    VehicleElementDisplay *element;
+    std::vector<VehicleElementDisplay*> *elementList;
     QPushButton attitude;
     QPushButton vehicleInfo;
+
 
     //Networking
     networking *network;
@@ -121,6 +128,8 @@ private:
     //Dynamic Vehicle addition
     void addVehicle(int,int);
 
+    bool commandShow;
+    bool controlShow;
 private slots:
     void update_vehicle_queue();
     void update_targets(Target*);
@@ -130,6 +139,9 @@ private slots:
     void UDrop();
     void UGVDrop();
 
+    void showCommand();
+    void showControl();
+
     //Test Slot for new signal
     void updateVech(int);
 
@@ -137,6 +149,9 @@ private slots:
     void addTarget(float lat, float lon);
     //void addWaypoint(int,Waypoint22*);
 //    void removeTarget(int gID);
+
+    //Test
+    void elementSelect(int);
 
 signals:
     void update_vehicle(int vehicle);

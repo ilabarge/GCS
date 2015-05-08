@@ -3,56 +3,87 @@
 VehicleElementDisplay::VehicleElementDisplay(QWidget *parent) :
     QWidget(parent)
 {
-    imgTemp = new QWidget(this);
-    imgTemp->setGeometry(0,0,300,100);
-    QPalette Pal(palette());
+    //imgTemp = new QWidget(this);
+    //imgTemp->setGeometry(0,0,300,100);
+    //QPalette Pal(palette());
 
     // set black background
-    Pal.setColor(QPalette::Background, Qt::black);
-    imgTemp->setAutoFillBackground(true);
-    imgTemp->setPalette(Pal);
+    //Pal.setColor(QPalette::Background, Qt::black);
+    //imgTemp->setAutoFillBackground(true);
+    //imgTemp->setPalette(Pal);
 
     VehicleType = new QLabel();
     VehicleNo = new QLabel();
     VehicleStatus = new QLabel();
 
     vehicleLayout = new QGridLayout();
+    vehicleLayout->setMargin(0);
     vehicleLayout->addWidget(VehicleType,0,0);
     vehicleLayout->addWidget(VehicleNo,0,1);
 
     infoLayout = new QGridLayout();
+    infoLayout->setMargin(0);
     infoLayout->addLayout(vehicleLayout,0,0);
     infoLayout->addWidget(VehicleStatus,1,0);
 
+
+
+    VehicleType->setText("VEHICLE_TYPE");
+    VehicleNo->setText("VEHICLE_ID");
+    VehicleStatus->setText("Unknown State");
+
     mainLayout = new QGridLayout();
-    mainLayout->setMargin(0);
-    mainLayout->addWidget(imgTemp,0,0);
-    mainLayout->addLayout(infoLayout,0,1);
+    mainLayout->setMargin(10);
+    //mainLayout->addWidget(imgTemp,0,0);
+    mainLayout->addLayout(infoLayout,0,0);
+    vehicleSelect = new QPushButton();
+    vehicleSelect->setLayout(mainLayout);
+    vehicleSelect->setMaximumHeight(100);
+    vehicleSelect->setMinimumWidth(200);
 
-    VehicleType->setText("UAV");
-    VehicleNo->setText("69");
-    VehicleStatus->setText("Collision Avoidence");
-
-    setLayout(mainLayout);
-
+    QGridLayout *element = new QGridLayout();
+    element->addWidget(vehicleSelect);
+    connect(vehicleSelect,SIGNAL(clicked()), this,SLOT(vehicleClick()));
+    setLayout(element);
 }
 
 void VehicleElementDisplay::setID(int vechID){
     id = vechID;
+    VehicleNo->setText(QString::number(id));
 }
 
 int VehicleElementDisplay::getID(){
     return vechicle->getVehicleID();
 }
 
+void VehicleElementDisplay::setText(){
+    if(vechicle->getVehicleType() ==0){
+        VehicleType->setText("UAV");
+    }else{
+        VehicleType->setText("UGV");
+    }
+    VehicleNo->setText(QString::number(vechicle->getVehicleID()));
+}
+
 void VehicleElementDisplay::updateDisplay(int vechID){
    if(vechID == id){
        //Update display with information
+       update();
    }
 }
 
+/**
+ * @brief VehicleElementDisplay::setVehicle
+ * Sets the vehicle to display
+ * @param vech
+ * Vehicle pointer that points to the data to display.
+ */
 void VehicleElementDisplay::setVehicle(Vehicle22* vech){
+    id = vech->getVehicleID();
     vechicle = vech;
+    VehicleNo->setText(QString::number(id));
+    //Call update to update the status of the vehicle
+    update();
 }
 
 void VehicleElementDisplay::update(){
@@ -85,6 +116,10 @@ void VehicleElementDisplay::update(){
             VehicleStatus->setText("Unknown Status Recieved");
 
     }
+}
+
+void VehicleElementDisplay::vehicleClick(){
+    emit vechID(id);
 }
 
 VehicleElementDisplay::~VehicleElementDisplay(){

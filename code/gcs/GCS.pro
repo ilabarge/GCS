@@ -56,7 +56,8 @@ SOURCES += \
     src/InternetTest.cpp \
     src/protonet/Joystick.cpp \
     src/vehicle_list.cpp \
-    src/consolelog.cpp
+    src/consolelog.cpp \
+    src/vehicleelementdisplay.cpp \
 
 HEADERS += \
     src/mainwindow.h \
@@ -141,7 +142,8 @@ HEADERS += \
     src/InternetTest.h \
     src/protonet/Joystick.h \
     src/vehicle_list.h \
-    src/consolelog.h
+    src/consolelog.h \
+    src/vehicleelementdisplay.h \
 
 FORMS += \
     forms/gcs_toolbar.ui
