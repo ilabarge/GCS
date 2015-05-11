@@ -26,7 +26,8 @@ extern "C"
 {
 
 void thread_create(thread_t* thread, void *(*start_routine) (void *), void* arg);
-
+void thread_set_priority(thread_t* thread, int32_t priority);
+thread_t thread_get_self_id();
 }
 
 

@@ -52,6 +52,7 @@ typedef enum {
    Proto_Ping = 0002,
    Proto_Pong = 0003,
    Proto_Vehicle_Identification = 1000,
+   Proto_Amy_Stuff = 9000,
    Proto_Vehicle_Authorization_Request = 1001,
    Proto_Vehicle_Authorization_Reply = 1002,
    Proto_Vehicle_Mode_Command = 1003,

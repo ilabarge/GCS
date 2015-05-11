@@ -9,9 +9,16 @@
 
 /* Keep track of the bytes we are parsing */
 typedef enum parse_state_e{
-	WAIT_SYNC_C = 0, /* CPP\0 is the sync byte */
-	WAIT_SYNC_P1,
-	WAIT_SYNC_P2,
+	WAIT_SYNC_1 = 1, /* 1129336832\0 is the sync byte */
+	WAIT_SYNC_1_2,
+	WAIT_SYNC_2,
+	WAIT_SYNC_9,
+	WAIT_SYNC_3,
+	WAIT_SYNC_3_2,
+	WAIT_SYNC_6,
+	WAIT_SYNC_8,
+	WAIT_SYNC_3_3,
+	WAIT_SYNC_2_2,
 	WAIT_SYNC_NULL,
 	WAIT_MESSAGE_HEADER,
 	WAIT_MESSAGE_DATA,

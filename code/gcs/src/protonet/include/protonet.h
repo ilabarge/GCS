@@ -17,6 +17,7 @@ namespace protonet
    typedef void* (*ping_callback)(int8_t, proto_header_t, ping_t, protonet::node* node_ptr);
    typedef void* (*pong_callback)(int8_t, proto_header_t, pong_t, protonet::node* node_ptr);
    typedef void* (*vehicle_identification_callback)(int8_t, proto_header_t, vehicle_identification_t, protonet::node* node_ptr);
+   typedef void* (*amy_stuff_callback)(int8_t, proto_header_t, amy_stuff_t, protonet::node* node_ptr);
    typedef void* (*vehicle_authorization_request_callback)(int8_t, proto_header_t, vehicle_authorization_request_t, protonet::node* node_ptr);
    typedef void* (*vehicle_authorization_reply_callback)(int8_t, proto_header_t, vehicle_authorization_reply_t, protonet::node* node_ptr);
    typedef void* (*vehicle_mode_command_callback)(int8_t, proto_header_t, vehicle_mode_command_t, protonet::node* node_ptr);
@@ -76,6 +77,10 @@ namespace protonet
          uint16_t vehicle_ID,
          uint8_t vehicle_type,
          uint16_t owner_ID);
+
+      void send_amy_stuff(
+         uint8_t dest_id,
+         float64_t hello);
 
       void send_vehicle_authorization_request(
          uint8_t dest_id,
@@ -242,6 +247,7 @@ namespace protonet
       void register_on_ping(ping_callback callback){on_ping = callback;}
       void register_on_pong(pong_callback callback){on_pong = callback;}
       void register_on_vehicle_identification(vehicle_identification_callback callback){on_vehicle_identification = callback;}
+      void register_on_amy_stuff(amy_stuff_callback callback){on_amy_stuff = callback;}
       void register_on_vehicle_authorization_request(vehicle_authorization_request_callback callback){on_vehicle_authorization_request = callback;}
       void register_on_vehicle_authorization_reply(vehicle_authorization_reply_callback callback){on_vehicle_authorization_reply = callback;}
       void register_on_vehicle_mode_command(vehicle_mode_command_callback callback){on_vehicle_mode_command = callback;}
@@ -285,6 +291,7 @@ namespace protonet
       ping_callback on_ping;
       pong_callback on_pong;
       vehicle_identification_callback on_vehicle_identification;
+      amy_stuff_callback on_amy_stuff;
       vehicle_authorization_request_callback on_vehicle_authorization_request;
       vehicle_authorization_reply_callback on_vehicle_authorization_reply;
       vehicle_mode_command_callback on_vehicle_mode_command;

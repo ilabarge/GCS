@@ -14,13 +14,13 @@
 TARGET = GCS 
 TEMPLATE = app
 
-QT += core gui opengl xml network serialport sql
+QT += core gui xml network serialport sql
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
 }
 
-CONFIG += c++11 esri_runtime_qt_10_2_3
+CONFIG += c++11 arcgis_runtime_qml
 
 win32:CONFIG += \
   embed_manifest_exe
@@ -162,13 +162,6 @@ else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet_64
 
 INCLUDEPATH += $$PWD/src/protonet
 DEPENDPATH += $$PWD/src/protonet
-
-
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_64
-#comment upper line and decomment lower line to compile release 32bit
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonetd
-#else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet
 
 INCLUDEPATH += $$PWD/src/protonet/include
 DEPENDPATH += $$PWD/src/protonet/include
