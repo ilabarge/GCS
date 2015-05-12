@@ -137,7 +137,7 @@ public:
 
     QString MapView::pointToDecimalDegrees(EsriRuntimeQt::Point p);
 
-    GCSGraphicsLayer* getVehicleLayer(){ return &grLayer; }
+    GCSGraphicsLayer* getVehicleLayer(){ return grLayer; }
 
     QList<double> coordinateStringToDoubles(QString coordinates);
 
@@ -163,9 +163,14 @@ signals:
 
 private:
     EsriRuntimeQt::Map m_map;
-    EsriRuntimeQt::ArcGISLocalTiledLayer m_tiledLayer;
-    EsriRuntimeQt::ArcGISTiledMapServiceLayer m_tiledServiceLayer;
-    EsriRuntimeQt::ArcGISTiledMapServiceLayer imageryLayer;
+    //Update 10.2.5
+    /*changed layers to pointers as they are singletons
+     meaning that we cannot copy the values of the map layer
+     we must copy the address of the created object*/
+    EsriRuntimeQt::ArcGISLocalTiledLayer *m_tiledLayer;
+    EsriRuntimeQt::ArcGISTiledMapServiceLayer *m_tiledServiceLayer;
+    EsriRuntimeQt::ArcGISTiledMapServiceLayer *imageryLayer;
+
     //  EsriRuntimeQt::ArcGISDynamicMapServiceLayer m_dynamicServiceLayer;
     //  EsriRuntimeQt::LocalMapService m_localMapService;
     //  EsriRuntimeQt::ArcGISDynamicMapServiceLayer m_dynamicLocalServiceLayer;
@@ -174,14 +179,14 @@ private:
     //  EsriRuntimeQt::GraphicsLayer m_graphicsLayer;
     //  EsriRuntimeQt::ArcGISFeatureLayer m_featureLayer;
 
-    GCSGraphicsLayer uavLayer;
-    GCSGraphicsLayer ugvLayer;
-    GCSGraphicsLayer waypointLayer;
-    GCSGraphicsLayer opspaceLayer;
-    GCSGraphicsLayer targetLayer;
-    GCSGraphicsLayer satelliteLayer;
+    GCSGraphicsLayer *uavLayer;
+    GCSGraphicsLayer *ugvLayer;
+    GCSGraphicsLayer *waypointLayer;
+    GCSGraphicsLayer *opspaceLayer;
+    GCSGraphicsLayer *targetLayer;
+    GCSGraphicsLayer *satelliteLayer;
 
-    GCSGraphicsLayer grLayer;
+    GCSGraphicsLayer *grLayer;
     EsriRuntimeQt::SpatialReference spatialRef;
     InternetTest it;
 };

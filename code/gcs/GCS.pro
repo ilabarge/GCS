@@ -11,16 +11,17 @@
 #  See the Sample code usage restrictions document for further information.
 #-------------------------------------------------
 
-TARGET = GCS 
+TARGET = GCS
 TEMPLATE = app
 
-QT += core gui xml network serialport sql
+QT += core gui opengl xml network serialport sql qml
+QT += positioning sensors
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
 }
 
-CONFIG += c++11 arcgis_runtime_qml
+CONFIG += c++11 esri_runtime_qt
 
 win32:CONFIG += \
   embed_manifest_exe
@@ -56,7 +57,6 @@ SOURCES += \
     src/InternetTest.cpp \
     src/protonet/Joystick.cpp \
     src/vehicle_list.cpp \
-    src/consolelog.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -141,7 +141,6 @@ HEADERS += \
     src/InternetTest.h \
     src/protonet/Joystick.h \
     src/vehicle_list.h \
-    src/consolelog.h
 
 FORMS += \
     forms/gcs_toolbar.ui
@@ -162,6 +161,14 @@ else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet_64
 
 INCLUDEPATH += $$PWD/src/protonet
 DEPENDPATH += $$PWD/src/protonet
+
+ #INCLUDEPATH += "C:/ProgramFile(x86)/ArcGIS SDKs/Qt10.2.5/sdk/windows/include/"
+
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_64
+#comment upper line and decomment lower line to compile release 32bit
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonetd
+#else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet
 
 INCLUDEPATH += $$PWD/src/protonet/include
 DEPENDPATH += $$PWD/src/protonet/include
@@ -186,6 +193,3 @@ else:unix: LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-window-s
 
 INCLUDEPATH += $$PWD/src/protonet/SFML/Window
 DEPENDPATH += $$PWD/src/protonet/SFML/Window
-
-
-

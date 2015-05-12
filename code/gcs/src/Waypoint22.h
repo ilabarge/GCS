@@ -32,7 +32,8 @@ public:
     double getNextLatitude(){ return nextLat; }
     double getNextLongitude(){ return nextLon; }
 
-    int getLineGraphicID(){ return lineGraphic.uid(); }
+    //ESRI 10.2.5 update change uid to uniqueId
+    int getLineGraphicID(){ return lineGraphic.uniqueId(); }
     EsriRuntimeQt::Graphic getLineGraphic(){ return lineGraphic; }
     EsriRuntimeQt::Polyline getLine(){ return line; }
     /* END GETTERS */

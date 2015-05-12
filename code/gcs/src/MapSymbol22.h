@@ -54,7 +54,8 @@ public:
     EsriRuntimeQt::Point getPoint(){ return curr_Point; }
     EsriRuntimeQt::PictureMarkerSymbol getPMS(){ return pmSymbol; }
     EsriRuntimeQt::PictureMarkerSymbol getSMS(){ return smSymbol; }
-    int getGraphicID(){ return graphic.uid(); }
+    //ESRI 10.2.5 update change from uid to uniqueID
+    int getGraphicID(){ return graphic.uniqueId(); }
     QColor getColor(){ return color; }
 
     EsriRuntimeQt::Point decimalDegreesToPoint(double lat, double lon);

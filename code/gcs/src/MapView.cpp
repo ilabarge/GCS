@@ -24,7 +24,7 @@ MapView::MapView(QWidget* parent)
 {
     //Set to openGL rendering
     EsriRuntimeQt::ArcGISRuntime::setRenderEngine(EsriRuntimeQt::RenderEngine::OpenGL);
-    m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(m_map, parent);
+    m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(&m_map, parent);
     m_map.setWrapAroundEnabled(false);
     m_map.setEsriLogoVisible(false);
 
@@ -33,9 +33,9 @@ MapView::MapView(QWidget* parent)
 
     if(it.isConnected()){
         //// ArcGIS Online Tiled Basemap Layer
-        m_tiledServiceLayer = EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
+        m_tiledServiceLayer = &EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
         m_map.addLayer(m_tiledServiceLayer);
-        imageryLayer = EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
+        imageryLayer = &EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
         m_map.addLayer(imageryLayer);
     }
     else{
@@ -45,7 +45,7 @@ MapView::MapView(QWidget* parent)
         QDir dataDir(path); // using QDir to convert to correct file separator
         QString pathSampleData = dataDir.path() + QDir::separator();
         QString tiledBaseMapLayer = pathSampleData + "tpks" + QDir::separator() + "Topographic.tpk";
-        m_tiledLayer = EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer);
+        m_tiledLayer = &EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer);
         m_map.addLayer(m_tiledLayer);
     }
 
@@ -125,27 +125,27 @@ MapView::MapView(QWidget* parent)
 }
 
 void MapView::UAVLayerVisible(bool visible){
-    uavLayer.setVisible(visible);
+    uavLayer->setVisible(visible);
 }
 
 void MapView::UGVLayerVisible(bool visible){
-    ugvLayer.setVisible(visible);
+    ugvLayer->setVisible(visible);
 }
 
 void MapView::waypointLayerVisible(bool visible){
-    waypointLayer.setVisible(visible);
+    waypointLayer->setVisible(visible);
 }
 
 void MapView::zoneLayerVisible(bool visible){
-    opspaceLayer.setVisible(visible);
+    opspaceLayer->setVisible(visible);
 }
 
 void MapView::targetLayerVisible(bool visible){
-    targetLayer.setVisible(visible);
+    targetLayer->setVisible(visible);
 }
 
 void MapView::satelliteLayerVisible(bool visible){
-    satelliteLayer.setVisible(visible);
+    satelliteLayer->setVisible(visible);
 }
 
 MapView::~MapView()
@@ -237,60 +237,61 @@ void MapView::onFeatureServiceCreationFailure(const QString& name)
 
 void MapView::onMapReady(){
     spatialRef = m_map.spatialReference();
-    grLayer.setSpatialReference(spatialRef);
+    grLayer->setSpatialReference(spatialRef);
     qDebug() << "Map Ready.";
     emit MapReady();
 }
 
 bool MapView::moveVehicleGraphic(Vehicle22& vehicle, const EsriRuntimeQt::Point point){
-    grLayer.moveGraphic(vehicle.getGraphicID(), point);
+    grLayer->moveGraphic(vehicle.getGraphicID(), point);
     return true;
 }
 
 bool MapView::moveVehicleGraphic(Vehicle22& vehicle, double lat, double lon){
-    grLayer.moveGraphic(vehicle.getGraphicID(), decimalDegreesToPoint(lat,lon));
+    grLayer->moveGraphic(vehicle.getGraphicID(), decimalDegreesToPoint(lat,lon));
     return true;
 }
 
 bool MapView::moveLayerGraphic(Layers layer, EsriRuntimeQt::Graphic& graphic, const EsriRuntimeQt::Point p){
     //TODO: Add behavior
+    //ESRI update 10.2.5 change uid to uniqueId
     switch(layer){
         case UGV:
-            ugvLayer.moveGraphic(graphic.uid(), p);
+            ugvLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case UAV:
-            uavLayer.moveGraphic(graphic.uid(), p);
+            uavLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case TARGET:
-            targetLayer.moveGraphic(graphic.uid(), p);
+            targetLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case SATELLITE:
-            satelliteLayer.moveGraphic(graphic.uid(), p);
+            satelliteLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case WAYPOINT:
-            waypointLayer.moveGraphic(graphic.uid(), p);
+            waypointLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case ZONE:
-            opspaceLayer.moveGraphic(graphic.uid(), p);
+            opspaceLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         default:
             break;
     }
 
-    grLayer.moveGraphic(graphic.uid(), p);
+    grLayer->moveGraphic(graphic.uniqueId(), p);
     return true;
 }
 
 bool MapView::moveLayerGraphic(Layers layer, EsriRuntimeQt::Graphic& graphic, double lat, double lon){
     //TODO: Add behavior
-    grLayer.moveGraphic(graphic.uid(), decimalDegreesToPoint(lat,lon));
+    grLayer->moveGraphic(graphic.uniqueId(), decimalDegreesToPoint(lat,lon));
     return true;
 }
 
 //bool MapView::addGraphicToLayer(EsriRuntimeQt::GraphicsLayer& layer, EsriRuntimeQt::Graphic& graphic){
 bool MapView::addGraphicToLayer(EsriRuntimeQt::Graphic& graphic){
     //layer.addGraphic(graphic);
-    grLayer.addGraphic(graphic);
+    grLayer->addGraphic(&graphic);
     return true;
 }
 
@@ -309,7 +310,7 @@ QString MapView::pointToDecimalDegrees(EsriRuntimeQt::Point p){
 
 bool MapView::rotateVehicleGraphic(Vehicle22& vehicle, int angle){
     vehicle.setAngle(angle);
-    grLayer.updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
+    grLayer->updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
     return true;
 }
     
@@ -347,26 +348,26 @@ QList<double> MapView::coordinateStringToDoubles(QString coordinates){
 }
 
 void MapView::uavLayerOn(bool isOn) {
-    uavLayer.setVisible(isOn);
+    uavLayer->setVisible(isOn);
 }
 
 void MapView::ugvLayerOn(bool isOn) {
-    ugvLayer.setVisible(isOn);
+    ugvLayer->setVisible(isOn);
 }
 
 void MapView::satelliteLayerOn(bool isOn) {
-    satelliteLayer.setVisible(isOn);
-    imageryLayer.setVisible(isOn);
+    satelliteLayer->setVisible(isOn);
+    imageryLayer->setVisible(isOn);
 }
 
 void MapView::waypointLayerOn(bool isOn) {
-    waypointLayer.setVisible(isOn);
+    waypointLayer->setVisible(isOn);
 }
 
 void MapView::opspaceLayerOn(bool isOn) {
-    opspaceLayer.setVisible(isOn);
+    opspaceLayer->setVisible(isOn);
 }
 
 void MapView::targetLayerOn(bool isOn) {
-    targetLayer.setVisible(isOn);
+    targetLayer->setVisible(isOn);
 }

@@ -75,3 +75,4 @@ void MapSymbol22::updateGraphic(){
         graphic = EsriRuntimeQt::Graphic(curr_Point, pmSymbol);
     }
 }
+
