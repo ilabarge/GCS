@@ -40,8 +40,8 @@ public:
 
 public slots:
     void removeLayerGraphic( int gID );
-    void updateLayerGraphic( int gID, EsriRuntimeQt::Graphic graphic );
-    void addGraphicToGCS( EsriRuntimeQt::Graphic );
+    void updateLayerGraphic( int gID, EsriRuntimeQt::Graphic *graphic );
+    void addGraphicToGCS(EsriRuntimeQt::Graphic * );
 
     void addWaypointToGCS( Waypoint22* wp, QColor color);
     void updateWaypointGraphics( Waypoint22* wp );

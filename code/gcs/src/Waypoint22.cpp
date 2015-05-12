@@ -11,7 +11,7 @@ Waypoint22::Waypoint22(QObject *parent) :
 }
 
 Waypoint22::Waypoint22(int id,          int type,        double latitude,
-                       double longitude, double altitude, int vehicleType){
+                       double longitude, double altitude, int vehicleType, EsriRuntimeQt::SpatialReference spatialReference){
     QMutexLocker l(&mx);
     this->ID = id;
     this->type = type;
@@ -20,11 +20,12 @@ Waypoint22::Waypoint22(int id,          int type,        double latitude,
     this->alt = altitude;
     nextLat = latitude;
     nextLon = longitude;
+    this->spatialReference = spatialReference;
 
     // TODO: Add in vehicle type to select color/shape
     QList<EsriRuntimeQt::Point> points;
-    points.append( EsriRuntimeQt::Point(0, 0) ); //Starting
-    points.append( EsriRuntimeQt::Point(0, 0) ); //Ending
+    points.append( EsriRuntimeQt::Point(0, 0, spatialReference) ); //Starting
+    points.append( EsriRuntimeQt::Point(0, 0,spatialReference) ); //Ending
     QList< QList<EsriRuntimeQt::Point> > pathList;
     pathList.append(points);
     color = Qt::red;
@@ -77,5 +78,5 @@ void Waypoint22::setLineGraphic(EsriRuntimeQt::Graphic graphic){
 
 void Waypoint22::updateLineGraphic(){
     QMutexLocker l(&mx);
-    lineGraphic = &EsriRuntimeQt::Graphic(line, lineSymb);
+    lineGraphic = new EsriRuntimeQt::Graphic(line, lineSymb);
 }

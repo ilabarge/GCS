@@ -675,11 +675,15 @@ void rx_thread::process() {
 
    //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
-   node->add_udp(&link_id,self_port,"127.0.0.1");
+   //Changed due to original being a const char
+   std::string *str = new std::string("127.0.0.1");
+   //We grab the memory location of the first char in the string as it is a char array
+   char *arr = &(*str)[0];
+   node->add_udp(&link_id,self_port,arr);
 
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
-   node->establish_udp(link_id,2,dest_port,"127.0.0.1");
+   node->establish_udp(link_id,2,dest_port,arr);
 
    //Start Node
    //node->start(); <- no longer needed due to protonet update

@@ -28,7 +28,7 @@ public:
      * -1: Bad image URL
      *  0: Success
      */
-    int setGraphic(const QString url, const int width, const int height);
+    int setGraphic(const QString url, const int width, const int height, EsriRuntimeQt::SpatialReference spatialReference);
 
     /**
      * @brief MapSymbol::setGraphic
@@ -42,9 +42,9 @@ public:
      * -1: Bad image URL
      *  0: Success
      */
-    int setGraphic(const QString url, double lat, double lon, int width, int height);
+    int setGraphic(const QString url, double lat, double lon, int width, int height, EsriRuntimeQt::SpatialReference spatialReference);
 
-    int setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMarkerSymbolStyle shape, double x, double y, int size);
+    int setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMarkerSymbolStyle shape, double x, double y, int size, EsriRuntimeQt::SpatialReference spatialReference);
     int setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMarkerSymbolStyle shape, EsriRuntimeQt::Point p, int size);
     bool setPoint(EsriRuntimeQt::Point point);
     bool setAngle(double angle);
@@ -74,7 +74,7 @@ protected:
 
 signals:
     void GCSRemoveGraphic(int graphicID);
-    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic graphic);
+    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic *graphic);
 
 public slots:
 

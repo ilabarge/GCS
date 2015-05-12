@@ -141,6 +141,12 @@ public:
 
     QList<double> coordinateStringToDoubles(QString coordinates);
 
+    /** Returns the spatial reference of the map to be used to set points
+     * @brief getSpatialRef
+     * @return
+     */
+    EsriRuntimeQt::SpatialReference getSpatialRef() { return spatialRef; }
+
 public slots:
     void onMapReady();
     //  void onLocalServiceCreationSuccess(const QString& url, const QString& name);

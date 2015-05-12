@@ -127,7 +127,7 @@ private slots:
 
 signals:
     void update_vehicle(int vehicle);
-    void updateIDGraphic(int gID, EsriRuntimeQt::Graphic graphic);
+    void updateIDGraphic(int gID, EsriRuntimeQt::Graphic *graphic);
     void removeLayerGraphic(int gID);
     //for uav drop
     void drop(int);

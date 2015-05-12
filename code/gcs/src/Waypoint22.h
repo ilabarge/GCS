@@ -20,7 +20,7 @@ public:
 
     explicit Waypoint22(QObject *parent = 0);
     Waypoint22(int id,     int type,        double lat,
-               double lon, double altitude, int vehicleType);
+               double lon, double altitude, int vehicleType, EsriRuntimeQt::SpatialReference spatialReference);
 
     /* START GETTERS */
     double getAltitude(){ return alt; }
@@ -67,6 +67,7 @@ private:
     EsriRuntimeQt::Polyline line;
     EsriRuntimeQt::SimpleLineSymbol lineSymb;
     EsriRuntimeQt::Graphic *lineGraphic;
+    EsriRuntimeQt::SpatialReference spatialReference;
 
 signals:
 

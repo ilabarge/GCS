@@ -9,7 +9,6 @@
 #include <message/Ping.h>
 #include <message/Pong.h>
 #include <message/VehicleIdentification.h>
-#include <message/AmyStuff.h>
 #include <message/VehicleAuthorizationRequest.h>
 #include <message/VehicleAuthorizationReply.h>
 #include <message/VehicleModeCommand.h>
@@ -34,7 +33,6 @@ typedef union {
    ping_t ping;
    pong_t pong;
    vehicle_identification_t vehicle_identification;
-   amy_stuff_t amy_stuff;
    vehicle_authorization_request_t vehicle_authorization_request;
    vehicle_authorization_reply_t vehicle_authorization_reply;
    vehicle_mode_command_t vehicle_mode_command;

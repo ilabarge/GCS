@@ -16,8 +16,8 @@ void GCSGraphicsLayer::removeWaypointGraphic(int waypointID, int lineID){
     qDebug() << "Remove Waypoint" << waypointID;
 }
 
-void GCSGraphicsLayer::updateLayerGraphic(int gID, EsriRuntimeQt::Graphic graphic){
-    updateGraphic(gID, &graphic);
+void GCSGraphicsLayer::updateLayerGraphic(int gID, EsriRuntimeQt::Graphic *graphic){
+    updateGraphic(gID, graphic);
     qDebug() << "Update " << gID;
 }
 
@@ -32,8 +32,8 @@ void GCSGraphicsLayer::addWaypointToGCS( Waypoint22* wp, QColor color){
     qDebug() << "Waypoint added";
 }
 
-void GCSGraphicsLayer::addGraphicToGCS(EsriRuntimeQt::Graphic graphic){
-    addGraphic(&graphic);
+void GCSGraphicsLayer::addGraphicToGCS(EsriRuntimeQt::Graphic *graphic){
+    addGraphic(graphic);
     qDebug() << "Adding";
 }
 
@@ -58,7 +58,7 @@ EsriRuntimeQt::Point GCSGraphicsLayer::decimalDegreesToPoint(double lat, double 
 }
 
 QString GCSGraphicsLayer::pointToDecimalDegrees(EsriRuntimeQt::Point p){
-    return EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(p, spatialRef, 8);
+    return EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(p, 8);
 }
 
 void GCSGraphicsLayer::setSpatialReference(EsriRuntimeQt::SpatialReference ref){

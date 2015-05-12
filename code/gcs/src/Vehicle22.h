@@ -89,7 +89,7 @@ public:
     std::vector<Waypoint22*> waypoints;
 
 signals:
-    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic graphic);
+    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic *graphic);
     void addWaypointGraphic(Waypoint22*, QColor);
     void updateWaypointGraphics(Waypoint22* wp );
     void removeWaypointGraphic(int waypointID, int lineID);

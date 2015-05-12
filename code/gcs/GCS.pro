@@ -57,6 +57,7 @@ SOURCES += \
     src/InternetTest.cpp \
     src/protonet/Joystick.cpp \
     src/vehicle_list.cpp \
+    src/consolelog.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -113,13 +114,7 @@ HEADERS += \
     src/SerialPortSelect.h \
     src/SerialCombobox.h \
     src/database/DataDaemon.h \
-    src/protonet/SFML/System.hpp \
-    src/protonet/SFML/Window.hpp \
-    src/protonet/SFML/Window/Joystick.hpp \
-    src/protonet/SFML/Window/Window.hpp \
     src/protonet/joystickinput.h \
-    src/protonet/SFML/Window/Export.hpp \
-    src/protonet/SFML/Config.hpp \
     src/telemetrygui.h \
     src/waypointgui.h \
     src/vehicleauthorizationgui.h \
@@ -141,6 +136,7 @@ HEADERS += \
     src/InternetTest.h \
     src/protonet/Joystick.h \
     src/vehicle_list.h \
+    src/consolelog.h
 
 FORMS += \
     forms/gcs_toolbar.ui
@@ -159,37 +155,9 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32d
 else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet_64
 
-INCLUDEPATH += $$PWD/src/protonet
-DEPENDPATH += $$PWD/src/protonet
-
- #INCLUDEPATH += "C:/ProgramFile(x86)/ArcGIS SDKs/Qt10.2.5/sdk/windows/include/"
-
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_64
-#comment upper line and decomment lower line to compile release 32bit
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonetd
-#else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet
-
 INCLUDEPATH += $$PWD/src/protonet/include
 DEPENDPATH += $$PWD/src/protonet/include
 INCLUDEPATH += $$PWD/src/protonet/
 DEPENDPATH += $$PWD/src/protonet/
 INCLUDEPATH += $$PWD/src/
 DEPENDPATH += $$PWD/src/
-
-
-#not using SFML
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-system-s
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-system-s-d
-else:unix: LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-system-s
-
-INCLUDEPATH += $$PWD/src/protonet/SFML
-DEPENDPATH += $$PWD/src/protonet/SFML
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-window-s
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-window-s-d
-else:unix: LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-window-s
-
-INCLUDEPATH += $$PWD/src/protonet/SFML/Window
-DEPENDPATH += $$PWD/src/protonet/SFML/Window

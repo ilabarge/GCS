@@ -178,8 +178,6 @@ MapView::~MapView()
 
     // disconnect signal for Map
     //disconnect(&m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
-
-    m_map.dispose();
     delete m_mapGraphicsView;
 }
 
@@ -305,7 +303,7 @@ EsriRuntimeQt::Point MapView::decimalDegreesToPoint(double lat, double lon){
 }
 
 QString MapView::pointToDecimalDegrees(EsriRuntimeQt::Point p){
-    return EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(p, spatialRef, 8);
+    return EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(p, 8);
 }
 
 bool MapView::rotateVehicleGraphic(Vehicle22& vehicle, int angle){
@@ -319,7 +317,7 @@ void MapView::onMousePress(QMouseEvent event){
         qDebug() << "x: " << event.x() << " y: " << event.y();
         EsriRuntimeQt::Point point = m_map.toMapPoint(event.x(), event.y());
         QList<double> latLon = coordinateStringToDoubles(EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(
-                                      EsriRuntimeQt::Point(point.x(), point.y()), spatialRef, 9));
+                                      EsriRuntimeQt::Point(point.x(), point.y(),spatialRef), 9));
         emit coordDesignated(latLon.at(0), latLon.at(1));
     }
 }
