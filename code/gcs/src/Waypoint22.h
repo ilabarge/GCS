@@ -33,8 +33,8 @@ public:
     double getNextLongitude(){ return nextLon; }
 
     //ESRI 10.2.5 update change uid to uniqueId
-    int getLineGraphicID(){ return lineGraphic.uniqueId(); }
-    EsriRuntimeQt::Graphic getLineGraphic(){ return lineGraphic; }
+    int getLineGraphicID(){ return lineGraphic->uniqueId(); }
+    EsriRuntimeQt::Graphic* getLineGraphic(){ return lineGraphic; }
     EsriRuntimeQt::Polyline getLine(){ return line; }
     /* END GETTERS */
 
@@ -66,7 +66,7 @@ private:
     int lineGraphicID;
     EsriRuntimeQt::Polyline line;
     EsriRuntimeQt::SimpleLineSymbol lineSymb;
-    EsriRuntimeQt::Graphic lineGraphic;
+    EsriRuntimeQt::Graphic *lineGraphic;
 
 signals:
 

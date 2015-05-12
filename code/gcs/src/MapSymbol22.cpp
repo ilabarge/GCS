@@ -5,7 +5,7 @@ MapSymbol22::MapSymbol22(QObject *parent) :
 {}
 
 MapSymbol22::MapSymbol22(EsriRuntimeQt::Point point, EsriRuntimeQt::PictureMarkerSymbol symbol){
-    graphic = EsriRuntimeQt::Graphic(point, symbol);
+    graphic = &EsriRuntimeQt::Graphic(point, symbol);
     color = Qt::black;
     pmExists = false;
     smExists = false;
@@ -15,7 +15,7 @@ int MapSymbol22::setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMar
     this->color = color;
     smSymbol = EsriRuntimeQt::SimpleMarkerSymbol(this->color, size, shape);
     curr_Point = EsriRuntimeQt::Point(x, y);
-    graphic = EsriRuntimeQt::Graphic(curr_Point, smSymbol);
+    graphic = &EsriRuntimeQt::Graphic(curr_Point, smSymbol);
     smExists = true;
     return 0;
 }
@@ -24,7 +24,7 @@ int MapSymbol22::setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMar
     this->color = color;
     smSymbol = EsriRuntimeQt::SimpleMarkerSymbol(this->color, size, shape);
     curr_Point = p;
-    graphic = EsriRuntimeQt::Graphic(curr_Point, smSymbol);
+    graphic = &EsriRuntimeQt::Graphic(curr_Point, smSymbol);
     smExists = true;
     return 0;
 }
@@ -40,7 +40,7 @@ int MapSymbol22::setGraphic(const QString url, double x, double y, const int wid
     }
     pmSymbol = EsriRuntimeQt::PictureMarkerSymbol(img, width, height);
     curr_Point = EsriRuntimeQt::Point(x, y);
-    graphic = EsriRuntimeQt::Graphic(curr_Point, pmSymbol);
+    graphic = &EsriRuntimeQt::Graphic(curr_Point, pmSymbol);
     pmExists = true;
     return 0;
 }
@@ -69,10 +69,10 @@ void MapSymbol22::setColor(QColor color){
 
 void MapSymbol22::updateGraphic(){
     if(smExists){
-        graphic = EsriRuntimeQt::Graphic(curr_Point, smSymbol);
+        graphic = &EsriRuntimeQt::Graphic(curr_Point, smSymbol);
     }
     else if(pmExists){
-        graphic = EsriRuntimeQt::Graphic(curr_Point, pmSymbol);
+        graphic = &EsriRuntimeQt::Graphic(curr_Point, pmSymbol);
     }
 }
 

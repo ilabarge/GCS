@@ -17,7 +17,7 @@ void GCSGraphicsLayer::removeWaypointGraphic(int waypointID, int lineID){
 }
 
 void GCSGraphicsLayer::updateLayerGraphic(int gID, EsriRuntimeQt::Graphic graphic){
-    updateGraphic(gID, graphic);
+    updateGraphic(gID, &graphic);
     qDebug() << "Update " << gID;
 }
 
@@ -33,7 +33,7 @@ void GCSGraphicsLayer::addWaypointToGCS( Waypoint22* wp, QColor color){
 }
 
 void GCSGraphicsLayer::addGraphicToGCS(EsriRuntimeQt::Graphic graphic){
-    addGraphic(graphic);
+    addGraphic(&graphic);
     qDebug() << "Adding";
 }
 

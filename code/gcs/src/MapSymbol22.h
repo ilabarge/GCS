@@ -50,12 +50,12 @@ public:
     bool setAngle(double angle);
     void setColor(QColor color);
 
-    EsriRuntimeQt::Graphic getGraphic(){ return graphic; }
+    EsriRuntimeQt::Graphic* getGraphic(){ return graphic; }
     EsriRuntimeQt::Point getPoint(){ return curr_Point; }
     EsriRuntimeQt::PictureMarkerSymbol getPMS(){ return pmSymbol; }
     EsriRuntimeQt::PictureMarkerSymbol getSMS(){ return smSymbol; }
     //ESRI 10.2.5 update change from uid to uniqueID
-    int getGraphicID(){ return graphic.uniqueId(); }
+    int getGraphicID(){ return graphic->uniqueId(); }
     QColor getColor(){ return color; }
 
     EsriRuntimeQt::Point decimalDegreesToPoint(double lat, double lon);
@@ -64,7 +64,7 @@ public:
 
 protected:
     QColor color;
-    EsriRuntimeQt::Graphic graphic;
+    EsriRuntimeQt::Graphic *graphic;
     EsriRuntimeQt::Point curr_Point;
     EsriRuntimeQt::PictureMarkerSymbol pmSymbol;
     EsriRuntimeQt::SimpleMarkerSymbol smSymbol;

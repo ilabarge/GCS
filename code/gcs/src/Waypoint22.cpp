@@ -31,7 +31,7 @@ Waypoint22::Waypoint22(int id,          int type,        double latitude,
     line = EsriRuntimeQt::Polyline(pathList);
     lineSymb.setColor(color);
     lineSymb.setWidth(2);
-    lineGraphic = EsriRuntimeQt::Graphic(line, lineSymb, -1);
+    lineGraphic = &EsriRuntimeQt::Graphic(line, lineSymb, -1);
 }
 
 bool Waypoint22::setLinePoints(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2){
@@ -72,10 +72,10 @@ void Waypoint22::clearNextWaypoint(){
 
 void Waypoint22::setLineGraphic(EsriRuntimeQt::Graphic graphic){
     QMutexLocker l(&mx);
-    lineGraphic = graphic;
+    lineGraphic = &graphic;
 }
 
 void Waypoint22::updateLineGraphic(){
     QMutexLocker l(&mx);
-    lineGraphic = EsriRuntimeQt::Graphic(line, lineSymb);
+    lineGraphic = &EsriRuntimeQt::Graphic(line, lineSymb);
 }
