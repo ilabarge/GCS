@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QStringList>
 #include <QThread>
+#include <QTcpSocket>
 
 //C lib includes
 #include <cstring>
@@ -37,6 +38,7 @@ private:
     protonet::node *node;
     QThread *joystick_thread;
     boolean send;
+    QTcpSocket *socket;
 public slots:
     void process();
     void send_ping();

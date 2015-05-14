@@ -58,7 +58,7 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     mutex.lock();
     node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
     mutex.unlock();
-    emit messageConfirm(QString("Sent vehicle authorization request to ID" + vehicle));
+    emit messageConfirm(QString("Sent vehicle authorization request to ID " + QString::number(vehicle)));
 }
 
 //Vehicle waypoint
@@ -100,7 +100,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
 
                mutex.unlock();
                emit message(QString("Added waypoint"));
-               emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
+               emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
 
            }
            else if((type == 0) && ((waypoint->getID()) > (size)))
@@ -154,7 +154,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                      waypoint->getType(),
                                                      waypoint->getID());
                   mutex.unlock();
-                  emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
+                  emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
               }
           }
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
@@ -175,7 +175,7 @@ void rx_thread::send_telemetry_command(int vehicle)
     mutex.lock();
     node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
     mutex.unlock();
-    emit messageConfirm(QString("Sent Telemetry Command to ID" + vehicle));
+    emit messageConfirm(QString("  Sent Telemetry Command to ID " + QString::number(vehicle)));
 }
 
 //Send targeting informaiton to vehicle
