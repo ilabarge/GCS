@@ -318,9 +318,10 @@ void MainWindow::initWidgets(){
     command_box.addWidget(consolelog,1,0);
 
     vInfo = new VehicleInfo();
+    attitude = new MainWindowADI();
 
     lowerBar.addLayout(vehicleList,0,0);
-    lowerBar.addWidget(&attitude,0,1);
+    lowerBar.addWidget(attitude,0,1);
     lowerBar.addWidget(vInfo,0,2);
     lowerBar.addLayout(&command_box,0,3);
     //lowerBarWidget.setLayout(&lowerBar);
@@ -577,6 +578,13 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event){
     }
 }
 
+
+void MainWindow::updateADI(int ID)
+{
+    vList22->at(ID);
+    Vehicle22* vehicle = vList22->at(ID);
+    attitude->initADI(vehicle->getRoll(),vehicle->getPitch());
+}
 /* BEGIN SLOTS */
 
 void MainWindow::addTarget(float lat, float lon){
@@ -610,6 +618,9 @@ void MainWindow::showControl(){
     }
 
 }
+
+
+
 /* END SLOTS */
 
 MainWindow::~MainWindow(){

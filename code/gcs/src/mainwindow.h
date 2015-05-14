@@ -41,6 +41,7 @@
 #include "uavpayload.h"
 #include "targetinggui.h"
 #include "vehicleinfo.h"
+#include "MainWindowADI.h"
 
 class MainWindow : public QMainWindow
 {
@@ -111,7 +112,7 @@ private:
     QGridLayout *vehicleList;
     VehicleElementDisplay *element;
     std::vector<VehicleElementDisplay*> *elementList;
-    QPushButton attitude;
+    MainWindowADI *attitude;
 
     //Networking
     networking *network;
@@ -153,6 +154,7 @@ private slots:
 
     //Test
     void elementSelect(int);
+    void updateADI(int);
 
 signals:
     void update_vehicle(int vehicle);

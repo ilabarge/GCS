@@ -58,7 +58,10 @@ SOURCES += \
     src/vehicle_list.cpp \
     src/consolelog.cpp \
     src/vehicleelementdisplay.cpp \
-    src/vehicleinfo.cpp
+    src/vehicleinfo.cpp \
+    src/MainWindowADI.cpp \
+    src/WidgetADI.cpp \
+    src/WidgetSix.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -145,7 +148,12 @@ HEADERS += \
     src/vehicle_list.h \
     src/consolelog.h \
     src/vehicleelementdisplay.h \
-    src/vehicleinfo.h
+    src/vehicleinfo.h \
+    src/MainWindowADI.h \
+    src/qfi_ADI.h \
+    src/ui_WidgetSix.h \
+    src/WidgetADI.h \
+    src/WidgetSix.h
 
 FORMS += \
     forms/gcs_toolbar.ui
