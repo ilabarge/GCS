@@ -61,7 +61,13 @@ SOURCES += \
     src/vehicleinfo.cpp \
     src/MainWindowADI.cpp \
     src/WidgetADI.cpp \
-    src/WidgetSix.cpp
+    src/WidgetSix.cpp \
+   # src/database/Vehicle.cpp \
+   # src/database/Waypoint.cpp \
+    src/LayoutSquare.cpp \
+    src/MapSymbol.cpp \
+    src/WidgetPFD.cpp \
+    main.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -153,7 +159,40 @@ HEADERS += \
     src/qfi_ADI.h \
     src/ui_WidgetSix.h \
     src/WidgetADI.h \
-    src/WidgetSix.h
+    src/WidgetSix.h \
+    src/protonet/include/protonet_message.h \
+    src/protonet/SFML/System/Clock.hpp \
+    src/protonet/SFML/System/Err.hpp \
+    src/protonet/SFML/System/Export.hpp \
+    src/protonet/SFML/System/InputStream.hpp \
+    src/protonet/SFML/System/Lock.hpp \
+    src/protonet/SFML/System/Mutex.hpp \
+    src/protonet/SFML/System/NonCopyable.hpp \
+    src/protonet/SFML/System/Sleep.hpp \
+    src/protonet/SFML/System/String.hpp \
+    src/protonet/SFML/System/Thread.hpp \
+    src/protonet/SFML/System/ThreadLocal.hpp \
+    src/protonet/SFML/System/ThreadLocalPtr.hpp \
+    src/protonet/SFML/System/Time.hpp \
+    src/protonet/SFML/System/Utf.hpp \
+    src/protonet/SFML/System/Vector2.hpp \
+    src/protonet/SFML/System/Vector3.hpp \
+    src/protonet/SFML/Window/Context.hpp \
+    src/protonet/SFML/Window/ContextSettings.hpp \
+    src/protonet/SFML/Window/Event.hpp \
+    src/protonet/SFML/Window/GlResource.hpp \
+    src/protonet/SFML/Window/Keyboard.hpp \
+    src/protonet/SFML/Window/Mouse.hpp \
+    src/protonet/SFML/Window/VideoMode.hpp \
+    src/protonet/SFML/Window/WindowHandle.hpp \
+    src/protonet/SFML/Window/WindowStyle.hpp \
+    src/protonet/SFML/Audio.hpp \
+    src/protonet/SFML/Graphics.hpp \
+    src/protonet/SFML/Network.hpp \
+    src/protonet/SFML/OpenGL.hpp \
+    src/LayoutSquare.h \
+    src/MapSymbol.h \
+    src/WidgetPFD.h
 
 FORMS += \
     forms/gcs_toolbar.ui \
