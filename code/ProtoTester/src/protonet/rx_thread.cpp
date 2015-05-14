@@ -25,7 +25,7 @@ rx_thread::~rx_thread() {
 //------------ User Commands -------------
 void rx_thread::send_ping()
 {
-    //qDebug() << "send ping";
+    qDebug() << "send ping";
     //Use vehicle type as id
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
@@ -112,7 +112,7 @@ void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::nod
    //qDebug() << "Ping timestamp:" << ping.timestamp << endl;
    //qDebug() << "Sending pong response." << endl;
    //send a pong as a reply
-   //np->send_pong(header.node_src_id);
+   node->send_pong(header.node_src_id,0);
    return 0;
 }
 
