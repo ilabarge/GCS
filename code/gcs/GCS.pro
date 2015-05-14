@@ -14,7 +14,7 @@
 TARGET = GCS 
 TEMPLATE = app
 
-QT += core gui opengl xml network serialport sql
+QT += core gui opengl xml network serialport sql svg
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
@@ -156,12 +156,17 @@ HEADERS += \
     src/WidgetSix.h
 
 FORMS += \
-    forms/gcs_toolbar.ui
+    forms/gcs_toolbar.ui \
+    forms/MainWindowADI.ui \
+    forms/WidgetADI.ui \
+    forms/WidgetPFD.ui \
+    forms/WidgetSix.ui
 
 RESOURCES += \
     images/sidebar_icons.qrc \
     images/Toolbar.qrc \
-    images/resources.qrc
+    images/resources.qrc \
+    src/qfi.qrc
 
 #Fixes qdatedime.h error
 DEFINES+= NOMINMAX\
