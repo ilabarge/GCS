@@ -59,14 +59,14 @@ void rx_thread::setNetworkSerial(QString serial)
 void rx_thread::GPS()
 {
 
-    socket = new QTcpSocket( this ); // <-- needs to be a member variable: QTcpSocket * _pSocket;
-    //connect( socket, SIGNAL(readyRead()), SLOT(readTcpData()) );
-     QByteArray data;
-     data.push_front("test");
-    socket->connectToHost("kfriede.com", 6969);
-    if( socket->waitForConnected() ) {
-        socket->write( data );
-    }
+//    socket = new QTcpSocket( this ); // <-- needs to be a member variable: QTcpSocket * _pSocket;
+//    //connect( socket, SIGNAL(readyRead()), SLOT(readTcpData()) );
+//     QByteArray data;
+//     data.push_front("test");
+//    socket->connectToHost("kfriede.com", 6969);
+//    if( socket->waitForConnected() ) {
+//        socket->write( data );
+//    }
     node->send_vehicle_inertial_state(1,0,69,32,18,0,0,0,0,0,0,0,0,0,0,0,0,0);
     node->send_vehicle_global_position(1,0,69,32*1E7,18*1E7,0,1,3*1E7,4*1E7,3*1E7);
     qDebug() << "sent info";

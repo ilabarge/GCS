@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v69->setColor(Qt::cyan);
-    //v69->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+    v69->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
     element = new VehicleElementDisplay();
     element->setVehicle(v69);
     element->setText();
@@ -149,6 +149,16 @@ void MainWindow::updateVech(int ID)
          mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
          v2->setAngle(v2->getZVelocity());
      }
+    if(vehicle_ID == 69)
+    {
+        qDebug() << "vehicle 2";
+//       qDebug() << (std::to_string(v3->getLatitude())).c_str();
+//       qDebug() << (std::to_string(v3->getLongitude())).c_str();
+//       qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
+         v69->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+         mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
+         v69->setAngle(v69->getZVelocity());
+     }
     emit update_vehicle(vehicle_ID);
 }
 
@@ -166,6 +176,10 @@ void MainWindow::initNetworking(){
     vList22->append(v2);
     vList22->append(v101);
     vList22->append(v102);
+
+    //Set vehicle info's vehicle list
+    vInfo->getList(vList22);
+
 
     vUpdate = new NodeQueue();
     targetList = new TargetList();
@@ -226,6 +240,9 @@ void MainWindow::initNetworkingConnects(){
     connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
     connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
     connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
+
+    //Connect vehicle updates to vehicle info
+    connect(network,SIGNAL(updateVechicle(int)),vInfo,SLOT(status(int)));
 }
 
 
@@ -295,6 +312,29 @@ void MainWindow::initWidgets(){
     controlLayoutWidget.hide();
     mainLayout->addWidget(&controlLayoutWidget,2,0);
 
+    command_control.addWidget(&command,0,0);
+    command_control.addWidget(&control,0,1);
+    command_box.addLayout(&command_control,0,0);
+    command_box.addWidget(consolelog,1,0);
+
+    vInfo = new VehicleInfo();
+
+    lowerBar.addLayout(vehicleList,0,0);
+    lowerBar.addWidget(&attitude,0,1);
+    lowerBar.addWidget(vInfo,0,2);
+    lowerBar.addLayout(&command_box,0,3);
+    //lowerBarWidget.setLayout(&lowerBar);
+    mainLayout->addLayout(&lowerBar,3,0);
+    connect(&command,SIGNAL(clicked()),this,SLOT(showCommand()));
+    connect(&control,SIGNAL(clicked()),this,SLOT(showControl()));
+    for(int i = 0; i < elementList->size(); i++){
+        connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(elementSelect(int)));
+        connect(elementList->at(i),SIGNAL(vechID(int)), vInfo,SLOT(displayVech(int)));
+    }
+
+
+    //OLD GUI
+    //---------------------------------------------------------------------------
     //Create Button for UGV drop notification
     ugvDrop = new QPushButton();
     //Set Text for button
@@ -305,7 +345,7 @@ void MainWindow::initWidgets(){
     dropCMDs->addWidget(sendcmd,0,0);
     dropCMDs->addWidget(ugvDrop,0,1);
 
-    /*//Set up basic UAV layout with C&C commands
+    /*Set up basic UAV layout with C&C commands
     //Create gridlayout : UAVLayout for UAV commands
     QGridLayout* UAVLayout = new QGridLayout();
     //Add UAV status, and dropCMDs layouts and UAV_payload widget
@@ -332,25 +372,6 @@ void MainWindow::initWidgets(){
     //mainLayout->addLayout(VehicleLayout,3,0);
 
     //mainLayout->addWidget(consolelog,3,1);
-    //NEW GUI BLOCKS
-
-    command_control.addWidget(&command,0,0);
-    command_control.addWidget(&control,0,1);
-    command_box.addLayout(&command_control,0,0);
-    command_box.addWidget(consolelog,1,0);
-
-    lowerBar.addLayout(vehicleList,0,0);
-    lowerBar.addWidget(&attitude,0,1);
-    lowerBar.addWidget(&vehicleInfo,0,2);
-    lowerBar.addLayout(&command_box,0,3);
-    //lowerBarWidget.setLayout(&lowerBar);
-    mainLayout->addLayout(&lowerBar,3,0);
-    connect(&command,SIGNAL(clicked()),this,SLOT(showCommand()));
-    connect(&control,SIGNAL(clicked()),this,SLOT(showControl()));
-    for(int i = 0; i < elementList->size(); i++){
-        connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(elementSelect(int)));
-
-    }
 }
 
 void MainWindow::elementSelect(int vech){
@@ -594,3 +615,9 @@ void MainWindow::showControl(){
 MainWindow::~MainWindow(){
     qDebug() << "deconstructor";
 }
+
+/*
+
+
+
+*/

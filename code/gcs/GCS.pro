@@ -58,6 +58,7 @@ SOURCES += \
     src/vehicle_list.cpp \
     src/consolelog.cpp \
     src/vehicleelementdisplay.cpp \
+    src/vehicleinfo.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -144,6 +145,7 @@ HEADERS += \
     src/vehicle_list.h \
     src/consolelog.h \
     src/vehicleelementdisplay.h \
+    src/vehicleinfo.h
 
 FORMS += \
     forms/gcs_toolbar.ui

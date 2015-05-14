@@ -40,6 +40,7 @@
 #include "ugv_state.h"
 #include "uavpayload.h"
 #include "targetinggui.h"
+#include "vehicleinfo.h"
 
 class MainWindow : public QMainWindow
 {
@@ -93,6 +94,8 @@ private:
     targetingGUI* targeting;
 
     ConsoleLog* consolelog;
+    VehicleInfo* vInfo;
+
 
     QPushButton command;
     QWidget commandLayoutWidget;
@@ -109,8 +112,6 @@ private:
     VehicleElementDisplay *element;
     std::vector<VehicleElementDisplay*> *elementList;
     QPushButton attitude;
-    QPushButton vehicleInfo;
-
 
     //Networking
     networking *network;
