@@ -67,8 +67,8 @@ void rx_thread::GPS()
 //    if( socket->waitForConnected() ) {
 //        socket->write( data );
 //    }
-    node->send_vehicle_inertial_state(1,0,69,32,18,0,0,0,0,0,0,0,0,0,0,0,0,0);
-    node->send_vehicle_global_position(1,0,69,32*1E7,18*1E7,0,1,3*1E7,4*1E7,3*1E7);
+    node->send_vehicle_inertial_state(1,0,2,32,18,0,0,0,0,0,0,0,0,0,0,0,0,0);
+    node->send_vehicle_global_position(1,0,2,32*1E7,18*1E7,0,1,3*1E7,4*1E7,3*1E7);
     qDebug() << "sent info";
 }
 
@@ -354,7 +354,7 @@ void rx_thread::process() {
    qDebug() << "Dest port for tester: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
-   node->establish_udp(link_id,1,dest_port,"127.0.0.1");
+   node->establish_udp(link_id, 1 ,dest_port,"127.0.0.1");
 
    //Start Node
    //node->start(); <- no longer needed due to protonet update

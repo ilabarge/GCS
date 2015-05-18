@@ -41,7 +41,7 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
 networking::networking()
 {
     //qDebug() << "Invoking thread with: " << port;
-    invokeThread(69, 7990, 7991);
+    invokeThread(2, 7990, 7991);
 }
 
 //Network send message signal/slots

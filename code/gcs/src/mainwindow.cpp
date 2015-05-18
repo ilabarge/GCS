@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v2->setColor(Qt::green);
-    //v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+    v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
     element = new VehicleElementDisplay();
     element->setVehicle(v2);
     element->setText();
