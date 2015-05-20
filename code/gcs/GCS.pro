@@ -201,7 +201,6 @@ FORMS += \
     forms/gcs_toolbar.ui \
     forms/MainWindowADI.ui \
     forms/WidgetADI.ui \
-    forms/WidgetPFD.ui \
     forms/WidgetSix.ui
 
 RESOURCES += \
