@@ -68,8 +68,7 @@ SOURCES += \
     src/MapSymbol.cpp \
     src/WidgetPFD.cpp \
     main.cpp \
-    src/qfi_ADI.cpp \
-    src/qfi_PFD.cpp
+    src/qfi_ADI.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -194,7 +193,6 @@ HEADERS += \
     src/protonet/SFML/OpenGL.hpp \
     src/LayoutSquare.h \
     src/MapSymbol.h \
-    src/WidgetPFD.h \
     src/qfi_PFD.h
 
 FORMS += \
