@@ -132,6 +132,9 @@ private:
 
     bool commandShow;
     bool controlShow;
+
+    //Temp, remove when MainwindowADI has a slot to take in the vech to display
+    int currentVech;
 private slots:
     void update_vehicle_queue();
     void update_targets(Target*);

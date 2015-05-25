@@ -53,7 +53,7 @@ VehicleInfo::VehicleInfo(QWidget *parent) :
 
 // Display updated information about a vehicle
 void VehicleInfo::status(int vID) {
-    Vehicle22 *vp = vl->at(vID);
+    Vehicle22 *vp = vl->get(vID);
     // Updated vehicle must match currently selected vehicle
     if (currentVehicle == vID) {
         idUp->setText(QString::number(vID));

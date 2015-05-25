@@ -66,7 +66,6 @@ SOURCES += \
    # src/database/Waypoint.cpp \
     src/LayoutSquare.cpp \
     src/MapSymbol.cpp \
-    src/WidgetPFD.cpp \
     main.cpp \
     src/qfi_ADI.cpp
 
@@ -192,8 +191,7 @@ HEADERS += \
     src/protonet/SFML/Network.hpp \
     src/protonet/SFML/OpenGL.hpp \
     src/LayoutSquare.h \
-    src/MapSymbol.h \
-    src/qfi_PFD.h
+    src/MapSymbol.h
 
 FORMS += \
     forms/gcs_toolbar.ui \

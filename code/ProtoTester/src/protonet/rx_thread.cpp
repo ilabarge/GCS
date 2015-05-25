@@ -67,8 +67,9 @@ void rx_thread::GPS()
 //    if( socket->waitForConnected() ) {
 //        socket->write( data );
 //    }
-    node->send_vehicle_inertial_state(1,0,2,32,18,0,0,0,0,0,0,0,0,0,0,0,0,0);
-    node->send_vehicle_global_position(1,0,2,32*1E7,18*1E7,0,1,3*1E7,4*1E7,3*1E7);
+    //node->send_vehicle_inertial_state(node id,time,id,lat,long,alt,roll,pitch,heading);
+    node->send_vehicle_inertial_state(1,0,69,0,0,0,34,32,12,21,12,12,21,21,12,21,21,12);
+    node->send_vehicle_global_position(1,0,69,32*1E7,18*1E7,0,1,3*1E7,4*1E7,3*1E7);
     qDebug() << "sent info";
 }
 

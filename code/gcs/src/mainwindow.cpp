@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v2->setColor(Qt::green);
-    v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+    //v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
     element = new VehicleElementDisplay();
     element->setVehicle(v2);
     element->setText();
@@ -90,6 +90,9 @@ MainWindow::MainWindow(QWidget* parent) :
     element = new VehicleElementDisplay();
     element->setVehicle(v102);
     element->setText();
+
+    //Initialize default vech to display attitude to be the first in the list
+    currentVech = 0;
 
     //Initialize Map
     initMap();
@@ -243,6 +246,8 @@ void MainWindow::initNetworkingConnects(){
 
     //Connect vehicle updates to vehicle info
     connect(network,SIGNAL(updateVechicle(int)),vInfo,SLOT(status(int)));
+    //Connect vehcil update with the attitued
+    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateADI(int)));
 }
 
 
@@ -328,9 +333,13 @@ void MainWindow::initWidgets(){
     mainLayout->addLayout(&lowerBar,3,0);
     connect(&command,SIGNAL(clicked()),this,SLOT(showCommand()));
     connect(&control,SIGNAL(clicked()),this,SLOT(showControl()));
+
+    //Connects to update the ADI widget and the vehicle info widget
+    //With approperate id of the vechicle being clicked.
     for(int i = 0; i < elementList->size(); i++){
         connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(elementSelect(int)));
         connect(elementList->at(i),SIGNAL(vechID(int)), vInfo,SLOT(displayVech(int)));
+        connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(updateADI(int)));
     }
 
 
@@ -376,6 +385,7 @@ void MainWindow::initWidgets(){
 }
 
 void MainWindow::elementSelect(int vech){
+    currentVech = vech;
     qDebug() << vech;
 }
 
@@ -578,12 +588,15 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event){
     }
 }
 
-
+//TEMP remove when mainwindow adi takes in the id of the vech to update
+//also in this case it must take in the vech list to select the vech
 void MainWindow::updateADI(int ID)
 {
-    vList22->at(ID);
-    Vehicle22* vehicle = vList22->at(ID);
-    attitude->initADI(vehicle->getRoll(),vehicle->getPitch());
+    if(ID = currentVech){
+        Vehicle22* vehicle = vList22->get(ID);
+        qDebug() << vehicle->getRoll() << " " << vehicle->getPitch();
+        attitude->initADI(vehicle->getRoll(),vehicle->getPitch());
+    }
 }
 /* BEGIN SLOTS */
 
