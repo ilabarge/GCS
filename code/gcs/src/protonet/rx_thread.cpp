@@ -362,29 +362,25 @@ void rx_thread::hold()
 
 void rx_thread::sendMessage(int ID){
     qDebug() << "Sending UDP message";
-    QJsonObject obj;
-    obj.insert("vehicleID", ID);
-    obj.insert("alt", vp->get(ID)->getAltitude());
-    obj.insert("mode", vp->get(ID)->getMode());
-    obj.insert("state", vp->get(ID)->getState());
-    obj.insert("latitude", vp->get(ID)->getLongitude());
-    obj.insert("longitude", vp->get(ID)->getLongitude());
-    obj.insert("heading", vp->get(ID)->getLongitude());
-    QJsonDocument doc(obj);
-    QTcpSocket * _pSocket;
-    QByteArray data = doc.toJson(); // <-- fill with data
-    _pSocket = new QTcpSocket(); // <-- needs to be a member variable: QTcpSocket * _pSocket;
-    connect( _pSocket, SIGNAL(readyRead()), SLOT(readTcpData()) );
+//    QJsonObject obj;
+//    obj.insert("vehicleID", ID);
+//    obj.insert("alt", vp->get(ID)->getAltitude());
+//    obj.insert("mode", vp->get(ID)->getMode());
+//    obj.insert("state", vp->get(ID)->getState());
+//    obj.insert("latitude", vp->get(ID)->getLongitude());
+//    obj.insert("longitude", vp->get(ID)->getLongitude());
+//    obj.insert("heading", vp->get(ID)->getLongitude());
+//    QJsonDocument doc(obj);
+//    QTcpSocket * _pSocket;
+//    QByteArray data = doc.toJson(); // <-- fill with data
+//    _pSocket = new QTcpSocket(); // <-- needs to be a member variable: QTcpSocket * _pSocket;
+//    connect( _pSocket, SIGNAL(readyRead()), SLOT(readTcpData()) );
 
-    _pSocket->connectToHost("127.0.0.1", 9000);
-    if( _pSocket->waitForConnected() ) {
-        _pSocket->write( data );
-    }
+//    _pSocket->connectToHost("127.0.0.1", 9000);
+//    if( _pSocket->waitForConnected() ) {
+//        _pSocket->write( data );
+//    }
 }
-
-
-
-
 
 // -------- CHECKING VEHICLE --------
 int checkVehicles(uint32_t vehicle_ID)
@@ -596,7 +592,7 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     vp->set(ID)->setXVelocity(position.x_speed);
     vp->set(ID)->setYVelocity(position.y_speed);
     vp->set(ID)->setZVelocity(position.z_speed);
-    vp->set(ID)->setHeading(((float)position.heading)/1E6);
+    vp->set(ID)->setHeading(((float)position.heading));///1E6);
     mutex.unlock();
     vp->update(header.node_src_id);
     nq->enqueue(header.node_src_id);

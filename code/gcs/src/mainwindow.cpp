@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v102->setColor(Qt::magenta);
-    //v102->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
+    v102->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
     element = new VehicleElementDisplay();
     element->setVehicle(v102);
     element->setText();
@@ -162,6 +162,29 @@ void MainWindow::updateVech(int ID)
          mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
          v69->setAngle(v69->getZVelocity());
      }
+    if(vehicle_ID == 46)
+    {
+    //               v46->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
+       //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
+       v46->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+       mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
+       v46->setAngle(v46->getZVelocity());
+    }
+    if(vehicle_ID == 101)
+    {
+       //printf("%f %f\n",v101->getLatitude(), v101->getLongitude());
+       v101->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+       mv->moveVehicleGraphic(*v101, EsriRuntimeQt::Point(v101->getPoint().x(), v101->getPoint().y()));
+       v101->setAngle(v101->getHeading());
+    }
+    if(vehicle_ID == 102)
+    {
+       //printf("%f %f\n",v102->getLatitude(), v102->getLongitude());
+       v102->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+       mv->moveVehicleGraphic(*v102, EsriRuntimeQt::Point(v102->getPoint().x(), v102->getPoint().y()));
+       v102->setAngle(v102->getHeading());
+    }
+
     emit update_vehicle(vehicle_ID);
 }
 
@@ -612,10 +635,15 @@ void MainWindow::showCommand(){
     if(commandShow == true){
         commandLayoutWidget.hide();
         commandShow = false;
-    }else{
+    }else if(commandShow == false && controlShow == true){
         commandLayoutWidget.show();
         controlLayoutWidget.hide();
         commandShow = true;
+        controlShow = false;
+    }else{
+        commandLayoutWidget.show();
+        commandShow = true;
+        controlShow = false;
     }
 }
 
@@ -623,11 +651,15 @@ void MainWindow::showControl(){
     if(controlShow == true){
         controlLayoutWidget.hide();
         controlShow = false;
-    }
-    else{
+    }else if (controlShow == false && commandShow == true){
         controlLayoutWidget.show();
         commandLayoutWidget.hide();
         controlShow = true;
+        commandShow = false;
+    }else{
+        controlLayoutWidget.show();
+        controlShow = true;
+        commandShow = false;
     }
 
 }
