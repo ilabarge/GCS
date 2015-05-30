@@ -310,7 +310,7 @@ QString MapView::pointToDecimalDegrees(EsriRuntimeQt::Point p){
 
 bool MapView::rotateVehicleGraphic(Vehicle22& vehicle, int angle){
     vehicle.setAngle(angle);
-    qDebug() << grLayer.updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
+    grLayer.updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
     return true;
 }
     
