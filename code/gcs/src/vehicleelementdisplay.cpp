@@ -24,7 +24,7 @@ VehicleElementDisplay::VehicleElementDisplay(QWidget *parent) :
     infoLayout = new QGridLayout();
     infoLayout->setMargin(0);
     infoLayout->addLayout(vehicleLayout,0,0);
-    infoLayout->addWidget(VehicleStatus,1,0);
+    infoLayout->addWidget(VehicleStatus,0,1);
 
 
 
@@ -38,11 +38,12 @@ VehicleElementDisplay::VehicleElementDisplay(QWidget *parent) :
     mainLayout->addLayout(infoLayout,0,0);
     vehicleSelect = new QPushButton();
     vehicleSelect->setLayout(mainLayout);
-    vehicleSelect->setMaximumHeight(100);
+    vehicleSelect->setMaximumHeight(50);
     vehicleSelect->setMinimumWidth(200);
 
     QGridLayout *element = new QGridLayout();
     element->addWidget(vehicleSelect);
+    element->setMargin(0);
     connect(vehicleSelect,SIGNAL(clicked()), this,SLOT(vehicleClick()));
     setLayout(element);
 }

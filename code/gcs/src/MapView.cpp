@@ -291,6 +291,7 @@ bool MapView::moveLayerGraphic(Layers layer, EsriRuntimeQt::Graphic& graphic, do
 bool MapView::addGraphicToLayer(EsriRuntimeQt::Graphic& graphic){
     //layer.addGraphic(graphic);
     grLayer.addGraphic(graphic);
+
     return true;
 }
 
@@ -309,7 +310,7 @@ QString MapView::pointToDecimalDegrees(EsriRuntimeQt::Point p){
 
 bool MapView::rotateVehicleGraphic(Vehicle22& vehicle, int angle){
     vehicle.setAngle(angle);
-    grLayer.updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
+    qDebug() << grLayer.updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
     return true;
 }
     

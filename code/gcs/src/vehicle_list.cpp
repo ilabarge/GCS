@@ -107,7 +107,7 @@ int vehicle_list::length()
 int vehicle_list::indexOf(int id)
 {
     int p = 0;
-    qDebug() << "Looking for vehcile ID " << id;
+    //qDebug() << "Looking for vehcile ID " << id;
 //    for(std::vector<int>::iterator it = pos.begin(); it!= pos.end(); ++it)
 //    {
 //        if(id == *it)
@@ -119,7 +119,7 @@ int vehicle_list::indexOf(int id)
     {
         if(id == (*it)->getVehicleID())
         {
-            qDebug() << "FOUND POSITION FOR ID " << id << "," << p;
+           // qDebug() << "FOUND POSITION FOR ID " << id << "," << p;
             return p;
         }
         //qDebug() <<  "ID" << (*it)->getVehicleID() << "pos " << p;

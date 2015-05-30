@@ -6,12 +6,15 @@ VehicleInfo::VehicleInfo(QWidget *parent) :
     QWidget *window = new QWidget;
 
     infoType = new QGridLayout();
+    infoType->setVerticalSpacing(0);
+    infoType->setContentsMargins(0,0,0,0);
+
     vehicleID = new QLabel("Vehicle ID",this);
     vehicleType = new QLabel("Vehicle Type",this);
     altitude = new QLabel("Altitude",this);
     mode = new QLabel("Mode",this);
     state = new QLabel("State",this);
-    latitude = new QLabel("Latitude",this);
+    latitude = new QLabel("Latitude",this);   
     longitude = new QLabel("Longitude",this);
     heading = new QLabel("Heading",this);
     velocity = new QLabel("Velocity",this);
@@ -25,6 +28,15 @@ VehicleInfo::VehicleInfo(QWidget *parent) :
     longUp = new QLabel("Not set");
     headingUp = new QLabel("Not set");
     velocityUp = new QLabel("Not set");
+
+    //    vehicleID->setStyleSheet("QLabel { background-color : red; }");
+    //    vehicleType->setStyleSheet("QLabel { background-color : blue; }");
+    //    idUp->setStyleSheet("QLabel { background-color : blue; }");
+    //    typeUp->setStyleSheet("QLabel { background-color : red; }");
+
+
+    //QSpacerItem *verticalSpacer = new QSpacerItem(100,20,QSizePolicy::Minimum);
+    //infoType->addItem(verticalSpacer,0,0,Qt::AlignTop);
 
     infoType->addWidget(vehicleID, 0, 0);
     infoType->addWidget(vehicleType, 1, 0);
@@ -44,11 +56,8 @@ VehicleInfo::VehicleInfo(QWidget *parent) :
     infoType->addWidget(longUp, 6, 1);
     infoType->addWidget(headingUp, 7, 1);
     infoType->addWidget(velocityUp, 8, 1);
-
     window->setLayout(infoType);
-
     setCentralWidget(window);
-
 }
 
 // Display updated information about a vehicle
@@ -86,7 +95,6 @@ void VehicleInfo::getList(vehicle_list *p) {
     vl = p;
 }
 
-VehicleInfo::~VehicleInfo()
-{
+VehicleInfo::~VehicleInfo(){
 
 }

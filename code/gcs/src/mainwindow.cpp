@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     vehicleList = new QGridLayout();
     vehicleList->setMargin(0);
+    vehicleList->setSpacing(0);
     elementList = new std::vector<VehicleElementDisplay*>();
 
    //Statically initialize vehicles
@@ -150,7 +151,7 @@ void MainWindow::updateVech(int ID)
 //       qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
          v2->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
          mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y()));
-         v2->setAngle(v2->getZVelocity());
+         v2->setAngle(v2->getHeading());
      }
     if(vehicle_ID == 69)
     {
@@ -160,7 +161,9 @@ void MainWindow::updateVech(int ID)
 //       qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
          v69->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
          mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
-         v69->setAngle(v69->getZVelocity());
+         //v69->setAngle(v69->getHeading());
+         mv->rotateVehicleGraphic(*v69,v69->getHeading());
+
      }
     if(vehicle_ID == 46)
     {
@@ -168,7 +171,8 @@ void MainWindow::updateVech(int ID)
        //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
        v46->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
        mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
-       v46->setAngle(v46->getZVelocity());
+       //v46->setAngle(v46->getHeading());
+       mv->rotateVehicleGraphic(*v46,v46->getHeading());
     }
     if(vehicle_ID == 101)
     {
@@ -289,7 +293,7 @@ void MainWindow::initWidgets(){
     connect(this,SIGNAL(destroyed()), mtb, SLOT(close()));
 
     consolelog = new ConsoleLog();
-
+    consolelog->setMaximumSize(500,200);
     //Add widgets to screen
     //Temp icons, make more pretty!!
     UGV_JOYSTICK = new QPushButton();
@@ -342,16 +346,21 @@ void MainWindow::initWidgets(){
 
     command_control.addWidget(&command,0,0);
     command_control.addWidget(&control,0,1);
+
+    command_box.setContentsMargins(0,0,0,0);
+    command_box.setSpacing(0);
     command_box.addLayout(&command_control,0,0);
     command_box.addWidget(consolelog,1,0);
 
     vInfo = new VehicleInfo();
     attitude = new MainWindowADI();
-
+    attitude->setMaximumSize(300,300);
+    vInfo->setMaximumSize(350,300);
     lowerBar.addLayout(vehicleList,0,0);
     lowerBar.addWidget(attitude,0,1);
     lowerBar.addWidget(vInfo,0,2);
     lowerBar.addLayout(&command_box,0,3);
+
     //lowerBarWidget.setLayout(&lowerBar);
     mainLayout->addLayout(&lowerBar,3,0);
     connect(&command,SIGNAL(clicked()),this,SLOT(showCommand()));
@@ -629,7 +638,6 @@ void MainWindow::addTarget(float lat, float lon){
                       mv->decimalDegreesToPoint(lat, lon), 20);
     mv->addGraphicToLayer(target.getGraphic());
 }
-
 
 void MainWindow::showCommand(){
     if(commandShow == true){

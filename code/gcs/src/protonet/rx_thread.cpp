@@ -514,7 +514,7 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
 //    obj.insert("pitch", );
 //    obj.insert("yaw", );
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+    //nq->enqueue(header.node_src_id);
     if(header.node_src_id == 69)
     {
         nq->status(header.node_src_id,status.vehicle_mode);
@@ -552,7 +552,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     inertial.vertical_accel; //Missing?
     inertial.vertical_speed; //Missing?
     vp->set(ID)->setRoll(inertial.roll);
-    std::string s = std::to_string(inertial.roll_rate);
+    //std::string s = std::to_string(inertial.roll_rate);
     vp->set(ID)->setRollRate(inertial.roll_rate);
     vp->set(ID)->setHeading(inertial.heading);
     vp->set(ID)->setAltitude(inertial.altitude/1E6);
@@ -562,7 +562,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     vp->set(ID)->setPitchRate(inertial.pitch_rate);
     mutex.unlock();
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+//    /nq->enqueue(header.node_src_id);
     return 0;
 }
 
@@ -592,10 +592,10 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     vp->set(ID)->setXVelocity(position.x_speed);
     vp->set(ID)->setYVelocity(position.y_speed);
     vp->set(ID)->setZVelocity(position.z_speed);
-    vp->set(ID)->setHeading(((float)position.heading));///1E6);
+    vp->set(ID)->setHeading(((float)position.heading)/1E6);
     mutex.unlock();
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+//    nq->enqueue(header.node_src_id);
     //Call database update in thread?
     //int checkLong = vp->at(i)->ts.at(0)->getLongitude() - vp->at(i)->getLatitude();
     //int checkLat = vp->at(i)->ts.at(0)->getLatitude() - vp->at(i)->getLatitude();
@@ -631,7 +631,7 @@ void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_
     vp->set(ID)->setYaw(attitude.yaw);
     mutex.unlock();
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+//    nq->enqueue(header.node_src_id);
     /*
     qDebug() << "Vehicle ID:" << attitude.vehicle_ID << "Timestamp:" << attitude.timestamp;
     qDebug() << "\nAttitudes";
