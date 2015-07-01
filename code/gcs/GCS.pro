@@ -64,7 +64,6 @@ SOURCES += \
     src/WidgetSix.cpp \
    # src/database/Vehicle.cpp \
    # src/database/Waypoint.cpp \
-    src/LayoutSquare.cpp \
     src/MapSymbol.cpp \
     main.cpp \
     src/qfi_ADI.cpp
@@ -190,7 +189,6 @@ HEADERS += \
     src/protonet/SFML/Graphics.hpp \
     src/protonet/SFML/Network.hpp \
     src/protonet/SFML/OpenGL.hpp \
-    src/LayoutSquare.h \
     src/MapSymbol.h
 
 FORMS += \
