@@ -688,10 +688,11 @@ void rx_thread::process() {
    np = node;
 
    //Joystick Handling
+   /*
    joystick = new JoystickInput(NULL,node);
    joystick_thread = new QThread;
    joystick -> moveToThread(joystick_thread);
-   joystick_thread->start();
+   joystick_thread->start();*/
 
    //Set link_id to 0
    int8_t link_id(0);

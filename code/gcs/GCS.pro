@@ -40,7 +40,6 @@ SOURCES += \
     src/SerialPortSelect.cpp \
     src/SerialCombobox.cpp \
     src/database/DataDaemon.cpp \
-    src/protonet/joystickinput.cpp \
     src/telemetrygui.cpp \
     src/waypointgui.cpp \
     src/vehicleauthorizationgui.cpp \
@@ -66,7 +65,9 @@ SOURCES += \
    # src/database/Waypoint.cpp \
     src/MapSymbol.cpp \
     main.cpp \
-    src/qfi_ADI.cpp
+    src/qfi_ADI.cpp \
+    src/protonet/joystickinput.cpp \
+    src/LayoutSquare.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -123,13 +124,6 @@ HEADERS += \
     src/SerialPortSelect.h \
     src/SerialCombobox.h \
     src/database/DataDaemon.h \
-    src/protonet/SFML/System.hpp \
-    src/protonet/SFML/Window.hpp \
-    src/protonet/SFML/Window/Joystick.hpp \
-    src/protonet/SFML/Window/Window.hpp \
-    src/protonet/joystickinput.h \
-    src/protonet/SFML/Window/Export.hpp \
-    src/protonet/SFML/Config.hpp \
     src/telemetrygui.h \
     src/waypointgui.h \
     src/vehicleauthorizationgui.h \
@@ -160,36 +154,9 @@ HEADERS += \
     src/WidgetADI.h \
     src/WidgetSix.h \
     src/protonet/include/protonet_message.h \
-    src/protonet/SFML/System/Clock.hpp \
-    src/protonet/SFML/System/Err.hpp \
-    src/protonet/SFML/System/Export.hpp \
-    src/protonet/SFML/System/InputStream.hpp \
-    src/protonet/SFML/System/Lock.hpp \
-    src/protonet/SFML/System/Mutex.hpp \
-    src/protonet/SFML/System/NonCopyable.hpp \
-    src/protonet/SFML/System/Sleep.hpp \
-    src/protonet/SFML/System/String.hpp \
-    src/protonet/SFML/System/Thread.hpp \
-    src/protonet/SFML/System/ThreadLocal.hpp \
-    src/protonet/SFML/System/ThreadLocalPtr.hpp \
-    src/protonet/SFML/System/Time.hpp \
-    src/protonet/SFML/System/Utf.hpp \
-    src/protonet/SFML/System/Vector2.hpp \
-    src/protonet/SFML/System/Vector3.hpp \
-    src/protonet/SFML/Window/Context.hpp \
-    src/protonet/SFML/Window/ContextSettings.hpp \
-    src/protonet/SFML/Window/Event.hpp \
-    src/protonet/SFML/Window/GlResource.hpp \
-    src/protonet/SFML/Window/Keyboard.hpp \
-    src/protonet/SFML/Window/Mouse.hpp \
-    src/protonet/SFML/Window/VideoMode.hpp \
-    src/protonet/SFML/Window/WindowHandle.hpp \
-    src/protonet/SFML/Window/WindowStyle.hpp \
-    src/protonet/SFML/Audio.hpp \
-    src/protonet/SFML/Graphics.hpp \
-    src/protonet/SFML/Network.hpp \
-    src/protonet/SFML/OpenGL.hpp \
-    src/MapSymbol.h
+    src/MapSymbol.h \
+    src/protonet/joystickinput.h \
+    src/LayoutSquare.h
 
 FORMS += \
     forms/gcs_toolbar.ui \
@@ -212,10 +179,6 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32d
 else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet_64
 
-INCLUDEPATH += $$PWD/src/protonet
-DEPENDPATH += $$PWD/src/protonet
-
-
 #win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_64
 #comment upper line and decomment lower line to compile release 32bit
 #win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32
@@ -228,23 +191,6 @@ INCLUDEPATH += $$PWD/src/protonet/
 DEPENDPATH += $$PWD/src/protonet/
 INCLUDEPATH += $$PWD/src/
 DEPENDPATH += $$PWD/src/
-
-
-#not using SFML
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-system-s
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-system-s-d
-else:unix: LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-system-s
-
-INCLUDEPATH += $$PWD/src/protonet/SFML
-DEPENDPATH += $$PWD/src/protonet/SFML
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-window-s
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-window-s-d
-else:unix: LIBS += -L$$PWD/src/protonet/SFML/ -lsfml-window-s
-
-INCLUDEPATH += $$PWD/src/protonet/SFML/Window
-DEPENDPATH += $$PWD/src/protonet/SFML/Window
 
 
 
