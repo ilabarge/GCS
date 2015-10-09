@@ -1,6 +1,18 @@
 #ifndef MAPSYMBOL22_H
 #define MAPSYMBOL22_H
 
+namespace EsriRuntimeQt
+{
+class MapGraphicsView;
+class Map;
+class ArcGISLocalTiledLayer;
+class ArcGISTiledMapServiceLayer;
+class ArcGISDynamicMapServiceLayer;
+class ArcGISFeatureLayer;
+class GraphicsLayer;
+class FeatureLayer;
+}
+
 #include <QObject>
 #include <QColor>
 #include <QString>

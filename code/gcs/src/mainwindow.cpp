@@ -203,12 +203,12 @@ MainWindow::MainWindow(QWidget* parent) :
     showMaximized();
 
     //mainwindow gui connect functions for networking
-    connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
+    //connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
     //update targets
-    connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
+    //connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
 
     //TEST METHOD FOR NEW SIGNAL
-    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
+    //connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
 
     //Map Interation
     //Sets coordinate positions for waypoint baised off of click on map
@@ -217,37 +217,37 @@ MainWindow::MainWindow(QWidget* parent) :
 
     //C&C GUI
     //General Vehicle
-    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
-    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
-    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
+    //connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
+//    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
+//    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
     //Manual Targeting
-    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
+//    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
 
     //UAV
     //Drop
     connect(sendcmd,SIGNAL(clicked()),this,SLOT(UDrop()));
     connect(ugvDrop,SIGNAL(clicked()),this,SLOT(UGVDrop()));
-    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
+//    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
 
     //Payload
-    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
-    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
+//    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
+//    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
 
     //UGV
     //JOYSTICK
-    connect(UGV_JOYSTICK,SIGNAL(clicked()),network,SLOT(start_UGV_Joystick()));
-    connect(UGV_JOYSTICKSTOP,SIGNAL(clicked()),network,SLOT(stop_UGV_Joystick()));
+//    connect(UGV_JOYSTICK,SIGNAL(clicked()),network,SLOT(start_UGV_Joystick()));
+//    connect(UGV_JOYSTICKSTOP,SIGNAL(clicked()),network,SLOT(stop_UGV_Joystick()));
 
     //UGV
     //STATE CHANGE
-    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
-    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
-    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
+//    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
+//    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
+//    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
 
     //MOTOR states
-    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
-    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
-    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
+//    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
+//    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
+//    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
 
     //Connect sidebar to map view layers
     connect(sb, SIGNAL(uavOn(bool)), mv, SLOT(uavLayerOn(bool)));
@@ -258,9 +258,9 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(sb, SIGNAL(targetOn(bool)), mv, SLOT(targetLayerOn(bool)));
 
     //Connect message display for console log
-    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
-    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
-    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
+//    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
+//    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
+//    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
 }
 
 void MainWindow::initMap(){
@@ -308,13 +308,13 @@ void MainWindow::initNetworking(){
     vList22->append(v101);
     vList22->append(v102);
 
-    vUpdate = new NodeQueue();
+//    vUpdate = new NodeQueue();
     targetList = new TargetList();
-    network = new networking(vList22,vUpdate,targetList);
-    connect(network,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
-    connect(network,SIGNAL(vehicleStatus(int,int)),this,SLOT(vStatus(int,int)));
-                                   //lat, long
-    connect(network, SIGNAL(vTarget(float,float)), this, SLOT( addTarget(float,float)));
+//    network = new networking(vList22,vUpdate,targetList);
+//    connect(network,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
+//    connect(network,SIGNAL(vehicleStatus(int,int)),this,SLOT(vStatus(int,int)));
+//                                   //lat, long
+//    connect(network, SIGNAL(vTarget(float,float)), this, SLOT( addTarget(float,float)));
     //connect(this,SIGNAL(update_vehicle(int)), vListGUI ,SLOT((int)));
 }
 

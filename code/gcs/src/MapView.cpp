@@ -11,8 +11,20 @@
 //
 
 //ArcGIS Headers
+namespace EsriRuntimeQt
+{
+class MapGraphicsView;
+class Map;
+class ArcGISLocalTiledLayer;
+class ArcGISTiledMapServiceLayer;
+class ArcGISDynamicMapServiceLayer;
+class ArcGISFeatureLayer;
+class GraphicsLayer;
+class FeatureLayer;
+}
+#include "ArcGISRuntime.h"
+
 #include <MapGraphicsView.h>
-#include <ArcGISRuntime.h>
 
 //Our Headers
 #include "MapView.h"
@@ -23,7 +35,7 @@
 MapView::MapView(QWidget* parent)
 {
     //Set to openGL rendering
-    EsriRuntimeQt::ArcGISRuntime::setRenderEngine(EsriRuntimeQt::RenderEngine::OpenGL);
+    //EsriRuntimeQt::ArcGISRuntime::setRenderEngine(EsriRuntimeQt::RenderEngine::OpenGL);
     m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(&m_map, parent);
     m_map.setWrapAroundEnabled(false);
     m_map.setEsriLogoVisible(false);
