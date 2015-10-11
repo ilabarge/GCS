@@ -4,10 +4,8 @@ Main repository for the GCS product.  Also may include GCS children such as Jiff
 
 ### Current Status ###
 
-* Master branch has been uploaded to repository and cleanup has begun
-* More cleanup will continue of file structure before development begins
+* Master branch is current "working" version of GCS
 
 ### Contacts ###
 
-* Lead: Ethan Ito <ethan.ito.rhs@gmail.com>
-* Sub: Kevin Friedemann <kevin.friedemann@gmail.com>
+* Lead: Ethan Ito <ethanitorhs@gmail.com>
