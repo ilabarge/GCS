@@ -15,7 +15,7 @@ TARGET = GCS
 TEMPLATE = app
 
 QT += core gui opengl xml network serialport sql qml
-QT += positioning sensors
+QT += positioning sensors svg
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
@@ -35,12 +35,12 @@ SOURCES += \
     src/togglebutton.cpp \
     src/gcs_toolbar.cpp \
     #src/protonet/networking.cpp \
-    src/protonet/rx_thread.cpp \
-    src/protonet/serialscanner.cpp \
+    #src/protonet/rx_thread.cpp \
+    #src/protonet/serialscanner.cpp \
     #src/nodequeue.cpp \
-    src/SerialPortSelect.cpp \
-    src/SerialCombobox.cpp \
-    src/database/DataDaemon.cpp \
+    #src/SerialPortSelect.cpp \
+    #src/SerialCombobox.cpp \
+    #src/database/DataDaemon.cpp \
     src/telemetrygui.cpp \
     src/waypointgui.cpp \
     src/vehicleauthorizationgui.cpp \
@@ -67,7 +67,7 @@ SOURCES += \
     src/MapSymbol.cpp \
     main.cpp \
     src/qfi_ADI.cpp \
-    src/protonet/joystickinput.cpp \
+   # src/protonet/joystickinput.cpp \
     src/LayoutSquare.cpp
 
 HEADERS += \
@@ -77,8 +77,8 @@ HEADERS += \
     src/togglebutton.h \
     src/gcs_toolbar.h \
     #src/protonet/networking.h \
-    src/protonet/rx_thread.h \
-    src/protonet/serialscanner.h \
+    #fsrc/protonet/rx_thread.h \
+    #src/protonet/serialscanner.h \
     #src/protonet/include/cond.h \
     #src/protonet/include/config.h \
     #src/protonet/include/datalink.h \
@@ -122,9 +122,9 @@ HEADERS += \
     #src/protonet/include/message/VehicleTerminationCommand.h \
     #src/protonet/include/message/VehicleWaypointCommand.h \
     #src/nodequeue.h \
-    src/SerialPortSelect.h \
-    src/SerialCombobox.h \
-    src/database/DataDaemon.h \
+    #src/SerialPortSelect.h \
+    #src/SerialCombobox.h \
+    #src/database/DataDaemon.h \
     #src/protonet/joystickinput.h \ (check usage)
     src/telemetrygui.h \
     src/waypointgui.h \
@@ -190,7 +190,7 @@ DEFINES+= NOMINMAX\
 
 #INCLUDEPATH += $$PWD/src/protonet/include
 #DEPENDPATH += $$PWD/src/protonet/include
-#INCLUDEPATH += $$PWD/src/protonet/
-#DEPENDPATH += $$PWD/src/protonet/
-#INCLUDEPATH += $$PWD/src/
-#DEPENDPATH += $$PWD/src/
+INCLUDEPATH += $$PWD/src/protonet/
+DEPENDPATH += $$PWD/src/protonet/
+INCLUDEPATH += $$PWD/src/
+DEPENDPATH += $$PWD/src/

@@ -1,4 +1,4 @@
-#include <serialScanner.h>
+#include <serialscanner.h>
 int nPorts = 0;
 
 serialScanner::serialScanner()
