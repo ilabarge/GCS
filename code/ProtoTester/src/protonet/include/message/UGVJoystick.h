@@ -9,7 +9,7 @@
 #include <protonet_message.h>
 
 typedef struct {
-    float64_t timestamp;
+   float64_t timestamp;
    uint8_t vehicle_id;
    float32_t steering;
    float32_t throttle;

@@ -9,6 +9,11 @@
 #include <QStringList>
 #include <QThread>
 
+//Connect to websharper
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QTcpSocket>
+
 //C lib includes
 #include <cstring>
 #include <chrono>
@@ -43,7 +48,6 @@ private:
     JoystickInput *joystick;
     vehicle_list* vList;
     boolean send;
-
     void hold();
 public slots:
     void process();
@@ -90,6 +94,9 @@ public slots:
     //Changing Networking Settings
     void setNetworkSerial(QString);
     void update(int);
+
+    //Send message with int vehicle id to airweb
+    void sendMessage(int);
 
 signals:
     void finished();

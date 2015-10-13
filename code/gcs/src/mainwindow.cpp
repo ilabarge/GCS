@@ -17,8 +17,13 @@ MainWindow::MainWindow(QWidget* parent) :
     mainLayout = new QGridLayout;
     mainLayout->setMargin( 0 );
 
+    vehicleList = new QGridLayout();
+    vehicleList->setMargin(0);
+    vehicleList->setSpacing(0);
+    elementList = new std::vector<VehicleElementDisplay*>();
+
    //Statically initialize vehicles
-    v46 =  new Vehicle22(46, 0, 0,
+    v46 =  new Vehicle22(46, 1, 0,
                0, 0, 0,
                0, 0, 0,
                0, 0, 0,
@@ -27,6 +32,15 @@ MainWindow::MainWindow(QWidget* parent) :
     v46->setColor(Qt::green);
     v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50, mv->getSpatialRef());
 
+    v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50 );
+    //Create new element display
+    element = new VehicleElementDisplay();
+    element->setVehicle(v46);
+    element->setText();
+    //Add element to the list to display
+    vehicleList->addWidget(element,2,0);
+    //Add element to the list of elements
+    elementList->push_back(element);
 
     v69 =  new Vehicle22(69, 0, 0,
                0, 0, 0,
@@ -35,7 +49,12 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v69->setColor(Qt::cyan);
-    //v69->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+    v69->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+    element = new VehicleElementDisplay();
+    element->setVehicle(v69);
+    element->setText();
+    vehicleList->addWidget(element, 1,0);
+    elementList->push_back(element);
 
     v2 = new Vehicle22(2, 0, 0,
                0, 0, 0,
@@ -45,6 +64,9 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0);
     v2->setColor(Qt::green);
     //v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+    element = new VehicleElementDisplay();
+    element->setVehicle(v2);
+    element->setText();
 
     v101 = new Vehicle22(101, 0, 0,
                0, 0, 0,
@@ -54,6 +76,11 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0);
     v101->setColor(Qt::yellow);
     //v101->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
+    element = new VehicleElementDisplay();
+    element->setVehicle(v101);
+    element->setText();
+    vehicleList->addWidget(element,0,0);
+    elementList->push_back(element);
 
     v102 = new Vehicle22(102, 0, 0,
                0, 0, 0,
@@ -62,153 +89,31 @@ MainWindow::MainWindow(QWidget* parent) :
                0, 0, 0,
                0, 0, 0);
     v102->setColor(Qt::magenta);
-    //v102->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
+    v102->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
+    element = new VehicleElementDisplay();
+    element->setVehicle(v102);
+    element->setText();
+
+    //Initialize default vech to display attitude to be the first in the list
+    currentVech = 0;
 
     //Initialize Map
     initMap();
 
     //Initialize widgets
-    quitButton = new QPushButton( this );
-    quitButton->setText( "Quit" );
+    initWidgets();
 
-    serialSelect = new SerialPortSelect( this );
-    sb = new sideBar(this);
-    mtb = new GcsToolbar( this );
-    connect(this,SIGNAL(destroyed()), mtb, SLOT(close()));
-
-    //Initialize networking AFTER all GUI has been created
+    //Start the networking
     initNetworking();
 
     //Initialize database
     initDatabase();
 
-    consolelog = new ConsoleLog();
-
-    //Add widgets to screen
-    //Temp icons, make more pretty!!
-    UGV_JOYSTICK = new QPushButton();
-    UGV_JOYSTICK->setText("Start Joystick Control");
-    UGV_JOYSTICKSTOP = new QPushButton();
-    UGV_JOYSTICKSTOP->setText("Stop Joystick Control");
-    Telemetry = new TelemetryGUI();
-    way = new WaypointGUI();
-    Authorize = new VehicleAuthorizationGUI();
-    UGV_States = new UGV_state();
-    UAV_Payload = new UAVPayload();
-    targeting = new targetingGUI();
-
-    sendcmd = new QPushButton();
-    sendcmd->setText("Drop payload");
-
-    //mainLayout->addWidget( quitButton, 2, 0 );
-    mainLayout->addWidget( sb, 1, 0, Qt::AlignCenter|Qt::AlignRight );
-    mainLayout->addWidget( serialSelect, 1, 0, Qt::AlignTop|Qt::AlignRight);
-    mainLayout->addWidget( mtb, 1, 0, Qt::AlignCenter|Qt::AlignTop);
-
-    //Temp locations & gui!!!!!!
-    mainLayout->addWidget(quitButton,4,0);
-
-    //Set up baisic C&C gui layout
-    //Gridlayout to group widgets as one
-    //Gridlayout : base to have the commands
-    QGridLayout* base = new QGridLayout();
-    //Add the widgets that have the commands
-    base->addWidget(Authorize,0,0);
-    base->addWidget(Telemetry,0,1);
-    base->addWidget(way,0,2);
-    base->addWidget(targeting,1,0);
-    //Add those commands to the mainLayout
-    mainLayout->addLayout(base,2,0);
-
-    //Set up UGV gui layout
-    //Gridlayout : UGV to group UGV commands
-    //Gridlayout : joyLaout to group the Joystick commands
-    QGridLayout* UGVLayout = new QGridLayout();
-    QGridLayout* joyLayout = new QGridLayout();
-    joyLayout->addWidget(UGV_JOYSTICK,0,0);
-    joyLayout->addWidget(UGV_JOYSTICKSTOP,0,1);
-    UGVLayout->addLayout(joyLayout,0,0);
-    UGVLayout->addWidget(UGV_States,1,0);
-
-    //Creates label for UAV status
-    QLabel* CPPuavStatLabel = new QLabel();
-    //Sets text for label
-    CPPuavStatLabel->setText("CPP UAV STATUS");
-    //Create label to display UAV status
-    CPPuavStatusLabel = new QLabel();
-    //Sets text for status as "UNKNOWN"
-    CPPuavStatusLabel->setText("UNKNOWN");
-
-    //Creates label for UAV status
-    QLabel* SLOuavStatLabel = new QLabel();
-    //Sets text for label
-    SLOuavStatLabel->setText("SLO UAV STATUS");
-    //Create label to display UAV status
-    SLOuavStatusLabel = new QLabel();
-    //Sets text for status as "UNKNOWN"
-    SLOuavStatusLabel->setText("UNKNOWN");
-    //Create a gridlayout : UAVStatus to hold the UGV status label and dipslay
-    QGridLayout* UAVStatus = new QGridLayout();
-    //Add uavstatus label and display to gridlayout
-    UAVStatus->addWidget(CPPuavStatLabel,0,0,Qt::AlignCenter);
-    UAVStatus->addWidget(CPPuavStatusLabel,0,1,Qt::AlignCenter);
-    UAVStatus->addWidget(SLOuavStatLabel,1,0,Qt::AlignCenter);
-    UAVStatus->addWidget(SLOuavStatusLabel,2,1,Qt::AlignCenter);
-
-    //Create Button for UGV drop notification
-    ugvDrop = new QPushButton();
-    //Set Text for button
-    ugvDrop->setText("UGV notify of drop");
-    //Create gridlayout : dropCMDs for the drop commands
-    QGridLayout* dropCMDs = new QGridLayout();
-    //Add widgets to gridlayout
-    dropCMDs->addWidget(sendcmd,0,0);
-    dropCMDs->addWidget(ugvDrop,0,1);
-
-    //Set up basic UAV layout with C&C commands
-    //Create gridlayout : UAVLayout for UAV commands
-    QGridLayout* UAVLayout = new QGridLayout();
-    //Add UAV status, and dropCMDs layouts and UAV_payload widget
-    UAVLayout->addLayout(UAVStatus,0,0);
-    UAVLayout->addWidget(UAV_Payload,1,0);
-    UAVLayout->addLayout(dropCMDs,2,0);
-
-    //Set up Layout for vehicle comands
-    //Create gridlayout : VehicleLayout for commands
-    QGridLayout* VehicleLayout = new QGridLayout();
-    //Create Label for UAV commands
-    QLabel* uavLabel = new QLabel();
-    //Set text for label
-    uavLabel->setText("UAV commands");
-
-    //Create Label for UGV commands
-    QLabel* ugvLabel = new QLabel();
-    //Set Text for label
-    ugvLabel->setText("UGV commands");
-    //Set Alignments for the labels to be the center
-    //Have the UAV label be on the left col and the UGV to be on the right col
-    VehicleLayout->addWidget(uavLabel,0,0,Qt::AlignCenter);
-    VehicleLayout->addWidget(ugvLabel,0,1,Qt::AlignCenter);
-    //Add the layouts to the layout
-    VehicleLayout->addLayout(UAVLayout,1,0);
-    VehicleLayout->addLayout(UGVLayout,1,1);
-    //Add the layout to the mainLayout
-    mainLayout->addLayout(VehicleLayout,3,0);
-
-    mainLayout->addWidget(consolelog,3,1);
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout( mainLayout );
     setCentralWidget( centralWidget );
 
     showMaximized();
-
-    //mainwindow gui connect functions for networking
-    //connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
-    //update targets
-    //connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
-
-    //TEST METHOD FOR NEW SIGNAL
-    //connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
 
     //Map Interation
     //Sets coordinate positions for waypoint baised off of click on map
@@ -290,6 +195,42 @@ void MainWindow::updateVech(int ID)
          mv->moveVehicleGraphic(*v2, EsriRuntimeQt::Point(v2->getPoint().x(), v2->getPoint().y(), mv->getSpatialRef()));
          v2->setAngle(v2->getZVelocity());
      }
+    if(vehicle_ID == 69)
+    {
+        qDebug() << "vehicle 2";
+//       qDebug() << (std::to_string(v3->getLatitude())).c_str();
+//       qDebug() << (std::to_string(v3->getLongitude())).c_str();
+//       qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
+         v69->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+         mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
+         //v69->setAngle(v69->getHeading());
+         mv->rotateVehicleGraphic(*v69,v69->getHeading());
+
+     }
+    if(vehicle_ID == 46)
+    {
+    //               v46->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
+       //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
+       v46->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+       mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
+       //v46->setAngle(v46->getHeading());
+       mv->rotateVehicleGraphic(*v46,v46->getHeading());
+    }
+    if(vehicle_ID == 101)
+    {
+       //printf("%f %f\n",v101->getLatitude(), v101->getLongitude());
+       v101->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+       mv->moveVehicleGraphic(*v101, EsriRuntimeQt::Point(v101->getPoint().x(), v101->getPoint().y()));
+       v101->setAngle(v101->getHeading());
+    }
+    if(vehicle_ID == 102)
+    {
+       //printf("%f %f\n",v102->getLatitude(), v102->getLongitude());
+       v102->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
+       mv->moveVehicleGraphic(*v102, EsriRuntimeQt::Point(v102->getPoint().x(), v102->getPoint().y()));
+       v102->setAngle(v102->getHeading());
+    }
+
     emit update_vehicle(vehicle_ID);
 }
 
@@ -308,7 +249,9 @@ void MainWindow::initNetworking(){
     vList22->append(v101);
     vList22->append(v102);
 
-//    vUpdate = new NodeQueue();
+    //Set vehicle info's vehicle list
+    vInfo->getList(vList22);
+
     targetList = new TargetList();
 //    network = new networking(vList22,vUpdate,targetList);
 //    connect(network,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
@@ -316,7 +259,64 @@ void MainWindow::initNetworking(){
 //                                   //lat, long
 //    connect(network, SIGNAL(vTarget(float,float)), this, SLOT( addTarget(float,float)));
     //connect(this,SIGNAL(update_vehicle(int)), vListGUI ,SLOT((int)));
+
+    initNetworkingConnects();
 }
+
+void MainWindow::initNetworkingConnects(){
+    //Set up connects for networking
+//    connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
+//    //update targets
+//    connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
+
+//    //TEST METHOD FOR NEW SIGNAL
+//    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
+
+//    //C&C GUI
+//    //General Vehicle
+//    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
+//    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
+//    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
+//    //Manual Targeting
+//    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
+
+//    //UAV
+//    //Drop
+//    connect(sendcmd,SIGNAL(clicked()),this,SLOT(UDrop()));
+//    connect(ugvDrop,SIGNAL(clicked()),this,SLOT(UGVDrop()));
+//    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
+
+//    //Payload
+//    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
+//    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
+
+//    //UGV
+//    //JOYSTICK
+//    connect(UGV_JOYSTICK,SIGNAL(clicked()),network,SLOT(start_UGV_Joystick()));
+//    connect(UGV_JOYSTICKSTOP,SIGNAL(clicked()),network,SLOT(stop_UGV_Joystick()));
+
+//    //UGV
+//    //STATE CHANGE
+//    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
+//    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
+//    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
+
+//    //MOTOR states
+//    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
+//    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
+//    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
+
+//    //Connect message display for console log
+//    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
+//    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
+//    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
+
+//    //Connect vehicle updates to vehicle info
+//    connect(network,SIGNAL(updateVechicle(int)),vInfo,SLOT(status(int)));
+//    //Connect vehcil update with the attitued
+//    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateADI(int)));
+}
+
 
 void MainWindow::initDatabase(){
     database = new DataDaemon();
@@ -324,6 +324,141 @@ void MainWindow::initDatabase(){
 
 void MainWindow::initWidgets(){
 
+    quitButton = new QPushButton( this );
+    quitButton->setText( "Quit" );
+
+    serialSelect = new SerialPortSelect( this );
+    sb = new sideBar(this);
+    mtb = new GcsToolbar( this );
+    connect(this,SIGNAL(destroyed()), mtb, SLOT(close()));
+
+    consolelog = new ConsoleLog();
+    consolelog->setMaximumSize(500,200);
+    //Add widgets to screen
+    //Temp icons, make more pretty!!
+    UGV_JOYSTICK = new QPushButton();
+    UGV_JOYSTICK->setText("Start Joystick Control");
+    UGV_JOYSTICKSTOP = new QPushButton();
+    UGV_JOYSTICKSTOP->setText("Stop Joystick Control");
+    Telemetry = new TelemetryGUI();
+    way = new WaypointGUI();
+    Authorize = new VehicleAuthorizationGUI();
+    UGV_States = new UGV_state();
+    UAV_Payload = new UAVPayload();
+    targeting = new targetingGUI();
+
+    sendcmd = new QPushButton();
+    sendcmd->setText("Drop payload");
+
+    command.setText("Command");
+    control.setText("Control");
+
+    //mainLayout->addWidget( quitButton, 2, 0 );
+    mainLayout->addWidget( sb, 1, 0, Qt::AlignCenter|Qt::AlignRight );
+    mainLayout->addWidget( serialSelect, 1, 0, Qt::AlignTop|Qt::AlignRight);
+    mainLayout->addWidget( mtb, 1, 0, Qt::AlignCenter|Qt::AlignTop);
+
+    //Temp locations & gui!!!!!!
+    mainLayout->addWidget(quitButton,4,0);
+
+    //Set up bssic C&C gui layout
+    //Gridlayout : commandLayout to have the commands
+    QGridLayout* commandLayout = new QGridLayout();
+    //Add the widgets that have the commands
+    commandLayout->addWidget(Authorize,0,0);
+    commandLayout->addWidget(Telemetry,0,1);
+    commandLayout->addWidget(way,0,2);
+    //commandLayout->addWidget(targeting,1,0);
+    //Add those commands to the command widget
+    commandLayoutWidget.setLayout(commandLayout);
+    commandLayoutWidget.hide();
+    mainLayout->addWidget(&commandLayoutWidget,2,0);
+
+    //Set up control layout
+    //Gridlayout : joyLaout to group the Joystick commands
+    QGridLayout* controlLayout = new QGridLayout();
+    controlLayout->addWidget(UGV_JOYSTICK,0,0);
+    controlLayout->addWidget(UGV_JOYSTICKSTOP,0,1);
+    //UGVLayout->addWidget(UGV_States,1,0);
+    controlLayoutWidget.setLayout(controlLayout);
+    controlLayoutWidget.hide();
+    mainLayout->addWidget(&controlLayoutWidget,2,0);
+
+    command_control.addWidget(&command,0,0);
+    command_control.addWidget(&control,0,1);
+
+    command_box.setContentsMargins(0,0,0,0);
+    command_box.setSpacing(0);
+    command_box.addLayout(&command_control,0,0);
+    command_box.addWidget(consolelog,1,0);
+
+    vInfo = new VehicleInfo();
+    attitude = new MainWindowADI();
+    attitude->setMaximumSize(300,300);
+    vInfo->setMaximumSize(350,300);
+    lowerBar.addLayout(vehicleList,0,0);
+    lowerBar.addWidget(attitude,0,1);
+    lowerBar.addWidget(vInfo,0,2);
+    lowerBar.addLayout(&command_box,0,3);
+
+    //lowerBarWidget.setLayout(&lowerBar);
+    mainLayout->addLayout(&lowerBar,3,0);
+    connect(&command,SIGNAL(clicked()),this,SLOT(showCommand()));
+    connect(&control,SIGNAL(clicked()),this,SLOT(showControl()));
+
+    //Connects to update the ADI widget and the vehicle info widget
+    //With approperate id of the vechicle being clicked.
+    for(int i = 0; i < elementList->size(); i++){
+        connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(elementSelect(int)));
+        connect(elementList->at(i),SIGNAL(vechID(int)), vInfo,SLOT(displayVech(int)));
+        connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(updateADI(int)));
+    }
+
+
+    //OLD GUI
+    //---------------------------------------------------------------------------
+    //Create Button for UGV drop notification
+    ugvDrop = new QPushButton();
+    //Set Text for button
+    ugvDrop->setText("UGV notify of drop");
+    //Create gridlayout : dropCMDs for the drop commands
+    QGridLayout* dropCMDs = new QGridLayout();
+    //Add widgets to gridlayout
+    dropCMDs->addWidget(sendcmd,0,0);
+    dropCMDs->addWidget(ugvDrop,0,1);
+
+    /*Set up basic UAV layout with C&C commands
+    //Create gridlayout : UAVLayout for UAV commands
+    QGridLayout* UAVLayout = new QGridLayout();
+    //Add UAV status, and dropCMDs layouts and UAV_payload widget
+    UAVLayout->addWidget(UAV_Payload,1,0);
+    UAVLayout->addLayout(dropCMDs,2,0);
+    */
+    //Set up Layout for vehicle comands
+    //Create gridlayout : VehicleLayout for commands
+    QGridLayout* VehicleLayout = new QGridLayout();
+    //Create Label for UAV commands
+    QLabel* uavLabel = new QLabel();
+    //Set text for label
+    uavLabel->setText("UAV commands");
+
+    //Create Label for UGV commands
+    QLabel* ugvLabel = new QLabel();
+    //Set Text for label
+    ugvLabel->setText("UGV commands");
+    //Set Alignments for the labels to be the center
+    //Have the UAV label be on the left col and the UGV to be on the right col
+    VehicleLayout->addWidget(uavLabel,0,0,Qt::AlignCenter);
+    VehicleLayout->addWidget(ugvLabel,0,1,Qt::AlignCenter);
+    //Add the layout to the mainLayout
+    //mainLayout->addLayout(VehicleLayout,3,0);
+
+    //mainLayout->addWidget(consolelog,3,1);
+}
+
+void MainWindow::elementSelect(int vech){
+    currentVech = vech;
+    qDebug() << vech;
 }
 
 //REMOVE ALL OLD QUEUE SYSTEM, USE AS REFERENCE TO CHANGE GRAPHICS
@@ -484,78 +619,7 @@ void MainWindow::addVehicle(int vech, int type)
  */
 void MainWindow::vStatus(int vech, int mode)
 {
-    int SLO = 0;
-    int CPP = 69;
-    if(vech == SLO){
-        switch(mode)
-        {
-            case 0:
-                SLOuavStatusLabel->setText("Startup");
-                break;
 
-            case 1:
-                SLOuavStatusLabel->setText("Manual Mode");
-                break;
-            case 2:
-                SLOuavStatusLabel->setText("Assisted Mode");
-                break;
-
-            case 3:
-                SLOuavStatusLabel->setText("Autonomous Mode");
-                break;
-
-            case 4:
-                SLOuavStatusLabel->setText("Collision Avoidence Mode");
-                break;
-
-            case 5:
-                 SLOuavStatusLabel->setText("Seek & Destroy");
-                 break;
-
-            default:
-                SLOuavStatusLabel->setText("Unknown Status Recieved");
-
-        }
-    }else{
-        switch(mode)
-        {
-            case 0:
-                CPPuavStatusLabel->setText("Startup");
-                break;
-
-            case 1:
-                CPPuavStatusLabel->setText("Manual Mode");
-                break;
-            case 2:
-                CPPuavStatusLabel->setText("Assisted Mode");
-                break;
-
-            case 3:
-                CPPuavStatusLabel->setText("Autonomous Mode");
-                break;
-
-            case 4:
-                CPPuavStatusLabel->setText("Collision Avoidence Mode");
-                break;
-
-            case 5:
-                 CPPuavStatusLabel->setText("Seek & Destroy");
-                 break;
-
-            default:
-                CPPuavStatusLabel->setText("Unknown Status Recieved");
-
-        }
-    }
-    /*
-     * switch(status)
-     * {
-     *     case 0:
-     *       uavStatusLabel->setText("In state");
-     *     case 1:
-     *       uavStatusLabel->setText("Ready");
-     * }
-     */
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event){
@@ -597,6 +661,16 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event){
     }
 }
 
+//TEMP remove when mainwindow adi takes in the id of the vech to update
+//also in this case it must take in the vech list to select the vech
+void MainWindow::updateADI(int ID)
+{
+    if(ID = currentVech){
+        Vehicle22* vehicle = vList22->get(ID);
+        qDebug() << vehicle->getRoll() << " " << vehicle->getPitch();
+        attitude->initADI(vehicle->getRoll(),vehicle->getPitch());
+    }
+}
 /* BEGIN SLOTS */
 
 void MainWindow::addTarget(float lat, float lon){
@@ -606,8 +680,49 @@ void MainWindow::addTarget(float lat, float lon){
     mv->addGraphicToLayer(*(target.getGraphic()));
 }
 
+void MainWindow::showCommand(){
+    if(commandShow == true){
+        commandLayoutWidget.hide();
+        commandShow = false;
+    }else if(commandShow == false && controlShow == true){
+        commandLayoutWidget.show();
+        controlLayoutWidget.hide();
+        commandShow = true;
+        controlShow = false;
+    }else{
+        commandLayoutWidget.show();
+        commandShow = true;
+        controlShow = false;
+    }
+}
+
+void MainWindow::showControl(){
+    if(controlShow == true){
+        controlLayoutWidget.hide();
+        controlShow = false;
+    }else if (controlShow == false && commandShow == true){
+        controlLayoutWidget.show();
+        commandLayoutWidget.hide();
+        controlShow = true;
+        commandShow = false;
+    }else{
+        controlLayoutWidget.show();
+        controlShow = true;
+        commandShow = false;
+    }
+
+}
+
+
+
 /* END SLOTS */
 
 MainWindow::~MainWindow(){
-    //delete widget;?
+    qDebug() << "deconstructor";
 }
+
+/*
+
+
+
+*/

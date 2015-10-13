@@ -1,5 +1,4 @@
 #include "rx_thread.h"
-
 TargetList* targetList;
 vehicle_list* vp;
 QMutex mutex;
@@ -23,6 +22,7 @@ rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, ve
     connect(q,SIGNAL(target(float,float)),this,SLOT(target(float,float)));
     //Connect for callback for new vehicle list
     connect(v,SIGNAL(update(int)),this,SLOT(update(int)));
+    connect(v,SIGNAL(update(int)),this,SLOT(sendMessage(int)));
 }
 
 void rx_thread::update_vech_queue() { emit update_queue();}
@@ -58,7 +58,7 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     mutex.lock();
     node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
     mutex.unlock();
-    emit messageConfirm(QString("Sent vehicle authorization request to ID" + vehicle));
+    emit messageConfirm(QString("Sent vehicle authorization request to ID " + QString::number(vehicle)));
 }
 
 //Vehicle waypoint
@@ -100,7 +100,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
 
                mutex.unlock();
                emit message(QString("Added waypoint"));
-               emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
+               emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
 
            }
            else if((type == 0) && ((waypoint->getID()) > (size)))
@@ -154,7 +154,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                      waypoint->getType(),
                                                      waypoint->getID());
                   mutex.unlock();
-                  emit messageConfirm(QString("Sent Waypoint to ID" + vehicle));
+                  emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
               }
           }
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
@@ -175,7 +175,7 @@ void rx_thread::send_telemetry_command(int vehicle)
     mutex.lock();
     node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
     mutex.unlock();
-    emit messageConfirm(QString("Sent Telemetry Command to ID" + vehicle));
+    emit messageConfirm(QString("  Sent Telemetry Command to ID " + QString::number(vehicle)));
 }
 
 //Send targeting informaiton to vehicle
@@ -360,6 +360,28 @@ void rx_thread::hold()
     for(int i = 0; i < 50; i++);
 }
 
+void rx_thread::sendMessage(int ID){
+    qDebug() << "Sending UDP message";
+//    QJsonObject obj;
+//    obj.insert("vehicleID", ID);
+//    obj.insert("alt", vp->get(ID)->getAltitude());
+//    obj.insert("mode", vp->get(ID)->getMode());
+//    obj.insert("state", vp->get(ID)->getState());
+//    obj.insert("latitude", vp->get(ID)->getLongitude());
+//    obj.insert("longitude", vp->get(ID)->getLongitude());
+//    obj.insert("heading", vp->get(ID)->getLongitude());
+//    QJsonDocument doc(obj);
+//    QTcpSocket * _pSocket;
+//    QByteArray data = doc.toJson(); // <-- fill with data
+//    _pSocket = new QTcpSocket(); // <-- needs to be a member variable: QTcpSocket * _pSocket;
+//    connect( _pSocket, SIGNAL(readyRead()), SLOT(readTcpData()) );
+
+//    _pSocket->connectToHost("127.0.0.1", 9000);
+//    if( _pSocket->waitForConnected() ) {
+//        _pSocket->write( data );
+//    }
+}
+
 // -------- CHECKING VEHICLE --------
 int checkVehicles(uint32_t vehicle_ID)
 {
@@ -370,14 +392,6 @@ int checkVehicles(uint32_t vehicle_ID)
     }
 
     return -1;
-//    if(vehicle_ID > 10 || vehicle_ID < 1)
-//    {
-//       return 0;
-//    }
-//    else
-//    {
-//        return vehicle_ID;
-//    }
 }
 
 // --------- PROTONET CALLBACKS ---------
@@ -407,7 +421,6 @@ void* enter_callback(int8_t id, proto_header_t header, enter_t enter, protonet::
 void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::node* node)
 {
    printf("got ping");
-   qDebug() << "got ping";
    //qDebug() << "Ping timestamp:" << ping.timestamp << endl;
    //qDebug() << "Sending pong response." << endl;
    //send a pong as a reply
@@ -491,8 +504,17 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
     vp->set(ID)->setMode(status.vehicle_mode);
     //Sets vehicle update value to true
     mutex.unlock();
+//    obj.insert("xAccel", v->getLongitude());
+//    obj.insert("yAccel", v->getLongitude());
+//    obj.insert("rollRate", v->getLongitude());
+//    obj.insert("pitchRate", v->getLongitude());
+//    obj.insert("yawrate", v->getLongitude());
+//    obj.insert("velocity", v->getLongitude());
+//    obj.insert("roll", );
+//    obj.insert("pitch", );
+//    obj.insert("yaw", );
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+    //nq->enqueue(header.node_src_id);
     if(header.node_src_id == 69)
     {
         nq->status(header.node_src_id,status.vehicle_mode);
@@ -530,6 +552,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     inertial.vertical_accel; //Missing?
     inertial.vertical_speed; //Missing?
     vp->set(ID)->setRoll(inertial.roll);
+    //std::string s = std::to_string(inertial.roll_rate);
     vp->set(ID)->setRollRate(inertial.roll_rate);
     vp->set(ID)->setHeading(inertial.heading);
     vp->set(ID)->setAltitude(inertial.altitude/1E6);
@@ -539,7 +562,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     vp->set(ID)->setPitchRate(inertial.pitch_rate);
     mutex.unlock();
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+//    /nq->enqueue(header.node_src_id);
     return 0;
 }
 
@@ -572,7 +595,7 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     vp->set(ID)->setHeading(((float)position.heading)/1E6);
     mutex.unlock();
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+//    nq->enqueue(header.node_src_id);
     //Call database update in thread?
     //int checkLong = vp->at(i)->ts.at(0)->getLongitude() - vp->at(i)->getLatitude();
     //int checkLat = vp->at(i)->ts.at(0)->getLatitude() - vp->at(i)->getLatitude();
@@ -608,7 +631,7 @@ void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_
     vp->set(ID)->setYaw(attitude.yaw);
     mutex.unlock();
     vp->update(header.node_src_id);
-    nq->enqueue(header.node_src_id);
+//    nq->enqueue(header.node_src_id);
     /*
     qDebug() << "Vehicle ID:" << attitude.vehicle_ID << "Timestamp:" << attitude.timestamp;
     qDebug() << "\nAttitudes";
@@ -665,25 +688,23 @@ void rx_thread::process() {
    np = node;
 
    //Joystick Handling
+   /*
    joystick = new JoystickInput(NULL,node);
    joystick_thread = new QThread;
    joystick -> moveToThread(joystick_thread);
-   joystick_thread->start();
+   joystick_thread->start();*/
 
    //Set link_id to 0
    int8_t link_id(0);
 
    //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
-   //Changed due to original being a const char
-   std::string *str = new std::string("127.0.0.1");
-   //We grab the memory location of the first char in the string as it is a char array
-   char *arr = &(*str)[0];
-   node->add_udp(&link_id,self_port,arr);
-
+   qDebug() << "Self port for GCS: " << self_port;
+   node->add_udp(&link_id,self_port,"127.0.0.1");
+   qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
-   node->establish_udp(link_id,2,dest_port,arr);
+   node->establish_udp(link_id,1,dest_port,"127.0.0.1");
 
    //Start Node
    //node->start(); <- no longer needed due to protonet update
@@ -698,6 +719,7 @@ void rx_thread::process() {
    node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
    node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
    node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
+   node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
    //ack vehicle got t
    //request list
 

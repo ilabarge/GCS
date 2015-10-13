@@ -10,6 +10,7 @@ vehicle_list::vehicle_list(QObject *parent) : QObject(parent)
  * @return the values of vehicle whose id we have, notifies user if incorrect
  * id was given
  */
+//Returns vehicle at the position in the vector
 Vehicle22* vehicle_list::at(int pos)
 {
     qDebug() << "at vechID" << pos;
@@ -57,6 +58,7 @@ Vehicle22 *vehicle_list::set(int vechID)
  * @return the values of vehicle whose id we have, notifies user if incorrect
  * id was given
  */
+//Returns the vechicle with the id given
 Vehicle22 *vehicle_list::get(int vechID)
 {
     qDebug() << "GET";
@@ -105,7 +107,7 @@ int vehicle_list::length()
 int vehicle_list::indexOf(int id)
 {
     int p = 0;
-    qDebug() << "Looking for vehcile ID " << id;
+    //qDebug() << "Looking for vehcile ID " << id;
 //    for(std::vector<int>::iterator it = pos.begin(); it!= pos.end(); ++it)
 //    {
 //        if(id == *it)
@@ -117,7 +119,7 @@ int vehicle_list::indexOf(int id)
     {
         if(id == (*it)->getVehicleID())
         {
-            qDebug() << "FOUND POSITION FOR ID " << id << "," << p;
+           // qDebug() << "FOUND POSITION FOR ID " << id << "," << p;
             return p;
         }
         //qDebug() <<  "ID" << (*it)->getVehicleID() << "pos " << p;

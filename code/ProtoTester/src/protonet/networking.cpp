@@ -11,7 +11,7 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
     network_thread = new QThread;
     //Create class to put in thread
     QString serial = "a";
-    rx = new rx_thread(node_id,self_port, dest_port,serial);
+    rx = new rx_thread(node_id,7990, 7991,serial);
     //Put class in thread
     rx->moveToThread(network_thread);
     //Mapp error strings
@@ -41,7 +41,7 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
 networking::networking()
 {
     //qDebug() << "Invoking thread with: " << port;
-    invokeThread(2, 7990, 7991);
+    invokeThread(69, 7990, 7991);
 }
 
 //Network send message signal/slots

@@ -31,6 +31,7 @@
 #include "Vehicle22.h"
 #include "vehicle_list.h"
 #include "consolelog.h"
+#include "vehicleelementdisplay.h"
 
 //GUI Testing headers
 #include "telemetrygui.h"
@@ -39,6 +40,8 @@
 #include "ugv_state.h"
 #include "uavpayload.h"
 #include "targetinggui.h"
+#include "vehicleinfo.h"
+#include "MainWindowADI.h"
 
 class MainWindow : public QMainWindow
 {
@@ -56,6 +59,9 @@ public:
 
     //Initialize networking
     void initNetworking();
+
+    //Initialize Connect funtions for network
+    void initNetworkingConnects();
 
     //Initialize database
     void initDatabase();
@@ -85,12 +91,29 @@ private:
     VehicleAuthorizationGUI *Authorize;
     UGV_state* UGV_States;
     UAVPayload* UAV_Payload;
-    QLabel* CPPuavStatusLabel;
-    QLabel* SLOuavStatusLabel;
     QLabel* uavModeLabel;
     targetingGUI* targeting;
 
     ConsoleLog* consolelog;
+    VehicleInfo* vInfo;
+
+
+    QPushButton command;
+    QWidget commandLayoutWidget;
+    QWidget controlLayoutWidget;
+    QPushButton control;
+    QGridLayout lowerBar;
+    QWidget lowerBarWidget;
+    QGridLayout command_box;
+    QGridLayout command_control;
+    //DUMMY PLACEHOLDERS
+    //QPushButton vehicleList;
+    //VehicleElementDiplay vehicleList;
+    QGridLayout *vehicleList;
+    VehicleElementDisplay *element;
+    std::vector<VehicleElementDisplay*> *elementList;
+    MainWindowADI *attitude;
+
     //Networking
     //networking *network;
     //NodeQueue* vUpdate;
@@ -99,7 +122,6 @@ private:
     DataDaemon* database;
 
     vehicle_list *vList22;
-    Waypoint22 *w22, *w23, *w24;
     Vehicle22 *v46, *v69, *v2, *v101, *v102;
 
     QPushButton* sendcmd;
@@ -108,6 +130,11 @@ private:
     //Dynamic Vehicle addition
     void addVehicle(int,int);
 
+    bool commandShow;
+    bool controlShow;
+
+    //Temp, remove when MainwindowADI has a slot to take in the vech to display
+    int currentVech;
 private slots:
     void update_vehicle_queue();
     void update_targets(Target*);
@@ -117,6 +144,9 @@ private slots:
     void UDrop();
     void UGVDrop();
 
+    void showCommand();
+    void showControl();
+
     //Test Slot for new signal
     void updateVech(int);
 
@@ -124,6 +154,10 @@ private slots:
     void addTarget(float lat, float lon);
     //void addWaypoint(int,Waypoint22*);
 //    void removeTarget(int gID);
+
+    //Test
+    void elementSelect(int);
+    void updateADI(int);
 
 signals:
     void update_vehicle(int vehicle);

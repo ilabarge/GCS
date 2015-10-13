@@ -35,13 +35,12 @@ SOURCES += \
     src/togglebutton.cpp \
     src/gcs_toolbar.cpp \
     #src/protonet/networking.cpp \
-    #src/protonet/rx_thread.cpp \
+    src/protonet/rx_thread.cpp \
     src/protonet/serialscanner.cpp \
     #src/nodequeue.cpp \
     src/SerialPortSelect.cpp \
     src/SerialCombobox.cpp \
     src/database/DataDaemon.cpp \
-    src/protonet/joystickinput.cpp \
     src/telemetrygui.cpp \
     src/waypointgui.cpp \
     src/vehicleauthorizationgui.cpp \
@@ -57,7 +56,19 @@ SOURCES += \
     src/InternetTest.cpp \
     src/protonet/Joystick.cpp \
     src/vehicle_list.cpp \
-    src/consolelog.cpp
+    src/consolelog.cpp \
+    src/vehicleelementdisplay.cpp \
+    src/vehicleinfo.cpp \
+    src/MainWindowADI.cpp \
+    src/WidgetADI.cpp \
+    src/WidgetSix.cpp \
+   # src/database/Vehicle.cpp \
+   # src/database/Waypoint.cpp \
+    src/MapSymbol.cpp \
+    main.cpp \
+    src/qfi_ADI.cpp \
+    src/protonet/joystickinput.cpp \
+    src/LayoutSquare.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -66,7 +77,7 @@ HEADERS += \
     src/togglebutton.h \
     src/gcs_toolbar.h \
     #src/protonet/networking.h \
-    #src/protonet/rx_thread.h \
+    src/protonet/rx_thread.h \
     src/protonet/serialscanner.h \
     #src/protonet/include/cond.h \
     #src/protonet/include/config.h \
@@ -114,7 +125,7 @@ HEADERS += \
     src/SerialPortSelect.h \
     src/SerialCombobox.h \
     src/database/DataDaemon.h \
-    src/protonet/joystickinput.h \
+    #src/protonet/joystickinput.h \ (check usage)
     src/telemetrygui.h \
     src/waypointgui.h \
     src/vehicleauthorizationgui.h \
@@ -136,28 +147,50 @@ HEADERS += \
     src/InternetTest.h \
     #src/protonet/Joystick.h \
     src/vehicle_list.h \
-    src/consolelog.h
+    src/consolelog.h \
+    src/vehicleelementdisplay.h \
+    src/vehicleinfo.h \
+    src/MainWindowADI.h \
+    src/qfi_ADI.h \
+    src/ui_WidgetSix.h \
+    src/WidgetADI.h \
+    src/WidgetSix.h \
+    src/protonet/include/protonet_message.h \
+    src/MapSymbol.h \
+    src/protonet/joystickinput.h \
+    src/LayoutSquare.h
 
 FORMS += \
-    forms/gcs_toolbar.ui
+    forms/gcs_toolbar.ui \
+    forms/MainWindowADI.ui \
+    forms/WidgetADI.ui \
+    forms/WidgetSix.ui
 
 RESOURCES += \
     images/sidebar_icons.qrc \
     images/Toolbar.qrc \
-    images/resources.qrc
+    images/resources.qrc \
+    src/qfi.qrc
 
 #Fixes qdatedime.h error
 DEFINES+= NOMINMAX\
          SFML_STATIC
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32d
-else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet_64
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32d
+#else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet_64
 
-INCLUDEPATH += $$PWD/src/protonet/include
-DEPENDPATH += $$PWD/src/protonet/include
-INCLUDEPATH += $$PWD/src/protonet/
-DEPENDPATH += $$PWD/src/protonet/
-INCLUDEPATH += $$PWD/src/
-DEPENDPATH += $$PWD/src/
+
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_64
+#comment upper line and decomment lower line to compile release 32bit
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonetd
+#else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet
+
+#INCLUDEPATH += $$PWD/src/protonet/include
+#DEPENDPATH += $$PWD/src/protonet/include
+#INCLUDEPATH += $$PWD/src/protonet/
+#DEPENDPATH += $$PWD/src/protonet/
+#INCLUDEPATH += $$PWD/src/
+#DEPENDPATH += $$PWD/src/

@@ -1,4 +1,6 @@
 #include "rx_thread.h"
+#include <QTcpSocket>
+#include <QTime>
 
 QMutex mutex;
 protonet::node *np;
@@ -24,7 +26,7 @@ rx_thread::~rx_thread() {
 //------------ User Commands -------------
 void rx_thread::send_ping()
 {
-    //qDebug() << "send ping";
+    qDebug() << "send ping";
     //Use vehicle type as id
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
@@ -57,8 +59,22 @@ void rx_thread::setNetworkSerial(QString serial)
 //TEST SEND GPS POSITION
 void rx_thread::GPS()
 {
-    node->send_vehicle_inertial_state(1,0,69,32,18,0,0,0,0,0,0,0,0,0,0,0,0,0);
-    node->send_vehicle_global_position(1,0,69,32*1E7,18*1E7,0,1,3*1E7,4*1E7,3*1E7);
+
+//    socket = new QTcpSocket( this ); // <-- needs to be a member variable: QTcpSocket * _pSocket;
+//    //connect( socket, SIGNAL(readyRead()), SLOT(readTcpData()) );
+//     QByteArray data;
+//     data.push_front("test");
+//    socket->connectToHost("kfriede.com", 6969);
+//    if( socket->waitForConnected() ) {
+//        socket->write( data );
+//    }
+    //node->send_vehicle_inertial_state(node id,time,id,lat,long,alt,roll,pitch,heading);
+    //node->send_vehicle_inertial_state(1,0,69,0,0,0,34,32,12,21,12,12,21,21,12,21,21,12);
+    QTime time;
+    time = time.currentTime();
+    int val = (time.second() * time.second())%360;
+    qDebug() << val;
+    node->send_vehicle_global_position(1,0,69,32*1E7,18*1E7,0,val*1E6,3*1E7,4*1E7,3*1E7);
     qDebug() << "sent info";
 }
 
@@ -102,7 +118,7 @@ void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::nod
    //qDebug() << "Ping timestamp:" << ping.timestamp << endl;
    //qDebug() << "Sending pong response." << endl;
    //send a pong as a reply
-   //np->send_pong(header.node_src_id);
+   node->send_pong(header.node_src_id,0);
    return 0;
 }
 
@@ -344,7 +360,7 @@ void rx_thread::process() {
    qDebug() << "Dest port for tester: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
-   node->establish_udp(link_id,1,dest_port,"127.0.0.1");
+   node->establish_udp(link_id, 1 ,dest_port,"127.0.0.1");
 
    //Start Node
    //node->start(); <- no longer needed due to protonet update
