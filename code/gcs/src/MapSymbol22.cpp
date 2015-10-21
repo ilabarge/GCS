@@ -70,11 +70,11 @@ void MapSymbol22::setColor(QColor color){
 void MapSymbol22::updateGraphic(){
     if(smExists){
         printf("updating via sm");
-        graphic = *(EsriRuntimeQt::Graphic(curr_Point, smSymbol));
+        graphic = &(EsriRuntimeQt::Graphic(curr_Point, smSymbol));
     }
     else if(pmExists){
         printf("updating via pm");
-        graphic = *(EsriRuntimeQt::Graphic(curr_Point, pmSymbol));
+        graphic = &(EsriRuntimeQt::Graphic(curr_Point, pmSymbol));
     }
 }
 

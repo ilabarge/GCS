@@ -4,7 +4,7 @@
 #include <QVector>
 #include <QMutex>
 
-#include "DataDaemon.h"
+//#include "DataDaemon.h"
 #include "networking.h"
 #include "Vehicle.h"
 

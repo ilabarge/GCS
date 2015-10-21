@@ -1,3 +1,1 @@
-build/
-build-GCS-Desktop_QT_5_3_MSVC2012_OpenGL_32bit-Release/
-build-GCS-Desktop_QT_5_3_MSVC2012_OpenGL_32bit-Debug/
+build*/

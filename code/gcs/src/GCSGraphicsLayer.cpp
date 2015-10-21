@@ -49,7 +49,7 @@ void GCSGraphicsLayer::updateWaypointGraphics(Waypoint22 *wp){
 }
 
 EsriRuntimeQt::Point GCSGraphicsLayer::decimalDegreesToPoint(QString coordinates){
-    return EsriRuntimeQt::CoordinateConversion::DecimalDegreesToPoint(coordinates, spatialRef);
+    return EsriRuntimeQt::CoordinateConversion::DecimalDegreesToPoint(coordinates, this->spatialReference());
 }
 
 EsriRuntimeQt::Point GCSGraphicsLayer::decimalDegreesToPoint(double lat, double lon){
@@ -59,8 +59,4 @@ EsriRuntimeQt::Point GCSGraphicsLayer::decimalDegreesToPoint(double lat, double 
 
 QString GCSGraphicsLayer::pointToDecimalDegrees(EsriRuntimeQt::Point p){
     return EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(p, 8);
-}
-
-void GCSGraphicsLayer::setSpatialReference(EsriRuntimeQt::SpatialReference ref){
-    spatialRef = ref;
 }

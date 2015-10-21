@@ -21,7 +21,7 @@
 #include <string>
 
 //GCS Includes
-#include "protonet.h"
+//#include "protonet.h"
 #include "Vehicle22.h"
 #include "nodequeue.h"
 #include "joystickinput.h"

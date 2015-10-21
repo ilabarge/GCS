@@ -36,8 +36,6 @@ public:
 
     QString pointToDecimalDegrees(EsriRuntimeQt::Point p);
 
-    void setSpatialReference(EsriRuntimeQt::SpatialReference ref);
-
 public slots:
     void removeLayerGraphic( int gID );
     void updateLayerGraphic( int gID, EsriRuntimeQt::Graphic *graphic );
@@ -47,8 +45,6 @@ public slots:
     void updateWaypointGraphics( Waypoint22* wp );
     void removeWaypointGraphic( int waypointID, int lineID);
 
-private:
-    EsriRuntimeQt::SpatialReference spatialRef;
 };
 
 #endif // GCSGRAPHICSLAYER_H

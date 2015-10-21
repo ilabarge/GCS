@@ -22,81 +22,6 @@ MainWindow::MainWindow(QWidget* parent) :
     vehicleList->setSpacing(0);
     elementList = new std::vector<VehicleElementDisplay*>();
 
-   //Statically initialize vehicles
-    v46 =  new Vehicle22(46, 1, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0);
-    v46->setColor(Qt::green);
-    v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50, mv->getSpatialRef());
-
-    v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50 );
-    //Create new element display
-    element = new VehicleElementDisplay();
-    element->setVehicle(v46);
-    element->setText();
-    //Add element to the list to display
-    vehicleList->addWidget(element,2,0);
-    //Add element to the list of elements
-    elementList->push_back(element);
-
-    v69 =  new Vehicle22(69, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0);
-    v69->setColor(Qt::cyan);
-    v69->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
-    element = new VehicleElementDisplay();
-    element->setVehicle(v69);
-    element->setText();
-    vehicleList->addWidget(element, 1,0);
-    elementList->push_back(element);
-
-    v2 = new Vehicle22(2, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0);
-    v2->setColor(Qt::green);
-    //v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
-    element = new VehicleElementDisplay();
-    element->setVehicle(v2);
-    element->setText();
-
-    v101 = new Vehicle22(101, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0);
-    v101->setColor(Qt::yellow);
-    //v101->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
-    element = new VehicleElementDisplay();
-    element->setVehicle(v101);
-    element->setText();
-    vehicleList->addWidget(element,0,0);
-    elementList->push_back(element);
-
-    v102 = new Vehicle22(102, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0,
-               0, 0, 0);
-    v102->setColor(Qt::magenta);
-    v102->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
-    element = new VehicleElementDisplay();
-    element->setVehicle(v102);
-    element->setText();
-
-    //Initialize default vech to display attitude to be the first in the list
-    currentVech = 0;
-
     //Initialize Map
     initMap();
 
@@ -172,6 +97,81 @@ void MainWindow::initMap(){
 
     mv = new MapView( this );
 
+    //Statically initialize vehicles
+     v46 =  new Vehicle22(46, 1, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0);
+     v46->setColor(Qt::green);
+     v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50, mv->getSpatialRef());
+
+     v46->setGraphic( ":/map_ico_ugv_02.png",50, 50, mv->getSpatialRef());
+     //Create new element display
+     element = new VehicleElementDisplay();
+     element->setVehicle(v46);
+     element->setText();
+     //Add element to the list to display
+     vehicleList->addWidget(element,2,0);
+     //Add element to the list of elements
+     elementList->push_back(element);
+
+     v69 =  new Vehicle22(69, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0);
+     v69->setColor(Qt::cyan);
+     v69->setGraphic( ":/map_ico_uav_01.png", 50, 50 , mv->getSpatialRef());
+     element = new VehicleElementDisplay();
+     element->setVehicle(v69);
+     element->setText();
+     vehicleList->addWidget(element, 1,0);
+     elementList->push_back(element);
+
+     v2 = new Vehicle22(2, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0);
+     v2->setColor(Qt::green);
+     //v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+     element = new VehicleElementDisplay();
+     element->setVehicle(v2);
+     element->setText();
+
+     v101 = new Vehicle22(101, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0);
+     v101->setColor(Qt::yellow);
+     //v101->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
+     element = new VehicleElementDisplay();
+     element->setVehicle(v101);
+     element->setText();
+     vehicleList->addWidget(element,0,0);
+     elementList->push_back(element);
+
+     v102 = new Vehicle22(102, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0);
+     v102->setColor(Qt::magenta);
+     v102->setGraphic( ":/map_ico_uav_02.png", 50, 50 , mv->getSpatialRef());
+     element = new VehicleElementDisplay();
+     element->setVehicle(v102);
+     element->setText();
+
+     //Initialize default vech to display attitude to be the first in the list
+     currentVech = 0;
+
     connect(mv, SIGNAL(MapReady()), this, SLOT(mapReady()));
 
     mainLayout->addWidget( mv->m_mapGraphicsView, 1, 0 );
@@ -202,7 +202,8 @@ void MainWindow::updateVech(int ID)
 //       qDebug() << (std::to_string(v3->getLongitude())).c_str();
 //       qDebug() << v2->getPoint().x() << " " << v2->getPoint().y();
          v69->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
-         mv->moveVehicleGraphic(*v69, EsriRuntimeQt::Point(v69->getPoint().x(), v69->getPoint().y()));
+
+         mv->moveVehicleGraphic(*v69, v69->getPoint());
          //v69->setAngle(v69->getHeading());
          mv->rotateVehicleGraphic(*v69,v69->getHeading());
 
@@ -212,7 +213,7 @@ void MainWindow::updateVech(int ID)
     //               v46->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50 );
        //printf("%f %f\n",v69->getLatitude(), v69->getLongitude());
        v46->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
-       mv->moveVehicleGraphic(*v46, EsriRuntimeQt::Point(v46->getPoint().x(), v46->getPoint().y()));
+       mv->moveVehicleGraphic(*v46,v46->getPoint());
        //v46->setAngle(v46->getHeading());
        mv->rotateVehicleGraphic(*v46,v46->getHeading());
     }
@@ -220,14 +221,14 @@ void MainWindow::updateVech(int ID)
     {
        //printf("%f %f\n",v101->getLatitude(), v101->getLongitude());
        v101->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
-       mv->moveVehicleGraphic(*v101, EsriRuntimeQt::Point(v101->getPoint().x(), v101->getPoint().y()));
+       mv->moveVehicleGraphic(*v101, v101->getPoint());
        v101->setAngle(v101->getHeading());
     }
     if(vehicle_ID == 102)
     {
        //printf("%f %f\n",v102->getLatitude(), v102->getLongitude());
        v102->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
-       mv->moveVehicleGraphic(*v102, EsriRuntimeQt::Point(v102->getPoint().x(), v102->getPoint().y()));
+       mv->moveVehicleGraphic(*v102, v102->getPoint());
        v102->setAngle(v102->getHeading());
     }
 

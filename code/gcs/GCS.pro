@@ -64,7 +64,7 @@ SOURCES += \
     src/WidgetSix.cpp \
    # src/database/Vehicle.cpp \
    # src/database/Waypoint.cpp \
-    src/MapSymbol.cpp \
+   # src/MapSymbol.cpp \
     main.cpp \
     src/qfi_ADI.cpp \
    # src/protonet/joystickinput.cpp \
@@ -156,8 +156,8 @@ HEADERS += \
     src/WidgetADI.h \
     src/WidgetSix.h \
     src/protonet/include/protonet_message.h \
-    src/MapSymbol.h \
-    src/protonet/joystickinput.h \
+    #src/MapSymbol.h \
+    #src/protonet/joystickinput.h \
     src/LayoutSquare.h
 
 FORMS += \

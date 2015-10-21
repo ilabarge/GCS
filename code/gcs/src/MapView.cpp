@@ -247,7 +247,7 @@ void MapView::onFeatureServiceCreationFailure(const QString& name)
 
 void MapView::onMapReady(){
     spatialRef = m_map.spatialReference();
-    grLayer->setSpatialReference(spatialRef);
+    m_map.addLayer(grLayer);
     qDebug() << "Map Ready.";
     emit MapReady();
 }
