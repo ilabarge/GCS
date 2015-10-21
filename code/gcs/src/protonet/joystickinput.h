@@ -6,7 +6,7 @@
 #include <QDebug>
 
 //GCS Includes
-#include <protonet.h>
+#include <protonet/include/protonet.h>
 #include <Joystick.h>
 
 class JoystickInput : public QObject

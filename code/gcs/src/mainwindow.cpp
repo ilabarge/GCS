@@ -47,9 +47,9 @@ MainWindow::MainWindow(QWidget* parent) :
 
     //C&C GUI
     //General Vehicle
-    //connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
-//    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
-//    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
+    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
+    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
+    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
     //Manual Targeting
 //    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
 
@@ -254,11 +254,11 @@ void MainWindow::initNetworking(){
     vInfo->getList(vList22);
 
     targetList = new TargetList();
-//    network = new networking(vList22,vUpdate,targetList);
-//    connect(network,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
-//    connect(network,SIGNAL(vehicleStatus(int,int)),this,SLOT(vStatus(int,int)));
-//                                   //lat, long
-//    connect(network, SIGNAL(vTarget(float,float)), this, SLOT( addTarget(float,float)));
+    network = new networking(vList22,vUpdate,targetList);
+    connect(network,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
+    connect(network,SIGNAL(vehicleStatus(int,int)),this,SLOT(vStatus(int,int)));
+                                   //lat, long
+    connect(network, SIGNAL(vTarget(float,float)), this, SLOT( addTarget(float,float)));
     //connect(this,SIGNAL(update_vehicle(int)), vListGUI ,SLOT((int)));
 
     initNetworkingConnects();

@@ -517,7 +517,7 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
     //nq->enqueue(header.node_src_id);
     if(header.node_src_id == 69)
     {
-        nq->status(header.node_src_id,status.vehicle_mode);
+        //nq->status(header.node_src_id,status.vehicle_mode);
     }
     //Debug
     /*
@@ -661,8 +661,8 @@ void* target_designation_command_callback(int8_t, proto_header_t, target_designa
                                           ((float)target.longitude)/1E7,
                                           target.altitude);
     //???
-    nq->targetRec(((float)target.latitude)/1E7,
-                  ((float)target.longitude)/1E7);
+    //nq->targetRec(((float)target.latitude)/1E7,
+                  //((float)target.longitude)/1E7);
     return 0;
 }
 
@@ -700,11 +700,12 @@ void rx_thread::process() {
    //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
    qDebug() << "Self port for GCS: " << self_port;
-   node->add_udp(&link_id,self_port,"127.0.0.1");
+   char  ip[] = "127.0.0.1";
+   node->add_udp(&link_id,self_port, ip);
    qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
-   node->establish_udp(link_id,1,dest_port,"127.0.0.1");
+   node->establish_udp(link_id,1,dest_port,ip);
 
    //Start Node
    //node->start(); <- no longer needed due to protonet update

@@ -22,7 +22,7 @@
 #include "MapView.h"
 #include "sidebar.h"
 #include "gcs_toolbar.h"
-//#include "networking.h"
+#include "networking.h"
 #include "SerialPortSelect.h"
 #include "database/DataDaemon.h"
 #include "targetlist.h"
@@ -115,8 +115,8 @@ private:
     MainWindowADI *attitude;
 
     //Networking
-    //networking *network;
-    //NodeQueue* vUpdate;
+    networking *network;
+    NodeQueue* vUpdate;
 
     //Database
     DataDaemon* database;
