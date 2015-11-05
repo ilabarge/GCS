@@ -727,8 +727,8 @@ void rx_thread::process() {
    //UGV Sends when
    node->register_on_target_designation_command(*target_designation_command_callback);
 
-   connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
-   connect(this, SIGNAL(startUGVJoystick()), joystick, SLOT(process()));
+   //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
+   //connect(this, SIGNAL(startUGVJoystick()), joystick, SLOT(process()));
    //when process is finished, set object to delete later
    //connect(this, SIGNAL(endUGVJoystick()), joystick, SLOT(deleteLater()));
    /*emit finished();

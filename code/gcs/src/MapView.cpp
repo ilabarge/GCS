@@ -64,6 +64,14 @@ MapView::MapView(QWidget* parent)
 //    Note for points:
 //          Top-left : -2.0037508342787E7,2.0037508342787E7
 //          Center   : 0,0
+    grLayer = new GCSGraphicsLayer();
+    targetLayer = new GCSGraphicsLayer();
+    uavLayer = new GCSGraphicsLayer();
+    ugvLayer = new GCSGraphicsLayer();
+    waypointLayer = new GCSGraphicsLayer();
+    opspaceLayer = new GCSGraphicsLayer();
+    satelliteLayer = new GCSGraphicsLayer();
+
 
     m_map.addLayer(grLayer);
     m_map.addLayer(targetLayer);
