@@ -41,7 +41,7 @@ MapView::MapView(QWidget* parent)
     m_map.setEsriLogoVisible(false);
 
     connect(&m_map,SIGNAL(mapReady()), this, SLOT(onMapReady()));
-    connect(&m_map, SIGNAL(mousePress(QMouseEvent)), this, SLOT(onMousePress(QMouseEvent)));
+    connect(&m_map, SIGNAL(mousePress(QMouseEvent&)), this, SLOT(onMousePress(QMouseEvent&)));
 
     if(it.isConnected()){
         //// ArcGIS Online Tiled Basemap Layer
@@ -324,7 +324,7 @@ bool MapView::rotateVehicleGraphic(Vehicle22& vehicle, int angle){
     return true;
 }
     
-void MapView::onMousePress(QMouseEvent event){
+void MapView::onMousePress(QMouseEvent &event){
     if(event.button() == Qt::LeftButton){
         qDebug() << "x: " << event.x() << " y: " << event.y();
         EsriRuntimeQt::Point point = m_map.toMapPoint(event.x(), event.y());

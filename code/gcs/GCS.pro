@@ -183,7 +183,7 @@ INCLUDEPATH += $$PWD/src/
 DEPENDPATH += $$PWD/src/
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonet_32d
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/protonet/ -lprotonetd
 #else:unix: LIBS += -L$$PWD/src/protonet/ -lprotonet_64
 
 

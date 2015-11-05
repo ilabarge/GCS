@@ -161,7 +161,7 @@ public slots:
     void targetLayerOn(bool isOn);
 
 private slots:
-    void onMousePress(QMouseEvent event);
+    void onMousePress(QMouseEvent &event);
 
 signals:
     void MapReady();

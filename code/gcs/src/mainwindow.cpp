@@ -21,13 +21,14 @@ MainWindow::MainWindow(QWidget* parent) :
     vehicleList->setMargin(0);
     vehicleList->setSpacing(0);
     elementList = new std::vector<VehicleElementDisplay*>();
-
+    qDebug() << "Begin init map";
     //Initialize Map
     initMap();
-
+    qDebug() << "Init map";
+    qDebug() << "Init begin widgets";
     //Initialize widgets
     initWidgets();
-
+    qDebug() << "init widgets";
     //Start the networking
     initNetworking();
 
@@ -94,9 +95,10 @@ MainWindow::MainWindow(QWidget* parent) :
 }
 
 void MainWindow::initMap(){
-
+    qDebug() << "Create map view";
     mv = new MapView( this );
-
+    qDebug() << "Created map view";
+    qDebug() << "Begin setting vehicles";
     //Statically initialize vehicles
      v46 =  new Vehicle22(46, 1, 0,
                 0, 0, 0,
@@ -105,9 +107,10 @@ void MainWindow::initMap(){
                 0, 0, 0,
                 0, 0, 0);
      v46->setColor(Qt::green);
-     v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50, mv->getSpatialRef());
-
+     qDebug() << "Setting graphic";
+     //v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50, mv->getSpatialRef());
      v46->setGraphic( ":/map_ico_ugv_02.png",50, 50, mv->getSpatialRef());
+     qDebug() << "Set graphic";
      //Create new element display
      element = new VehicleElementDisplay();
      element->setVehicle(v46);
@@ -171,6 +174,7 @@ void MainWindow::initMap(){
 
      //Initialize default vech to display attitude to be the first in the list
      currentVech = 0;
+     qDebug() << "Finished setting all vehicles";
 
     connect(mv, SIGNAL(MapReady()), this, SLOT(mapReady()));
 
