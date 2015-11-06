@@ -8,6 +8,7 @@
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent)
 {
+    try{
     //Set window properties
     setMinimumWidth( 900 );
     setMinimumHeight( 600 );
@@ -21,14 +22,11 @@ MainWindow::MainWindow(QWidget* parent) :
     vehicleList->setMargin(0);
     vehicleList->setSpacing(0);
     elementList = new std::vector<VehicleElementDisplay*>();
-    qDebug() << "Begin init map";
     //Initialize Map
     initMap();
-    qDebug() << "Init map";
-    qDebug() << "Init begin widgets";
+
     //Initialize widgets
     initWidgets();
-    qDebug() << "init widgets";
     //Start the networking
     initNetworking();
 
@@ -92,13 +90,17 @@ MainWindow::MainWindow(QWidget* parent) :
 //    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
 //    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
 //    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
+    }catch(...){
+        qDebug() << "Error caught";
+    }
 }
 
+
 void MainWindow::initMap(){
-    qDebug() << "Create map view";
+    //qDebug() << "Create map view";
     mv = new MapView( this );
-    qDebug() << "Created map view";
-    qDebug() << "Begin setting vehicles";
+    //qDebug() << "Created map view";
+    //qDebug() << "Begin setting vehicles";
     //Statically initialize vehicles
      v46 =  new Vehicle22(46, 1, 0,
                 0, 0, 0,
@@ -107,10 +109,10 @@ void MainWindow::initMap(){
                 0, 0, 0,
                 0, 0, 0);
      v46->setColor(Qt::green);
-     qDebug() << "Setting graphic";
+     //qDebug() << "Setting graphic";
      //v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50, mv->getSpatialRef());
      v46->setGraphic( ":/map_ico_ugv_02.png",50, 50, mv->getSpatialRef());
-     qDebug() << "Set graphic";
+     //qDebug() << "Set graphic";
      //Create new element display
      element = new VehicleElementDisplay();
      element->setVehicle(v46);
@@ -141,7 +143,7 @@ void MainWindow::initMap(){
                 0, 0, 0,
                 0, 0, 0);
      v2->setColor(Qt::green);
-     //v2->setGraphic( ":/map_ico_uav_01.png", 0, 0, 50, 50 );
+     v2->setGraphic( ":/map_ico_uav_01.png", 50, 50 , mv->getSpatialRef());
      element = new VehicleElementDisplay();
      element->setVehicle(v2);
      element->setText();
@@ -153,7 +155,7 @@ void MainWindow::initMap(){
                 0, 0, 0,
                 0, 0, 0);
      v101->setColor(Qt::yellow);
-     //v101->setGraphic( ":/map_ico_uav_02.png", 0, 0, 50, 50 );
+     v101->setGraphic( ":/map_ico_uav_02.png", 50, 50 , mv->getSpatialRef());
      element = new VehicleElementDisplay();
      element->setVehicle(v101);
      element->setText();
@@ -552,21 +554,21 @@ void MainWindow::UGVDrop()
 void MainWindow::mapReady(){
 
 //    qDebug() << "Adding v46";
-    mv->addGraphicToLayer( *(v46->getGraphic()) );
+    mv->addGraphicToLayer( (v46->getGraphic()) );
 //    qDebug() << "Added " << v46->getGraphicID();
     connect(v46, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
     connect(v46, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
     connect(v46, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
 
 //    qDebug() << "Adding v69";
-    mv->addGraphicToLayer( *(v69->getGraphic()) );
+    mv->addGraphicToLayer( (v69->getGraphic()) );
 //    qDebug() << "Added " << v69->getGraphicID();
     connect(v69, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
     connect(v69, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
     connect(v69, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
 
 //    qDebug() << "Adding v2";
-    mv->addGraphicToLayer( *(v2->getGraphic()) );
+    mv->addGraphicToLayer( (v2->getGraphic()) );
 //    qDebug() << "Graphic " << v2->getGraphic().isEmpty();
 //    qDebug() << "Added " << v2->getGraphicID();
     connect(v2, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
@@ -574,13 +576,13 @@ void MainWindow::mapReady(){
     connect(v2, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
 
 //    qDebug() << "Adding v101";
-    mv->addGraphicToLayer( *(v101->getGraphic()) );
+    mv->addGraphicToLayer( (v101->getGraphic()) );
     connect(v101, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
     connect(v101, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
     connect(v101, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
 
 //    qDebug() << "Adding v102";
-    mv->addGraphicToLayer( *(v102->getGraphic()) );
+    mv->addGraphicToLayer( (v102->getGraphic()) );
     connect(v102, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
     connect(v102, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
     connect(v102, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
@@ -682,7 +684,7 @@ void MainWindow::addTarget(float lat, float lon){
     Target target(lat, lon, 0, 0, 0, 0);
     target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X,
                       mv->decimalDegreesToPoint(lat, lon), 20);
-    mv->addGraphicToLayer(*(target.getGraphic()));
+    mv->addGraphicToLayer((target.getGraphic()));
 }
 
 void MainWindow::showCommand(){

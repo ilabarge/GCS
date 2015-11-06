@@ -36,19 +36,20 @@ MapView::MapView(QWidget* parent)
 {
     //Set to openGL rendering
     //EsriRuntimeQt::ArcGISRuntime::setRenderEngine(EsriRuntimeQt::RenderEngine::OpenGL);
-    m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(&m_map, parent);
-    m_map.setWrapAroundEnabled(false);
-    m_map.setEsriLogoVisible(false);
+    m_map = new EsriRuntimeQt::Map(this);
+    m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(m_map, this);
+    m_map->setWrapAroundEnabled(false);
+    //m_map->setEsriLogoVisible(false);
 
-    connect(&m_map,SIGNAL(mapReady()), this, SLOT(onMapReady()));
-    connect(&m_map, SIGNAL(mousePress(QMouseEvent&)), this, SLOT(onMousePress(QMouseEvent&)));
+    connect(m_map,SIGNAL(mapReady()), this, SLOT(onMapReady()));
+    connect(m_map, SIGNAL(mousePress(QMouseEvent&)), this, SLOT(onMousePress(QMouseEvent&)));
 
     if(it.isConnected()){
         //// ArcGIS Online Tiled Basemap Layer
-        m_tiledServiceLayer = &EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
-        m_map.addLayer(m_tiledServiceLayer);
-        imageryLayer = &EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
-        m_map.addLayer(imageryLayer);
+        m_tiledServiceLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", this);
+        m_map->addLayer(m_tiledServiceLayer);
+        //imageryLayer = &(new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"));
+        //m_map->addLayer(imageryLayer);
     }
     else{
         //// Local Tiled Basemap Layer using: sdk/samples/data/tpks/Topographic.tpk
@@ -58,7 +59,7 @@ MapView::MapView(QWidget* parent)
         QString pathSampleData = dataDir.path() + QDir::separator();
         QString tiledBaseMapLayer = pathSampleData + "tpks" + QDir::separator() + "Topographic.tpk";
         m_tiledLayer = &EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer);
-        m_map.addLayer(m_tiledLayer);
+        m_map->addLayer(m_tiledLayer);
     }
 
 //    Note for points:
@@ -73,17 +74,17 @@ MapView::MapView(QWidget* parent)
     satelliteLayer = new GCSGraphicsLayer();
 
 
-    m_map.addLayer(grLayer);
-    m_map.addLayer(targetLayer);
-    m_map.addLayer(uavLayer);
-    m_map.addLayer(ugvLayer);
-    m_map.addLayer(waypointLayer);
-    m_map.addLayer(opspaceLayer);
-    m_map.addLayer(satelliteLayer);
+    m_map->addLayer(grLayer);
+    m_map->addLayer(targetLayer);
+    m_map->addLayer(uavLayer);
+    m_map->addLayer(ugvLayer);
+    m_map->addLayer(waypointLayer);
+    m_map->addLayer(opspaceLayer);
+    m_map->addLayer(satelliteLayer);
 
     //// ArcGIS Online Dynamic Map Service Layer
     //m_dynamicServiceLayer = EsriRuntimeQt::ArcGISDynamicMapServiceLayer("http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StateCityHighway_USA/MapServer");
-    //m_map.addLayer(m_dynamicServiceLayer);
+    //m_map->addLayer(m_dynamicServiceLayer);
 
     //Local Dynamic Layer using: sdk/samples/data/mpks/USCitiesStates.mpk
     /*
@@ -122,7 +123,7 @@ MapView::MapView(QWidget* parent)
     EsriRuntimeQt::SimpleMarkerSymbol redCircle(Qt::red, 8, EsriRuntimeQt::SimpleMarkerSymbolStyle::Circle);
     EsriRuntimeQt::Graphic graphic1(point1, redCircle);
     m_graphicsLayer.addGraphic(graphic1);
-    m_map.addLayer(m_graphicsLayer);
+    m_map->addLayer(m_graphicsLayer);
     */
 
     // Feature Layer
@@ -136,12 +137,12 @@ MapView::MapView(QWidget* parent)
     {
         //Layer can also be created directly by specifying the layer in the url
         m_featureLayer = EsriRuntimeQt::ArcGISFeatureLayer(layerInfoList.at(0).url());
-        m_map.addLayer(m_featureLayer);
+        m_map->addLayer(m_featureLayer);
     }
     */
 
     //// connect to signal that is emitted when the map is ready
-    // connect(&m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
+    // connect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
 }
 
 void MapView::UAVLayerVisible(bool visible){
@@ -197,7 +198,7 @@ MapView::~MapView()
     //disconnect(&m_localFeatureService, SIGNAL(serviceCreationFailure(const QString&)), this, SLOT(onFeatureServiceCreationFailure(const QString&)));
 
     // disconnect signal for Map
-    //disconnect(&m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
+    //disconnect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
     delete m_mapGraphicsView;
 }
 
@@ -209,7 +210,7 @@ void MapView::onLocalServiceCreationSuccess(const QString& url, const QString& n
 
    // create the ArcGISDynamicMapServiceLayer using the LocalMapService's url
    m_dynamicLocalServiceLayer = EsriRuntimeQt::ArcGISDynamicMapServiceLayer(m_localMapService.urlMapService());
-   m_map.addLayer(m_dynamicLocalServiceLayer);
+   m_map->addLayer(m_dynamicLocalServiceLayer);
 }
 */
 
@@ -241,7 +242,7 @@ void MapView::onFeatureServiceCreationSuccess(const QString& url, const QString&
   }
 
   m_localFeatureLayer = EsriRuntimeQt::ArcGISFeatureLayer(serviceUrl);
-  m_map.addLayer(m_localFeatureLayer);
+  m_map->addLayer(m_localFeatureLayer);
 }
 */
 
@@ -254,8 +255,8 @@ void MapView::onFeatureServiceCreationFailure(const QString& name)
 */
 
 void MapView::onMapReady(){
-    spatialRef = m_map.spatialReference();
-    m_map.addLayer(grLayer);
+    spatialRef = m_map->spatialReference();
+    //m_map->addLayer(grLayer);
     qDebug() << "Map Ready.";
     emit MapReady();
 }
@@ -307,9 +308,9 @@ bool MapView::moveLayerGraphic(Layers layer, EsriRuntimeQt::Graphic& graphic, do
 }
 
 //bool MapView::addGraphicToLayer(EsriRuntimeQt::GraphicsLayer& layer, EsriRuntimeQt::Graphic& graphic){
-bool MapView::addGraphicToLayer(EsriRuntimeQt::Graphic& graphic){
+bool MapView::addGraphicToLayer(EsriRuntimeQt::Graphic *graphic){
     //layer.addGraphic(graphic);
-    grLayer->addGraphic(&graphic);
+    grLayer->addGraphic(graphic);
     return true;
 }
 
@@ -333,9 +334,11 @@ bool MapView::rotateVehicleGraphic(Vehicle22& vehicle, int angle){
 }
     
 void MapView::onMousePress(QMouseEvent &event){
+    EsriRuntimeQt::Point point = m_map->toMapPoint(event.pos().x(), event.pos().y());
+    spatialRef = m_map->spatialReference();
     if(event.button() == Qt::LeftButton){
         qDebug() << "x: " << event.x() << " y: " << event.y();
-        EsriRuntimeQt::Point point = m_map.toMapPoint(event.x(), event.y());
+        //EsriRuntimeQt::Point point = m_map->toMapPoint(event.x(), event.y());
         QList<double> latLon = coordinateStringToDoubles(EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(
                                       EsriRuntimeQt::Point(point.x(), point.y(),spatialRef), 9));
         emit coordDesignated(latLon.at(0), latLon.at(1));

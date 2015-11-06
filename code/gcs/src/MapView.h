@@ -113,7 +113,7 @@ public:
      * @param v     The vehicle to add.
      * @return      true on success, false on fail.
      */
-    bool addGraphicToLayer(EsriRuntimeQt::Graphic& graphic);
+    bool addGraphicToLayer(EsriRuntimeQt::Graphic *graphic);
 
     //Conversion Methods
     /**
@@ -168,7 +168,7 @@ signals:
     void coordDesignated(double, double);
 
 private:
-    EsriRuntimeQt::Map m_map;
+    EsriRuntimeQt::Map *m_map;
     //Update 10.2.5
     /*changed layers to pointers as they are singletons
      meaning that we cannot copy the values of the map layer
