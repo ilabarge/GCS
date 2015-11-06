@@ -46,10 +46,20 @@ MapView::MapView(QWidget* parent)
 
     if(it.isConnected()){
         //// ArcGIS Online Tiled Basemap Layer
-        m_tiledServiceLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", this);
-        m_map->addLayer(m_tiledServiceLayer);
-        //imageryLayer = &(new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"));
-        //m_map->addLayer(imageryLayer);
+//        m_tiledServiceLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", this);
+//        m_map->addLayer(m_tiledServiceLayer);
+//        imageryLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", this);
+//        m_map->addLayer(imageryLayer);
+
+        //// Local Tiled Basemap Layer using: sdk/samples/data/tpks/Topographic.tpk
+        QString path = EsriRuntimeQt::ArcGISRuntime::installDirectory();
+        path.append("/sdk/samples/data");
+        QDir dataDir(path); // using QDir to convert to correct file separator
+        QString pathSampleData = dataDir.path() + QDir::separator();
+        QString tiledBaseMapLayer = pathSampleData + "tpks" + QDir::separator() + "Topographic.tpk";
+        //qDebug(tiledBaseMapLayer.toStdString().);
+        m_tiledLayer = new EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer, this);
+        m_map->addLayer(m_tiledLayer);
     }
     else{
         //// Local Tiled Basemap Layer using: sdk/samples/data/tpks/Topographic.tpk
@@ -360,10 +370,10 @@ QList<double> MapView::coordinateStringToDoubles(QString coordinates){
 
     //Negative lon
     if(list.at(1).contains("W")){
-        latLon.append(-list.at(1).left(list.at(1).indexOf("W")).toDouble());
+        //latLon.append(-list.at(1).left(list.at(1).indexOf("W")).toDouble());
     }
     else{
-        latLon.append(list.at(1).left(list.at(1).indexOf("E")).toDouble());
+       // latLon.append(list.at(1).left(list.at(1).indexOf("E")).toDouble());
     }
     return latLon;
 }

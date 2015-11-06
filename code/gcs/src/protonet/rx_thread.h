@@ -32,7 +32,7 @@ class rx_thread : public QObject
 {
     Q_OBJECT
 public:
-    rx_thread(uint8_t, uint16_t, uint16_t, vehicle_list*, NodeQueue*, TargetList*);
+    rx_thread(uint8_t, uint16_t, uint16_t, vehicle_list*, TargetList*);
     rx_thread();
     void print_port();
     ~rx_thread();

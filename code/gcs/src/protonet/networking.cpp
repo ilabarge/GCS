@@ -8,12 +8,12 @@
  * @param self_port UDP port to recieve protonet messages
  * @param dest_port UDP port to send protonet messages
  */
-void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uint8_t node_id, uint16_t self_port, uint16_t dest_port)
+void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id, uint16_t self_port, uint16_t dest_port)
 {
     //create new thread
     network_thread = new QThread;
     //Create class to put in thread
-    rx = new rx_thread(node_id,self_port, dest_port, v,q,tgt);
+    rx = new rx_thread(node_id,self_port, dest_port, v,tgt);
     //Put class in thread
     rx->moveToThread(network_thread);
     //Map error strings
@@ -96,10 +96,10 @@ void networking::invokeThread(NodeQueue* q, vehicle_list* v, TargetList* tgt,uin
 /**
  * @brief networking::networking invokes the thread to handle protonet messages
  */
-networking::networking(vehicle_list* v, NodeQueue *q, TargetList* targ)
+networking::networking(vehicle_list* v, TargetList* targ)
 {
     //qDebug() << "Invoking thread with: " << port;
-    invokeThread(q,v,targ,1, 7991, 7990);
+    invokeThread(v,targ,1, 7991, 7990);
 }
 
 //Network send message signal/slots

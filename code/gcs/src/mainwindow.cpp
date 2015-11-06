@@ -260,7 +260,7 @@ void MainWindow::initNetworking(){
     vInfo->getList(vList22);
 
     targetList = new TargetList();
-    network = new networking(vList22,vUpdate,targetList);
+    network = new networking(vList22,targetList);
     connect(network,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
     connect(network,SIGNAL(vehicleStatus(int,int)),this,SLOT(vStatus(int,int)));
                                    //lat, long

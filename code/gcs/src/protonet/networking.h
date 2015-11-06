@@ -23,9 +23,9 @@ class networking : public QObject
 {
     Q_OBJECT
 public:
-    networking(vehicle_list* v, NodeQueue* q, TargetList* targ);
+    networking(vehicle_list* v, TargetList* targ);
     ~networking();
-    void invokeThread(NodeQueue* q, vehicle_list *v, TargetList* tgt, uint8_t node_id, uint16_t self_port, uint16_t dest_port);
+    void invokeThread(vehicle_list *v, TargetList* tgt, uint8_t node_id, uint16_t self_port, uint16_t dest_port);
 
 public slots:
     void update_vehicle_queue();

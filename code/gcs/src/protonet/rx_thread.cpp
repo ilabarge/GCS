@@ -3,23 +3,21 @@ TargetList* targetList;
 vehicle_list* vp;
 QMutex mutex;
 protonet::node *np;
-NodeQueue *nq;
 
 // ------- CONSTRUCTOR -------
-rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, vehicle_list* v, NodeQueue *q, TargetList* tgt){
+rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, vehicle_list* v, TargetList* tgt){
     // you could copy data from constructor arguments to internal variables here.
     this->node_id = node_id;
     this->self_port = self_port;
     this->dest_port = dest_port;
     qDebug() << "rx_thread constructor serial port is: " << this->serial_port;
     vp = v;
-    nq = q;
     this->vList = v;
     targetList = tgt;
-    connect(q,SIGNAL(update_queue()),this,SLOT(update_vech_queue()));
-    connect(q,SIGNAL(vechStat(int,int)),this,SLOT(vechStat(int,int)));
+    //connect(q,SIGNAL(update_queue()),this,SLOT(update_vech_queue()));
+    //connect(q,SIGNAL(vechStat(int,int)),this,SLOT(vechStat(int,int)));
     connect(targetList,SIGNAL(newTarget(Target*)),this,SLOT(target_added(Target*)));
-    connect(q,SIGNAL(target(float,float)),this,SLOT(target(float,float)));
+    //connect(q,SIGNAL(target(float,float)),this,SLOT(target(float,float)));
     //Connect for callback for new vehicle list
     connect(v,SIGNAL(update(int)),this,SLOT(update(int)));
     connect(v,SIGNAL(update(int)),this,SLOT(sendMessage(int)));
