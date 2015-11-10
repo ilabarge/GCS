@@ -45,30 +45,25 @@ MapView::MapView(QWidget* parent)
     connect(m_map, SIGNAL(mousePress(QMouseEvent&)), this, SLOT(onMousePress(QMouseEvent&)));
 
     if(it.isConnected()){
+        qDebug() << "Internet present";
         //// ArcGIS Online Tiled Basemap Layer
-//        m_tiledServiceLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", this);
-//        m_map->addLayer(m_tiledServiceLayer);
-//        imageryLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", this);
-//        m_map->addLayer(imageryLayer);
-
-        //// Local Tiled Basemap Layer using: sdk/samples/data/tpks/Topographic.tpk
-        QString path = EsriRuntimeQt::ArcGISRuntime::installDirectory();
-        path.append("/sdk/samples/data");
-        QDir dataDir(path); // using QDir to convert to correct file separator
-        QString pathSampleData = dataDir.path() + QDir::separator();
-        QString tiledBaseMapLayer = pathSampleData + "tpks" + QDir::separator() + "Topographic.tpk";
-        //qDebug(tiledBaseMapLayer.toStdString().);
-        m_tiledLayer = new EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer, this);
-        m_map->addLayer(m_tiledLayer);
+        m_tiledServiceLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", this);
+        m_map->addLayer(m_tiledServiceLayer);
+        imageryLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", this);
+        m_map->addLayer(imageryLayer);
     }
     else{
+        qDebug() << "No internet";
         //// Local Tiled Basemap Layer using: sdk/samples/data/tpks/Topographic.tpk
         QString path = EsriRuntimeQt::ArcGISRuntime::installDirectory();
         path.append("/sdk/samples/data");
+        qDebug() << "Path: " << path;
         QDir dataDir(path); // using QDir to convert to correct file separator
         QString pathSampleData = dataDir.path() + QDir::separator();
+        qDebug() << "path sample : " << pathSampleData;
         QString tiledBaseMapLayer = pathSampleData + "tpks" + QDir::separator() + "Topographic.tpk";
-        m_tiledLayer = &EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer);
+        qDebug() << "tiled base layer " << tiledBaseMapLayer;
+        m_tiledLayer =  new EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer, this);
         m_map->addLayer(m_tiledLayer);
     }
 
@@ -152,7 +147,7 @@ MapView::MapView(QWidget* parent)
     */
 
     //// connect to signal that is emitted when the map is ready
-    // connect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
+    connect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
 }
 
 void MapView::UAVLayerVisible(bool visible){
@@ -208,7 +203,7 @@ MapView::~MapView()
     //disconnect(&m_localFeatureService, SIGNAL(serviceCreationFailure(const QString&)), this, SLOT(onFeatureServiceCreationFailure(const QString&)));
 
     // disconnect signal for Map
-    //disconnect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
+    disconnect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
     delete m_mapGraphicsView;
 }
 

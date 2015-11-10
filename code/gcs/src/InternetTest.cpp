@@ -12,8 +12,7 @@ bool InternetTest::isConnected()
 
     if(!socket->waitForConnected(1000))
     {
-        //return false;
-        return true;
+        return false;
     }
     return true;
 }
