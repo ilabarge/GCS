@@ -39,7 +39,7 @@ MapView::MapView(QWidget* parent)
     m_map = new EsriRuntimeQt::Map(this);
     m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(m_map, this);
     m_map->setWrapAroundEnabled(false);
-    //m_map->setEsriLogoVisible(false);
+    m_map->setEsriLogoVisible(false);
 
     connect(m_map,SIGNAL(mapReady()), this, SLOT(onMapReady()));
     connect(m_map, SIGNAL(mousePress(QMouseEvent&)), this, SLOT(onMousePress(QMouseEvent&)));
