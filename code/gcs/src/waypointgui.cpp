@@ -1,7 +1,7 @@
 #include "waypointgui.h"
 #include <QDebug>
 
-WaypointGUI::WaypointGUI(QWidget *parent) :
+WaypointGUI::WaypointGUI(EsriRuntimeQt::SpatialReference sp, QWidget *parent) :
     QWidget(parent)
 {
     /* Type defn
@@ -13,6 +13,7 @@ WaypointGUI::WaypointGUI(QWidget *parent) :
     mainLayout = new QGridLayout();
     //Set margins
     mainLayout->setMargin( 0 );
+    this->sp = sp;
     initGUIElements();
     setGUIElementText();
     addGUIElementToLayout();
@@ -26,17 +27,18 @@ WaypointGUI::WaypointGUI(QWidget *parent) :
  */
 void WaypointGUI::send_waypoint()
 {
-//    Waypoint22* w = new Waypoint22(id->text().toInt(),
-//                         type->text().toInt(),
-//                         latitude->text().toDouble(),
-//                         longitude->text().toDouble(),
-//                         altitude->text().toInt(),
-//                         0,
-//                         );
+    Waypoint22* w = new Waypoint22(id->text().toInt(),
+                         type->text().toInt(),
+                         latitude->text().toDouble(),
+                         longitude->text().toDouble(),
+                         altitude->text().toInt(),
+                         0,sp
+                         );
+
 
     mutex.lock();
     mutex.unlock();
-    //emit waypoint(w, vehicle->text().toInt());
+    emit waypoint(w, vehicle->text().toInt());
 }
 
 /**

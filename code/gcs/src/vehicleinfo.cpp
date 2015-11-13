@@ -18,6 +18,7 @@ VehicleInfo::VehicleInfo(QWidget *parent) :
     longitude = new QLabel("Longitude",this);
     heading = new QLabel("Heading",this);
     velocity = new QLabel("Velocity",this);
+    depth = new QLabel("Depth",this);
 
     idUp = new QLabel("Not set");
     typeUp = new QLabel("Not set");
@@ -28,6 +29,7 @@ VehicleInfo::VehicleInfo(QWidget *parent) :
     longUp = new QLabel("Not set");
     headingUp = new QLabel("Not set");
     velocityUp = new QLabel("Not set");
+    depthUp = new QLabel("Not set");
 
     //    vehicleID->setStyleSheet("QLabel { background-color : red; }");
     //    vehicleType->setStyleSheet("QLabel { background-color : blue; }");
@@ -56,6 +58,9 @@ VehicleInfo::VehicleInfo(QWidget *parent) :
     infoType->addWidget(longUp, 6, 1);
     infoType->addWidget(headingUp, 7, 1);
     infoType->addWidget(velocityUp, 8, 1);
+    infoType->addWidget(depth,9,0);
+    infoType->addWidget(depthUp,9,1);
+
     window->setLayout(infoType);
     setCentralWidget(window);
 }
@@ -74,6 +79,7 @@ void VehicleInfo::status(int vID) {
         longUp->setText(QString::number(vp->getLongitude()));
         headingUp->setText(QString::number(vp->getHeading()));
         velocityUp->setText(QString::number(vp->getVelocity()));
+        depthUp->setText(QString::number(vp->getDepth()));
     }
 }
 
@@ -89,6 +95,8 @@ void VehicleInfo::displayVech(int vID) {
     longUp->setText(QString::number(vp->getLongitude()));
     headingUp->setText(QString::number(vp->getHeading()));
     velocityUp->setText(QString::number(vp->getVelocity()));
+    depthUp->setText(QString::number(vp->getDepth()));
+
 }
 
 void VehicleInfo::getList(vehicle_list *p) {

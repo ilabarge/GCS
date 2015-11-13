@@ -74,19 +74,19 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
    //update vehicle localy to have t
    qDebug() << "vehicle ID " << id;
    qDebug() << "waypoint type" << waypoint->getType();
-   for(int i = 0; i < vList->length(); i++)
-   {
-       qDebug() << "at vehicle: " <<  vList->at(i)->getVehicleID();
-       if(vList->at(i)->getVehicleID() == vehicle)
+   if(vList->get(id) != 0){
+
+       qDebug() << "at vehicle: " <<  vList->get(id)->getVehicleID();
+       if(vList->get(id)->getVehicleID() == vehicle)
        {
-           int size = vList->at(i)->waypoints.size();
+           int size = vList->get(id)->waypoints.size();
            int type = waypoint->getType();
            qDebug() << "dest size: " << size;
            qDebug() << "Waypoint id: " << waypoint->getID();
            if((type == 0) && ((waypoint->getID() - 1) == (size)))
            {
                mutex.lock();
-               vList->at(i)->appendWaypoint(waypoint, vList->at(i)->getColor() );
+               vList->get(id)->appendWaypoint(waypoint, vList->get(id)->getColor() );
                node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                   (int32_t)(waypoint->getLatitude()*1E7),
                                                   (int32_t)(waypoint->getLongitude()*1E7),
@@ -104,6 +104,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
            else if((type == 0) && ((waypoint->getID()) > (size)))
            {
                emit messageAlert(QString("added t past end of list!!"));
+
            }
           //this condition must be true for editing and removing t to
           //work
@@ -116,18 +117,20 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                  if(waypoint->getID() == size)
                  {
                      mutex.lock();
-                     vList->at(i)->removeWaypoint(waypoint->getID() -1);
-                     vList->at(i)->appendWaypoint(waypoint, Qt::green );
+                     vList->get(id)->removeWaypoint(waypoint->getID() -1);
+                     vList->get(id)->appendWaypoint(waypoint, Qt::green );
                      mutex.unlock();
                      emit message(QString("Edited waypoint at first position"));
+
                  }
                  else
                  {
                      mutex.lock();
-                     vList->at(i)->removeWaypoint(waypoint->getID() -1);
-                     vList->at(i)->insertWaypoint(waypoint->getID() - 1, waypoint, Qt::green );
+                     vList->get(id)->removeWaypoint(waypoint->getID() -1);
+                     vList->get(id)->insertWaypoint(waypoint->getID() - 1, waypoint, Qt::green );
                      mutex.unlock();
                      emit message(QString("Edited waypoint"));
+
                  }
 
               }
@@ -136,9 +139,10 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
               {
                   //qDebug() << "removed t";
                   mutex.lock();
-                  vList->at(i)->removeWaypoint(waypoint->getID() - 1);
+                  vList->get(id)->removeWaypoint(waypoint->getID() - 1);
                   mutex.unlock();
                   emit message(QString("Removed Waypoint"));
+
               }
 
               if((type == 1) || (type == 2))
@@ -153,11 +157,13 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                      waypoint->getID());
                   mutex.unlock();
                   emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
+
               }
           }
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
        }
    }
+   qDebug() << "Vehicle not found";
 }
 
 //Need to send before vehicle will stream info

@@ -39,6 +39,7 @@ private:
     QLabel *longitude;
     QLabel *heading;
     QLabel *velocity;
+    QLabel *depth;
 
 
     QLabel *idUp;
@@ -50,6 +51,7 @@ private:
     QLabel *longUp;
     QLabel *headingUp;
     QLabel *velocityUp;
+    QLabel *depthUp;
 };
 
 #endif // VEHICLEINFO_H

@@ -18,7 +18,7 @@ class WaypointGUI : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WaypointGUI(QWidget *parent = 0);
+    explicit WaypointGUI(EsriRuntimeQt::SpatialReference, QWidget *parent = 0);
 
 signals:
     void waypoint(Waypoint22*,int);
@@ -47,7 +47,7 @@ private:
 
     QPushButton *WaypointB;
     QMutex mutex;
-
+    EsriRuntimeQt::SpatialReference sp;
 };
 
 #endif // WAYPOINTGUI_H

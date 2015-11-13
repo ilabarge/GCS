@@ -87,9 +87,9 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(sb, SIGNAL(targetOn(bool)), mv, SLOT(targetLayerOn(bool)));
 
     //Connect message display for console log
-//    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
-//    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
-//    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
+    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
+    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
+    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
     }catch(...){
         qDebug() << "Error caught";
     }
@@ -272,18 +272,18 @@ void MainWindow::initNetworking(){
 
 void MainWindow::initNetworkingConnects(){
     //Set up connects for networking
-//    connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
+    connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
 //    //update targets
 //    connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
 
 //    //TEST METHOD FOR NEW SIGNAL
-//    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
+    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
 
 //    //C&C GUI
 //    //General Vehicle
-//    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
-//    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
-//    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
+    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
+    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
+    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
 //    //Manual Targeting
 //    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
 
@@ -314,14 +314,14 @@ void MainWindow::initNetworkingConnects(){
 //    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
 
 //    //Connect message display for console log
-//    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
-//    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
-//    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
+    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
+    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
+    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
 
 //    //Connect vehicle updates to vehicle info
-//    connect(network,SIGNAL(updateVechicle(int)),vInfo,SLOT(status(int)));
+    connect(network,SIGNAL(updateVechicle(int)),vInfo,SLOT(status(int)));
 //    //Connect vehcil update with the attitued
-//    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateADI(int)));
+    connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateADI(int)));
 }
 
 
@@ -348,7 +348,7 @@ void MainWindow::initWidgets(){
     UGV_JOYSTICKSTOP = new QPushButton();
     UGV_JOYSTICKSTOP->setText("Stop Joystick Control");
     Telemetry = new TelemetryGUI();
-    way = new WaypointGUI();
+    way = new WaypointGUI(mv->getSpatialRef());
     Authorize = new VehicleAuthorizationGUI();
     UGV_States = new UGV_state();
     UAV_Payload = new UAVPayload();

@@ -112,10 +112,10 @@ void networking::update_vehicle_queue() { emit update_queue(); }
 void networking::updateVech(int ID) {emit updateVechicle(ID); }
 
 //Sending waypoint
-void networking::send_waypoint(Waypoint22* w, int id){ emit waypoint(w, id); }
+void networking::send_waypoint(Waypoint22* w, int id){ qDebug() << "in networking";emit waypoint(w, id); }
 
 //Send vehicle authorization request to vehicle i
-void networking::send_vehicle_auth_request(int i){ emit vehicle_auth_request(i);}
+void networking::send_vehicle_auth_request(int i){emit vehicle_auth_request(i);}
 
 //Send telemetry command
 void networking::send_telemetry_command(int i){ emit telemetry_command(i);}
