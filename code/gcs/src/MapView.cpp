@@ -365,10 +365,10 @@ QList<double> MapView::coordinateStringToDoubles(QString coordinates){
 
     //Negative lon
     if(list.at(1).contains("W")){
-        //latLon.append(-list.at(1).left(list.at(1).indexOf("W")).toDouble());
+        latLon.append(-list.at(1).left(list.at(1).indexOf("W")).toDouble());
     }
     else{
-       // latLon.append(list.at(1).left(list.at(1).indexOf("E")).toDouble());
+        latLon.append(list.at(1).left(list.at(1).indexOf("E")).toDouble());
     }
     return latLon;
 }
