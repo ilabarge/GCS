@@ -680,6 +680,24 @@ void MainWindow::showControl(){
 
 MainWindow::~MainWindow(){
     qDebug() << "deconstructor";
+    delete  sb;
+    delete mtb;
+    delete  serialSelect;
+    delete targetList;
+
+    //Test GUI
+    delete UGV_JOYSTICK;
+    delete UGV_JOYSTICKSTOP;
+    delete Telemetry;
+    delete way;
+    delete Authorize;
+    delete UGV_States;
+    delete UAV_Payload;
+    delete targeting;
+    delete consolelog;
+    delete vInfo;
+    delete mv;
+    delete quitButton;
 }
 
 /*

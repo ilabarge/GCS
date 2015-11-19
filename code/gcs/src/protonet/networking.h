@@ -131,9 +131,7 @@ signals:
 
 private:
     rx_thread* rx;
-    rx_thread* rx2;
     QThread* network_thread;
-    QThread* network_send_thread;
 };
 
 #endif // NETWORKING_H

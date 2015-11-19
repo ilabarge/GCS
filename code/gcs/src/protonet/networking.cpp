@@ -29,7 +29,7 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
     connect(network_thread, SIGNAL(finished()), network_thread, SLOT(deleteLater()));
 
     //Basic network actions
-    connect(this,SIGNAL(ping()),rx,SLOT(send_ping()));
+    connect(this,SIGNAL(ping(int)),rx,SLOT(send_ping(int)));
 
     //Send waypoint command
     connect(this,SIGNAL(waypoint(Waypoint22*, int)), rx,SLOT(send_vehicle_waypoint(Waypoint22*, int)));

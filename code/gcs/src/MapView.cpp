@@ -41,7 +41,6 @@ MapView::MapView(QWidget* parent)
     m_map->setWrapAroundEnabled(false);
     m_map->setEsriLogoVisible(false);
 
-    connect(m_map,SIGNAL(mapReady()), this, SLOT(onMapReady()));
     connect(m_map, SIGNAL(mousePress(QMouseEvent&)), this, SLOT(onMousePress(QMouseEvent&)));
 
     if(it.isConnected()){

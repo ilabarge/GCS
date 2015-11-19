@@ -55,6 +55,7 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     float64_t x = UTC.toMSecsSinceEpoch();
     mutex.lock();
     node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
+    qDebug() << "Sent auth request";
     mutex.unlock();
     emit messageConfirm(QString("Sent vehicle authorization request to ID " + QString::number(vehicle)));
 }
@@ -178,6 +179,7 @@ void rx_thread::send_telemetry_command(int vehicle)
     //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);
     mutex.lock();
     node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
+    qDebug() << "Sent telemetry request";
     mutex.unlock();
     emit messageConfirm(QString("  Sent Telemetry Command to ID " + QString::number(vehicle)));
 }
@@ -441,7 +443,6 @@ void* pong_callback(int8_t, proto_header_t header, pong_t pong, protonet::node* 
 
 void* vehicle_authorization_request_callback(int8_t id, proto_header_t header, vehicle_authorization_request_t vehicle, protonet::node* node_ptr)
 {
-
    printf("Got Vehicle Authorization Request");
    //node_ptr->send_vehicle_authorization_reply(header.node_src_id,99,vehicle.vehicle_ID,99 ,vehicle.request_services,99);
    return 0;
@@ -710,7 +711,8 @@ void rx_thread::process() {
    qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
-   node->establish_udp(link_id,1,dest_port,ip);
+   //Dest id is for the node id that we want to send to
+   node->establish_udp(link_id,46,dest_port,ip);
 
    //Start Node
    //node->start(); <- no longer needed due to protonet update

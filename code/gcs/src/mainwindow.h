@@ -91,7 +91,6 @@ private:
     VehicleAuthorizationGUI *Authorize;
     UGV_state* UGV_States;
     UAVPayload* UAV_Payload;
-    QLabel* uavModeLabel;
     targetingGUI* targeting;
 
     ConsoleLog* consolelog;

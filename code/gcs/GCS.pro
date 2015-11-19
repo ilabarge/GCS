@@ -94,12 +94,6 @@ HEADERS += \
     src/protonet/include/message/PayloadBayModeCommand.h \
     src/protonet/include/message/UGVBatteryStatus.h \
     src/protonet/include/message/VehicleGroundRelativeState.h \
-    src/protonet/include/message/AirVehicleGroundRelativeState.h \
-    src/protonet/include/message/CommunicationPayloadCommand.h \
-    src/protonet/include/message/CommunicationPayloadConfigurationCommand.h \
-    src/protonet/include/message/CommunicationPayloadStatus.h \
-    src/protonet/include/message/ConnectionReply.h \
-    src/protonet/include/message/ConnectionRequest.h \
     src/protonet/include/message/Enter.h \
     src/protonet/include/message/Exit.h \
     src/protonet/include/message/PayloadBayCommand.h \
@@ -110,7 +104,6 @@ HEADERS += \
     src/protonet/include/message/PayloadOperationCommand.h \
     src/protonet/include/message/Ping.h \
     src/protonet/include/message/Pong.h \
-    src/protonet/include/message/Raw.h \
     src/protonet/include/message/TargetDesignationCommand.h \
     src/protonet/include/message/UGVJoystick.h \
     src/protonet/include/message/VehicleAttitude.h \
