@@ -42,54 +42,6 @@ MainWindow::MainWindow(QWidget* parent) :
     //Map Interation
     //Sets coordinate positions for waypoint baised off of click on map
     connect(mv, SIGNAL(coordDesignated(double,double)), way, SLOT(coordDesignated(double,double)));
-
-
-    //C&C GUI
-    //General Vehicle
-    connect(Authorize,SIGNAL(authorize(int)),network,SLOT(send_vehicle_auth_request(int)));
-    connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
-    connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
-    //Manual Targeting
-//    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
-
-    //UAV
-    //Drop
-    connect(sendcmd,SIGNAL(clicked()),this,SLOT(UDrop()));
-    connect(ugvDrop,SIGNAL(clicked()),this,SLOT(UGVDrop()));
-//    connect(this,SIGNAL(drop(int)),network,SLOT(UDrop(int)));
-
-    //Payload
-//    connect(UAV_Payload,SIGNAL(arm(int)),network,SLOT(arm(int)));
-//    connect(UAV_Payload,SIGNAL(disarm(int)),network,SLOT(disarm(int)));
-
-    //UGV
-    //JOYSTICK
-//    connect(UGV_JOYSTICK,SIGNAL(clicked()),network,SLOT(start_UGV_Joystick()));
-//    connect(UGV_JOYSTICKSTOP,SIGNAL(clicked()),network,SLOT(stop_UGV_Joystick()));
-
-    //UGV
-    //STATE CHANGE
-//    connect(UGV_States,SIGNAL(AutoToManual()),network,SLOT(AutoToManual()));
-//    connect(UGV_States,SIGNAL(ManualToAuto()),network,SLOT(ManualToAuto()));
-//    connect(UGV_States,SIGNAL(Reset()),network,SLOT(Reset()));
-
-    //MOTOR states
-//    connect(UGV_States,SIGNAL(DisableMotor()),network,SLOT(DisableMotor()));
-//    connect(UGV_States,SIGNAL(ToggleMotor()),network,SLOT(ToggleMotor()));
-//    connect(UGV_States,SIGNAL(EnableMotor()),network,SLOT(EnableMotor()));
-
-    //Connect sidebar to map view layers
-    connect(sb, SIGNAL(uavOn(bool)), mv, SLOT(uavLayerOn(bool)));
-    connect(sb, SIGNAL(ugvOn(bool)), mv, SLOT(ugvLayerOn(bool)));
-    connect(sb, SIGNAL(satelliteOn(bool)), mv, SLOT(satelliteLayerOn(bool)));
-    connect(sb, SIGNAL(waypointOn(bool)), mv, SLOT(waypointLayerOn(bool)));
-    connect(sb, SIGNAL(opspaceOn(bool)), mv, SLOT(opspaceLayerOn(bool)));
-    connect(sb, SIGNAL(targetOn(bool)), mv, SLOT(targetLayerOn(bool)));
-
-    //Connect message display for console log
-    connect(network,SIGNAL(message(QString)),consolelog,SLOT(displayMessage(QString)));
-    connect(network,SIGNAL(messageAlert(QString)),consolelog,SLOT(displayMessageAlert(QString)));
-    connect(network,SIGNAL(messageConfirm(QString)),consolelog,SLOT(displayMessageConfirm(QString)));
     }catch(...){
         qDebug() << "Error caught";
     }
@@ -109,6 +61,7 @@ void MainWindow::initMap(){
                 0, 0, 0,
                 0, 0, 0);
      v46->setColor(Qt::green);
+     v46->setDepth(0);
      //qDebug() << "Setting graphic";
      //v46->setGraphic( ":/map_ico_ugv_02.png", 0, 0, 50, 50, mv->getSpatialRef());
      v46->setGraphic( ":/map_ico_ugv_02.png",50, 50, mv->getSpatialRef());
@@ -130,6 +83,7 @@ void MainWindow::initMap(){
                 0, 0, 0);
      v69->setColor(Qt::cyan);
      v69->setGraphic( ":/map_ico_uav_01.png", 50, 50 , mv->getSpatialRef());
+     v69->setDepth(0);
      element = new VehicleElementDisplay();
      element->setVehicle(v69);
      element->setText();

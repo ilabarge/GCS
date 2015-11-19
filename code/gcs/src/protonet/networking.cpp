@@ -29,7 +29,7 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
     connect(network_thread, SIGNAL(finished()), network_thread, SLOT(deleteLater()));
 
     //Basic network actions
-    connect(this,SIGNAL(ping(int)),rx,SLOT(send_ping(int)));
+    connect(this,SIGNAL(ping()),rx,SLOT(send_ping()));
 
     //Send waypoint command
     connect(this,SIGNAL(waypoint(Waypoint22*, int)), rx,SLOT(send_vehicle_waypoint(Waypoint22*, int)));
@@ -172,7 +172,7 @@ void networking::messageSlot(QString messageString) { emit message(messageString
 
 void networking::messageAlertSlot(QString messageString) { emit messageAlert(messageString); }
 
-void networking::messageConfirmSlot(QString messageString) { emit messageConfirm(messageString); }
+void networking::messageConfirmSlot(QString messageString) {emit messageConfirm(messageString); }
 
 networking::~networking()
 {

@@ -418,13 +418,14 @@ void* enter_callback(int8_t id, proto_header_t header, enter_t enter, protonet::
     //Request is as follows, vech id, timestamp, our id, link key (100 for now),
     //request services (1 for we want services 0 for we do not want),
     //handover node (default is 0 only change if we want to give control to someone else node#)
-    np->send_vehicle_authorization_request(header.node_src_id,x,header.node_src_id,200,1,0);
+    //np->send_vehicle_authorization_request(header.node_src_id,x,header.node_src_id,200,1,0);
     return 0;
 }
 
 void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::node* node)
 {
    printf("got ping");
+   qDebug() << "got ping" << endl;
    //qDebug() << "Ping timestamp:" << ping.timestamp << endl;
    //qDebug() << "Sending pong response." << endl;
    //send a pong as a reply

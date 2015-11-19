@@ -9,7 +9,7 @@
 
 /* Keep track of the bytes we are parsing */
 typedef enum parse_state_e{
-	WAIT_SYNC_1 = 0, /* 1129336832\0 is the sync byte */
+	WAIT_SYNC_1 = 1, /* 1129336832\0 is the sync byte */
 	WAIT_SYNC_1_2,
 	WAIT_SYNC_2,
 	WAIT_SYNC_9,
@@ -52,6 +52,6 @@ int32_t parse_message(
 		parse_data_t* parse_data, /*in*/
 		proto_msg_t* rx_msg); /*out*/
 
-uint32_t print_parse_state(parse_state_t parse_state, uint8_t rx_byte);
+uint32_t print_parse_state(parse_state_t parse_state);
 
 #endif 
