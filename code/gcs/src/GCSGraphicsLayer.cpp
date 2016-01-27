@@ -3,7 +3,29 @@
 #include <QDebug>
 
 GCSGraphicsLayer::GCSGraphicsLayer()
-{}
+{
+    EsriRuntimeQt::SpatialReference spatialReference = this->spatialReference();
+    // add simple line symbol
+    EsriRuntimeQt::Point point10(600000,  -2000000, spatialReference);
+    EsriRuntimeQt::Point point11(2000000, -3000000, spatialReference);
+    EsriRuntimeQt::Point point12(3400000, -2000000, spatialReference);
+    QList<EsriRuntimeQt::Point> pointList;
+    pointList.append(point10);
+    pointList.append(point11);
+    pointList.append(point12);
+    QList<QList<EsriRuntimeQt::Point> > tmpList;
+    tmpList.append(pointList);
+
+    EsriRuntimeQt::Polyline line1(tmpList);
+    QColor qcRed;
+    qcRed.setRgb(255,0,0);
+    EsriRuntimeQt::SimpleLineSymbol simpleLineSym;
+    simpleLineSym.setColor(qcRed);
+    simpleLineSym.setWidth(3);
+    simpleLineSym.setStyle(EsriRuntimeQt::SimpleLineSymbolStyle::DashDot);
+    EsriRuntimeQt::Graphic* graphic10 = new EsriRuntimeQt::Graphic(line1, simpleLineSym);
+    this->addGraphic(graphic10);
+}
 
 void GCSGraphicsLayer::removeLayerGraphic(int gID){
     removeGraphic(gID);
