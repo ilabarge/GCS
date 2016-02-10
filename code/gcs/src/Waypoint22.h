@@ -47,6 +47,7 @@ public:
     void clearNextWaypoint();
     void setLineGraphic(EsriRuntimeQt::Graphic graphic);
     bool setLinePoints(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2);
+    bool setLinePoints2(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2);
     void setWaypointOrigin(double lat, double lon);
     bool setNextWaypoint(double lat, double lon);
     void updateLineGraphic();
@@ -61,6 +62,9 @@ private:
 
     double nextLat;
     double nextLon;
+
+    QList<EsriRuntimeQt::Point> points;
+    QList<QList<EsriRuntimeQt::Point>> pathList;
 
     // Graphics members
     int lineGraphicID;

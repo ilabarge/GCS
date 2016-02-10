@@ -4,6 +4,7 @@
 WaypointGUI::WaypointGUI(EsriRuntimeQt::SpatialReference sp, QWidget *parent) :
     QWidget(parent)
 {
+
     /* Type defn
         0 insert
         1 edit
@@ -22,6 +23,7 @@ WaypointGUI::WaypointGUI(EsriRuntimeQt::SpatialReference sp, QWidget *parent) :
     //Connect button press to send information for waypoint
     connectElements();
 }
+
 /**
  * @brief WaypointGUI::send_waypoint sends waypoint baised off of user input from text fields
  */
@@ -35,9 +37,8 @@ void WaypointGUI::send_waypoint()
                          0,sp
                          );
 
-
-    mutex.lock();
-    mutex.unlock();
+//    mutex.lock();
+//    mutex.unlock();
     emit waypoint(w, vehicle->text().toInt());
 }
 

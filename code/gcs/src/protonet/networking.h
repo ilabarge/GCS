@@ -98,7 +98,7 @@ signals:
     void targeting(float,float,float);
 
     //targeting
-    void manTargeting(float,float,float);
+    void manTargeting(double,double,double);
 
     //from vech
     void vTarget(float,float);

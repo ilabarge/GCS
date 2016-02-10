@@ -66,6 +66,9 @@ public:
     //Initialize database
     void initDatabase();
 
+    double getLatitude();
+    double getLongitude();
+
     //Widgets
     QPushButton* quitButton;
     MapView* mv;

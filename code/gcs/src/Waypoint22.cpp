@@ -22,17 +22,19 @@ Waypoint22::Waypoint22(int id,          int type,        double latitude,
     nextLon = longitude;
     this->spatialReference = spatialReference;
 
+
     // TODO: Add in vehicle type to select color/shape
-    QList<EsriRuntimeQt::Point> points;
-    points.append( EsriRuntimeQt::Point(0, 0, spatialReference) ); //Starting
-    points.append( EsriRuntimeQt::Point(0, 0,spatialReference) ); //Ending
-    QList< QList<EsriRuntimeQt::Point> > pathList;
+//    QList<EsriRuntimeQt::Point> points;
+    points.append( EsriRuntimeQt::Point(0,  0, spatialReference) ); //Starting
+    points.append( EsriRuntimeQt::Point(0, 0, spatialReference) ); //Ending
+////    QList< QList<EsriRuntimeQt::Point> > pathList;
     pathList.append(points);
     color = Qt::red;
     line = EsriRuntimeQt::Polyline(pathList);
+
     lineSymb.setColor(color);
     lineSymb.setWidth(2);
-    lineGraphic = &EsriRuntimeQt::Graphic(line, lineSymb, -1);
+    lineGraphic = new EsriRuntimeQt::Graphic(line, lineSymb);
 }
 
 bool Waypoint22::setLinePoints(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2){
@@ -41,13 +43,21 @@ bool Waypoint22::setLinePoints(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2)
     //Clear the path
     line.removePath(0);
 
-    QList<EsriRuntimeQt::Point> pointList;
-    pointList.append(p1);
-    pointList.append(p2);
+//  QList<EsriRuntimeQt::Point> pointList;
 
-    //           index, list, offset, numPoints, inOrder
-    line.insertPath(0, pointList, 0, 2,  true);
+//    pointList.append(p1);
+//    pointList.append(p2);
 
+////    points.append(p1);
+////    points.append(p2);
+
+    line.startPath(p1);
+    line.lineTo(p2);
+
+//               index, list, offset, numPoints, inOrder
+//    line.insertPath(0, pointList, 0, 2,  true);
+
+    updateLineGraphic();
     return true;
 }
 
@@ -77,6 +87,6 @@ void Waypoint22::setLineGraphic(EsriRuntimeQt::Graphic graphic){
 }
 
 void Waypoint22::updateLineGraphic(){
-    QMutexLocker l(&mx);
+    //QMutexLocker l(&mx);
     lineGraphic = new EsriRuntimeQt::Graphic(line, lineSymb);
 }

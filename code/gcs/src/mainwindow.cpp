@@ -36,7 +36,6 @@ MainWindow::MainWindow(QWidget* parent) :
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout( mainLayout );
     setCentralWidget( centralWidget );
-
     showMaximized();
 
     //Map Interation
@@ -47,6 +46,13 @@ MainWindow::MainWindow(QWidget* parent) :
     }
 }
 
+double MainWindow::getLatitude(){
+    return v69->getLatitude();
+}
+
+double MainWindow::getLongitude(){
+    return v69->getLongitude();
+}
 
 void MainWindow::initMap(){
     //qDebug() << "Create map view";
@@ -506,7 +512,6 @@ void MainWindow::UGVDrop()
 }
 
 void MainWindow::mapReady(){
-
 //    qDebug() << "Adding v46";
     mv->addGraphicToLayer( (v46->getGraphic()) );
 //    qDebug() << "Added " << v46->getGraphicID();

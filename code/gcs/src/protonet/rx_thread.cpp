@@ -100,7 +100,6 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                mutex.unlock();
                emit message(QString("Added waypoint"));
                emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
-
            }
            else if((type == 0) && ((waypoint->getID()) > (size)))
            {

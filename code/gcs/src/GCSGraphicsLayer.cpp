@@ -4,27 +4,6 @@
 
 GCSGraphicsLayer::GCSGraphicsLayer()
 {
-    EsriRuntimeQt::SpatialReference spatialReference = this->spatialReference();
-    // add simple line symbol
-    EsriRuntimeQt::Point point10(600000,  -2000000, spatialReference);
-    EsriRuntimeQt::Point point11(2000000, -3000000, spatialReference);
-    EsriRuntimeQt::Point point12(3400000, -2000000, spatialReference);
-    QList<EsriRuntimeQt::Point> pointList;
-    pointList.append(point10);
-    pointList.append(point11);
-    pointList.append(point12);
-    QList<QList<EsriRuntimeQt::Point> > tmpList;
-    tmpList.append(pointList);
-
-    EsriRuntimeQt::Polyline line1(tmpList);
-    QColor qcRed;
-    qcRed.setRgb(255,0,0);
-    EsriRuntimeQt::SimpleLineSymbol simpleLineSym;
-    simpleLineSym.setColor(qcRed);
-    simpleLineSym.setWidth(3);
-    simpleLineSym.setStyle(EsriRuntimeQt::SimpleLineSymbolStyle::DashDot);
-    EsriRuntimeQt::Graphic* graphic10 = new EsriRuntimeQt::Graphic(line1, simpleLineSym);
-    this->addGraphic(graphic10);
 }
 
 void GCSGraphicsLayer::removeLayerGraphic(int gID){
@@ -44,6 +23,7 @@ void GCSGraphicsLayer::updateLayerGraphic(int gID, EsriRuntimeQt::Graphic *graph
 }
 
 void GCSGraphicsLayer::addWaypointToGCS( Waypoint22* wp, QColor color){
+
     wp->setLinePoints(decimalDegreesToPoint(wp->getLatitude(), wp->getLongitude()),
                       decimalDegreesToPoint(wp->getNextLatitude(), wp->getNextLongitude()));
 
@@ -51,6 +31,7 @@ void GCSGraphicsLayer::addWaypointToGCS( Waypoint22* wp, QColor color){
 
     addGraphic(wp->getLineGraphic());
     addGraphic(wp->getGraphic());
+
     qDebug() << "Waypoint added";
 }
 
@@ -64,8 +45,10 @@ void GCSGraphicsLayer::updateWaypointGraphics(Waypoint22 *wp){
     wp->setLinePoints(decimalDegreesToPoint(wp->getLatitude(), wp->getLongitude()),
                       decimalDegreesToPoint(wp->getNextLatitude(), wp->getNextLongitude()));
 
-    updateGraphic(wp->getLineGraphicID(), wp->getLineGraphic());
-    updateGraphic(wp->getGraphicID(), wp->getGraphic());
+
+    //updateGraphic(wp->getLineGraphicID(), wp->getLineGraphic());
+    addGraphic(wp->getLineGraphic());
+    //updateGraphic(wp->getGraphicID(), wp->getGraphic());
 
     qDebug() << "Updated waypoint";
 }

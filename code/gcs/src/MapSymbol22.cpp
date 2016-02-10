@@ -14,7 +14,7 @@ MapSymbol22::MapSymbol22(EsriRuntimeQt::Point point, EsriRuntimeQt::PictureMarke
 int MapSymbol22::setGraphic(const QColor& color, const EsriRuntimeQt::SimpleMarkerSymbolStyle shape, double x, double y, int size, EsriRuntimeQt::SpatialReference spatialReference){
     this->color = color;
     smSymbol = EsriRuntimeQt::SimpleMarkerSymbol(this->color, size, shape);
-    curr_Point = EsriRuntimeQt::Point(x, y,spatialReference);
+    curr_Point = EsriRuntimeQt::Point(x, y, spatialReference);
     graphic = new EsriRuntimeQt::Graphic(curr_Point, smSymbol);
     smExists = true;
     return 0;

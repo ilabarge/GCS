@@ -260,7 +260,6 @@ int Vehicle22::numWaypoints(){
 }
 
 void Vehicle22::updateWaypoints(int first, int middle, int last){
-
     //Don't need mutex because it's a private function
     //and is only called after a mutex lock.
 
