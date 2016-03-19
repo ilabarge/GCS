@@ -60,8 +60,14 @@ int VehicleElementDisplay::getID(){
 void VehicleElementDisplay::setText(){
     if(vechicle->getVehicleType() ==0){
         VehicleType->setText("UAV");
-    }else{
+        //spelling?
+    }else if(vechicle->getVehicleType() == 1){
         VehicleType->setText("UGV");
+    }else if(vechicle->getVehicleType() == 2){
+        VehicleType->setText("UUV");
+    }
+    else {
+        VehicleType->setText("ROV");
     }
     VehicleNo->setText(QString::number(vechicle->getVehicleID()));
 }

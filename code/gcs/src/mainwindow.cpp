@@ -60,6 +60,46 @@ void MainWindow::initMap(){
     //qDebug() << "Created map view";
     //qDebug() << "Begin setting vehicles";
     //Statically initialize vehicles
+      v1251 = new Vehicle22(1251, 3, 0,
+                 0, 0, 0,
+                 0, 0, 0,
+                 0, 0, 0,
+                 0, 0, 0,
+                 0, 0, 0);
+      v1251->setColor(Qt::darkCyan);
+      v1251->setDepth(0);
+      //need new icon
+      v1251->setGraphic( ":/map_ico_ugv_02.png", 50, 50 , mv->getSpatialRef());
+      element = new VehicleElementDisplay();
+      element->setVehicle(v1251);
+      element->setText();
+      //Add element to the list to display
+      vehicleList->addWidget(element,4,0);
+      //Add element to the list of elements
+      elementList->push_back(element);
+
+    mv = new MapView( this );
+    //qDebug() << "Created map view";
+    //qDebug() << "Begin setting vehicles";
+    //Statically initialize vehicles
+      v35 = new Vehicle22(35, 2, 0,
+                 0, 0, 0,
+                 0, 0, 0,
+                 0, 0, 0,
+                 0, 0, 0,
+                 0, 0, 0);
+      v35->setColor(Qt::black);
+      v35->setDepth(0);
+      //need new icon
+      v35->setGraphic( ":/map_ico_ugv_02.png", 50, 50 , mv->getSpatialRef());
+      element = new VehicleElementDisplay();
+      element->setVehicle(v35);
+      element->setText();
+      //Add element to the list to display
+      vehicleList->addWidget(element,3,0);
+      //Add element to the list of elements
+      elementList->push_back(element);
+
      v46 =  new Vehicle22(46, 1, 0,
                 0, 0, 0,
                 0, 0, 0,
@@ -133,7 +173,6 @@ void MainWindow::initMap(){
      element = new VehicleElementDisplay();
      element->setVehicle(v102);
      element->setText();
-
      //Initialize default vech to display attitude to be the first in the list
      currentVech = 0;
      qDebug() << "Finished setting all vehicles";
@@ -170,6 +209,7 @@ void MainWindow::updateVech(int ID)
          v69->setPoint(mv->decimalDegreesToPoint(vList22->get(ID)->getLatitude() , vList22->get(ID)->getLongitude()));
 
          mv->moveVehicleGraphic(*v69, v69->getPoint());
+
          //v69->setAngle(v69->getHeading());
          mv->rotateVehicleGraphic(*v69,v69->getHeading());
 
@@ -210,6 +250,8 @@ void MainWindow::initNetworking(){
 
     //Statically add specified vehicles to list
     vList22 = new vehicle_list();
+    vList22->append(v1251);
+    vList22->append(v35);
     vList22->append(v46);
     vList22->append(v69);
     vList22->append(v2);
@@ -234,7 +276,7 @@ void MainWindow::initNetworkingConnects(){
     //Set up connects for networking
     connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
 //    //update targets
-//    connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
+    connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
 
 //    //TEST METHOD FOR NEW SIGNAL
     connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
@@ -245,7 +287,7 @@ void MainWindow::initNetworkingConnects(){
     connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
     connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
 //    //Manual Targeting
-//    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
+    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
 
 //    //UAV
 //    //Drop
@@ -335,14 +377,14 @@ void MainWindow::initWidgets(){
     commandLayout->addWidget(Authorize,0,0);
     commandLayout->addWidget(Telemetry,0,1);
     commandLayout->addWidget(way,0,2);
-    //commandLayout->addWidget(targeting,1,0);
+    commandLayout->addWidget(targeting,1,0);
     //Add those commands to the command widget
     commandLayoutWidget.setLayout(commandLayout);
     commandLayoutWidget.hide();
     mainLayout->addWidget(&commandLayoutWidget,2,0);
 
     //Set up control layout
-    //Gridlayout : joyLaout to group the Joystick commands
+    //Gridlayout : joyLayout to group the Joystick commands
     QGridLayout* controlLayout = new QGridLayout();
     controlLayout->addWidget(UGV_JOYSTICK,0,0);
     controlLayout->addWidget(UGV_JOYSTICKSTOP,0,1);
@@ -496,8 +538,8 @@ void MainWindow::update_targets(Target* t)
 {
     qDebug() << "Latitude is:" << t->getLatitude();
     qDebug() << "Longitude is:" << t->getLongitude();
-    //t->setGraphic(Qt::red,EsriRuntimeQt::SimpleMarkerSymbolStyle::Cross,t->getLatitude()*10000000,t->getLongitude()*10000000,10);
-    //t->setGraphicID(mv->addGraphicToLayer(t->getGraphic()));
+    t->setGraphic(Qt::red,EsriRuntimeQt::SimpleMarkerSymbolStyle::Cross,t->getLatitude()*10000000,t->getLongitude()*10000000,10, mv->getSpatialRef());
+    t->setTargetID(mv->addGraphicToLayer(t->getGraphic()));
 }
 
 //Manually drop UAV and alert UGV of drop
@@ -512,6 +554,20 @@ void MainWindow::UGVDrop()
 }
 
 void MainWindow::mapReady(){
+    //    qDebug() << "Adding v1251";
+        mv->addGraphicToLayer( (v1251->getGraphic()) );
+    //    qDebug() << "Added " << v1251->getGraphicID();
+        connect(v1251, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
+        connect(v1251, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
+        connect(v1251, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
+
+//    qDebug() << "Adding v35";
+    mv->addGraphicToLayer( (v35->getGraphic()) );
+//    qDebug() << "Added " << v35->getGraphicID();
+    connect(v35, SIGNAL(updateWaypointGraphics(Waypoint22*)), mv->getVehicleLayer(), SLOT(updateWaypointGraphics( Waypoint22*)));
+    connect(v35, SIGNAL(addWaypointGraphic(Waypoint22*, QColor)), mv->getVehicleLayer(), SLOT(addWaypointToGCS(Waypoint22*, QColor)));
+    connect(v35, SIGNAL(removeWaypointGraphic(int, int)), mv->getVehicleLayer(), SLOT(removeWaypointGraphic(int, int)));
+
 //    qDebug() << "Adding v46";
     mv->addGraphicToLayer( (v46->getGraphic()) );
 //    qDebug() << "Added " << v46->getGraphicID();
@@ -558,7 +614,7 @@ void MainWindow::addVehicle(int vech, int type)
     //TODO: graphics!!!!!!1
     /*0 - default
       1 - UAV
-      2 - UGV */
+      2 - UGV*/
     Vehicle22 *v = new Vehicle22();
     v->setVehicleID(vech);
     v->setVehicleType(type);
@@ -571,7 +627,6 @@ void MainWindow::addVehicle(int vech, int type)
         case 2:
             v->setGraphic( ":/images/ugv_icon.png", 0, 0, 50, 50,mv->getSpatialRef() );
             break;
-
         default:
             break;
     }

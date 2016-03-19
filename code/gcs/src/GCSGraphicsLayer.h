@@ -36,6 +36,10 @@ public:
 
     QString pointToDecimalDegrees(EsriRuntimeQt::Point p);
 
+private:
+    EsriRuntimeQt::Polyline polyLine;
+    EsriRuntimeQt::Graphic *initialLine;
+
 public slots:
     void removeLayerGraphic( int gID );
     void updateLayerGraphic( int gID, EsriRuntimeQt::Graphic *graphic );
@@ -44,7 +48,6 @@ public slots:
     void addWaypointToGCS( Waypoint22* wp, QColor color);
     void updateWaypointGraphics( Waypoint22* wp );
     void removeWaypointGraphic( int waypointID, int lineID);
-
 };
 
 #endif // GCSGRAPHICSLAYER_H

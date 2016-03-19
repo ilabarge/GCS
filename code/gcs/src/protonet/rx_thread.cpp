@@ -206,6 +206,7 @@ void rx_thread::target(float lat,float longi) { emit sendTarget(lat,longi);}
 //Send manual targeting to UAV (static ID)
 void rx_thread::send_manTargeting(double latitude, double longitude, double altitude)
 {
+    qDebug() << "sent manual targeting";
     //Target id = 1, Payload ID = 1
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());

@@ -54,6 +54,7 @@ bool Waypoint22::setLinePoints(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2)
     line.startPath(p1);
     line.lineTo(p2);
 
+
 //               index, list, offset, numPoints, inOrder
 //    line.insertPath(0, pointList, 0, 2,  true);
 

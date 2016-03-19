@@ -24,9 +24,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 #endif
 
-    EsriRuntimeQt::ArcGISRuntime::setClientId("Place client id here");
-    EsriRuntimeQt::ArcGISRuntime::License::setLicense("Place license string in here");
-
     QApplication application(argc, argv);
     
     MainWindow mw;
