@@ -2,7 +2,7 @@
 TargetList* targetList;
 vehicle_list* vp;
 QMutex mutex;
-protonet::node *np;
+comnet::node *np;
 
 // ------- CONSTRUCTOR -------
 rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, vehicle_list* v, TargetList* tgt){
@@ -38,6 +38,7 @@ rx_thread::~rx_thread() {
 //------------ User Commands -------------
 void rx_thread::send_ping(int id)
 {
+    //for testing
     //qDebug() << "send ping";
     //Use vehicle type as id
     QDateTime local(QDateTime::currentDateTime());
@@ -400,9 +401,9 @@ int checkVehicles(uint32_t vehicle_ID)
     return -1;
 }
 
-// --------- PROTONET CALLBACKS ---------
+// --------- COMNET CALLBACKS ---------
 //Clean up code!!
-void* enter_callback(int8_t id, proto_header_t header, enter_t enter, protonet::node* node)
+void* enter_callback(int8_t id, com_header_t header, enter_t enter, comnet::node* node)
 {
     //printf("got enter");
     //upon enter message add vehicle to vector if it doesn't exist already
@@ -424,7 +425,7 @@ void* enter_callback(int8_t id, proto_header_t header, enter_t enter, protonet::
     return 0;
 }
 
-void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::node* node)
+void* ping_callback(int8_t id, com_header_t header, ping_t ping, comnet::node* node)
 {
    printf("got ping");
    qDebug() << "got ping" << endl;
@@ -435,13 +436,14 @@ void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::nod
    return 0;
 }
 
-void* pong_callback(int8_t, proto_header_t header, pong_t pong, protonet::node* node_ptr)
+void* pong_callback(int8_t, com_header_t header, pong_t pong, comnet::node* node_ptr)
 {
    printf("got pong");
+   //node_ptr->send_ping(header.node_src_id,0);
    return 0;
 }
 
-void* vehicle_authorization_request_callback(int8_t id, proto_header_t header, vehicle_authorization_request_t vehicle, protonet::node* node_ptr)
+void* vehicle_authorization_request_callback(int8_t id, com_header_t header, vehicle_authorization_request_t vehicle, comnet::node* node_ptr)
 {
    printf("Got Vehicle Authorization Request");
    //node_ptr->send_vehicle_authorization_reply(header.node_src_id,99,vehicle.vehicle_ID,99 ,vehicle.request_services,99);
@@ -449,7 +451,7 @@ void* vehicle_authorization_request_callback(int8_t id, proto_header_t header, v
 }
 
 //Runs after we send a request to a vehicle
-void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, vehicle_authorization_reply_t vehicle, protonet::node* node_ptr)
+void* vehicle_authorization_reply_callback(int8_t id, com_header_t header, vehicle_authorization_reply_t vehicle, comnet::node* node_ptr)
 {
    printf("Got Vehicle Authorization Reply");
    int ID = header.node_src_id;
@@ -477,7 +479,7 @@ void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, veh
 }
 
 //Gives system status
-void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_system_status_t status, protonet::node* node_ptr)
+void* vehicle_system_status_callback(int8_t, com_header_t header, vehicle_system_status_t status, comnet::node* node_ptr)
 {
     printf("=============\nsystem status\n");
     int ID = header.node_src_id;
@@ -535,7 +537,7 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
     return 0;
 }
 
-void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_inertial_state_t inertial, protonet::node* node_ptr)
+void* vehicle_inertial_state_callback(int8_t id, com_header_t header, vehicle_inertial_state_t inertial, comnet::node* node_ptr)
 {
     int ID = header.node_src_id;
     //Is the vehicle id in list?
@@ -572,7 +574,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     return 0;
 }
 
-void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle_global_position_t position, protonet::node* node_ptr)
+void* vehicle_global_position_callback(int8_t id, com_header_t header, vehicle_global_position_t position, comnet::node* node_ptr)
 {
     qDebug() << "globalpos" << header.node_src_id;
     int ID = header.node_src_id;
@@ -620,7 +622,7 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     return 0;
 }
 
-void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_t attitude, protonet::node* node_ptr)
+void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t attitude, comnet::node* node_ptr)
 {
     //Finds index of vehicle
     int ID = header.node_src_id;
@@ -648,7 +650,7 @@ void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_
     return 0;
 }
 
-void* target_designation_command_callback(int8_t, proto_header_t, target_designation_command_t target, protonet::node* node_ptr)
+void* target_designation_command_callback(int8_t, com_header_t, target_designation_command_t target, comnet::node* node_ptr)
 {
     //Add target to the target list
     //targetList->addTarget(&Target(((float)target.latitude)/1E7,
@@ -672,7 +674,7 @@ void* target_designation_command_callback(int8_t, proto_header_t, target_designa
     return 0;
 }
 
-void* vehicle_waypoint_command_callback(int8_t, proto_header_t h, vehicle_waypoint_command_t way, protonet::node* node_ptr)
+void* vehicle_waypoint_command_callback(int8_t, com_header_t h, vehicle_waypoint_command_t way, comnet::node* node_ptr)
 {
     if(way.waypoint_type == 1)
     targetList->addTarget(&Target(((float)way.latitude)/1E7,
@@ -687,8 +689,8 @@ void* vehicle_waypoint_command_callback(int8_t, proto_header_t h, vehicle_waypoi
 void rx_thread::process() {
    // allocate resources using new here
 
-    //Create Protonet Node
-   node = new protonet::node(node_id);
+    //Create comnet Node
+   node = new comnet::node(node_id);
 
    //Have the methods outside of class (i.e. callbacks) be able to have access to node
    np = node;
@@ -706,28 +708,32 @@ void rx_thread::process() {
    //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
    qDebug() << "Self port for GCS: " << self_port;
-   char  ip[] = "127.0.0.1";
-   node->add_udp(&link_id,self_port, ip);
+   //char  ip[] = "127.0.0.1";
+   char  ip[] = "0013A20040917974";
+   char comport[] = "5";
+   //node->add_udp(&link_id,self_port, ip);
+   node->add_zigBee(&link_id,57600, comport);
    qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
    //Dest id is for the node id that we want to send to
-   node->establish_udp(link_id,46,dest_port,ip);
+   //node->establish_udp(link_id,1,dest_port,ip);
+   node->establish_zigBee(link_id,3,ip);
 
    //Start Node
-   //node->start(); <- no longer needed due to protonet update
+   //node->start(); <- no longer needed due to comnet update
 
    /*Begin Callback Register functions*/
-   node->register_on_ping(*ping_callback);
    node->register_on_enter(*enter_callback);
+   node->register_on_ping(*ping_callback);
    node->register_on_pong(*pong_callback);
-   node->register_on_vehicle_global_position(*vehicle_global_position_callback);
-   node->register_on_vehicle_system_status(*vehicle_system_status_callback);
-   node->register_on_vehicle_attitude(*vehicle_attitude_callback);
    node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
    node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
    node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
+   node->register_on_vehicle_system_status(*vehicle_system_status_callback);
    node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
+   node->register_on_vehicle_global_position(*vehicle_global_position_callback);
+   node->register_on_vehicle_attitude(*vehicle_attitude_callback);
    //ack vehicle got t
    //request list
 
@@ -767,8 +773,8 @@ void send_vehicle_mode_command()
    node->send_vehicle_mode_command(dest_id,timestamp,vehicle_id,vehicle_mode);
 }
 
-void* connection_request_callback(int8_t, proto_header_t header, connection_request_t
-connection, protonet::node* node_ptr)
+void* connection_request_callback(int8_t, com_header_t header, connection_request_t
+connection, comnet::node* node_ptr)
 {
    printf("got request for connection");
    qDebug() << "Trace node1" << connection.tracenode_1;
@@ -780,8 +786,8 @@ connection, protonet::node* node_ptr)
    return 0;
 }
 
-void* connection_reply_callback(int8_t, proto_header_t header, connection_reply_t
-reply, protonet::node* node_ptr)
+void* connection_reply_callback(int8_t, com_header_t header, connection_reply_t
+reply, comnet::node* node_ptr)
 {
    printf("got connection reply");
    //qDebug()<< "Connection id:" << reply.connection_ID << "Timestamp:" <<
@@ -790,15 +796,15 @@ reply.timestamp;
    return 0;
 }
 
-typedef void* (*exit_callback)(int8_t, proto_header_t, exit_t, protonet::node*
+typedef void* (*exit_callback)(int8_t, com_header_t, exit_t, comnet::node*
 node_ptr);
 
-typedef void* (*vehicle_identification_callback)(int8_t, proto_header_t,
-vehicle_identification_t, protonet::node* node_ptr);
+typedef void* (*vehicle_identification_callback)(int8_t, com_header_t,
+vehicle_identification_t, comnet::node* node_ptr);
 
 
-void* air_vehicle_ground_relative_state_callback(int8_t, proto_header_t header,
-air_vehicle_ground_relative_state_t air_ground, protonet::node* node_ptr)
+void* air_vehicle_ground_relative_state_callback(int8_t, com_header_t header,
+air_vehicle_ground_relative_state_t air_ground, comnet::node* node_ptr)
 {
    qDebug() << "Vehicle ID:" << air_ground.vehicle_ID << "Timestamp:" <<
 air_ground.timestamp;
@@ -815,8 +821,8 @@ air_ground.timestamp;
 }
 
 
-void* vehicle_body_sensed_state_callback(int8_t id, proto_header_t header,
-vehicle_body_sensed_state_t state, protonet::node* node_ptr)
+void* vehicle_body_sensed_state_callback(int8_t id, com_header_t header,
+vehicle_body_sensed_state_t state, comnet::node* node_ptr)
 {
 
    qDebug() << "Vehicle ID:" << state.vehicle_ID << " Timestamp:" << state.timestamp;

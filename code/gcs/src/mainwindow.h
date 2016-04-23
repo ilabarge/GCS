@@ -24,7 +24,7 @@
 #include "gcs_toolbar.h"
 #include "networking.h"
 #include "SerialPortSelect.h"
-#include "database/DataDaemon.h"
+//#include "database/DataDaemon.h"
 #include "targetlist.h"
 #include "MapSymbol22.h"
 #include "Waypoint22.h"
@@ -64,7 +64,7 @@ public:
     void initNetworkingConnects();
 
     //Initialize database
-    void initDatabase();
+   // void initDatabase();
 
     double getLatitude();
     double getLongitude();
@@ -121,7 +121,7 @@ private:
     NodeQueue* vUpdate;
 
     //Database
-    DataDaemon* database;
+    //DataDaemon* database;
 
     vehicle_list *vList22;
     Vehicle22 *v1251, *v35, *v46, *v69, *v2, *v101, *v102;

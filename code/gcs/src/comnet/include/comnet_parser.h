@@ -1,5 +1,5 @@
-#ifndef COMNET_PARSER_H_
-#define COMNET_PARSER_H_
+#ifndef PROTONET_PARSER_H_
+#define PROTONET_PARSER_H_
 /**@File
 Global functions to parse message by using a checksum*/
 

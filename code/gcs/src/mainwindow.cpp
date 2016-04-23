@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget* parent) :
     initNetworking();
 
     //Initialize database
-    initDatabase();
+//    initDatabase();
 
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout( mainLayout );
@@ -327,9 +327,9 @@ void MainWindow::initNetworkingConnects(){
 }
 
 
-void MainWindow::initDatabase(){
-    database = new DataDaemon();
-}
+//void MainWindow::initDatabase(){
+//    database = new DataDaemon();
+//}
 
 void MainWindow::initWidgets(){
 

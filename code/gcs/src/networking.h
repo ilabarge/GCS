@@ -34,10 +34,10 @@ public slots:
     //Update Vehicle with ID
     void updateVech(int);
 
-    //Basic Protonet
+    //Basic Comnet
     void send_ping(int);
 
-    //Protonet Setup
+    //Comnet Setup
     void network_serial_set(QString);
 
     //General commands

@@ -9,8 +9,8 @@ Function returns specify the offset
 after the packing or unpacking is complete.
 
 */
-#ifndef COMNET_MARSHAL_H
-#define COMNET_MARSHAL_H
+#ifndef PROTONET_MARSHAL_H
+#define PROTONET_MARSHAL_H
 
 #include <stdint.h>
 

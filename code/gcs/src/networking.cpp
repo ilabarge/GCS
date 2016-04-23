@@ -1,12 +1,12 @@
 #include "networking.h"
 /**
- * @brief networking::invokeThread Creates thread for protonet messages
+ * @brief networking::invokeThread Creates thread for comnet messages
  * @param q NODE QUEUE (will need to remove after transfer to new signal is complete)
  * @param v vehicle list
  * @param tgt Holds targets
  * @param node_id  GCS NODE ID (1)
- * @param self_port UDP port to recieve protonet messages
- * @param dest_port UDP port to send protonet messages
+ * @param self_port UDP port to recieve comnet messages
+ * @param dest_port UDP port to send comnet messages
  */
 void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id, uint16_t self_port, uint16_t dest_port)
 {
@@ -94,12 +94,12 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
     network_thread->start();
 }
 /**
- * @brief networking::networking invokes the thread to handle protonet messages
+ * @brief networking::networking invokes the thread to handle comnet messages
  */
 networking::networking(vehicle_list* v, TargetList* targ)
 {
     //qDebug() << "Invoking thread with: " << port;
-    invokeThread(v,targ,1, 7991, 7990);
+    invokeThread(v,targ,1, 1338, 1337);
 }
 
 //Network send message signal/slots

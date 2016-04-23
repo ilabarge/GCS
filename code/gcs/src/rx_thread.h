@@ -21,7 +21,7 @@
 #include <string>
 
 //GCS Includes
-//#include "protonet.h"
+#include "comnet.h"
 #include "Vehicle22.h"
 #include "nodequeue.h"
 #include "joystickinput.h"
@@ -38,12 +38,12 @@ public:
     ~rx_thread();
 
 private:
-    //Protonet node setup
+    //Comnet node setup
     uint8_t node_id;
     uint16_t self_port;
     uint16_t dest_port;
     char serial_port[25];
-    protonet::node *node;
+    comnet::node *node;
     QThread *joystick_thread;
     JoystickInput *joystick;
     vehicle_list* vList;
@@ -56,7 +56,7 @@ public slots:
     //Communicates vehicle updating
     void update_vech_queue();
 
-    //Protonet send messages
+    //Comnet send messages
     void send_vehicle_auth_request(int);
     void send_vehicle_waypoint(Waypoint22*,int);
     void send_telemetry_command(int);
