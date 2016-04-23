@@ -10,8 +10,8 @@ void VehicleListDisplay::setList(vehicle_list *list){
     vList = list;
     for(int i = 0; i < list->length(); i++){
         VehicleElementDisplay *element = new VehicleElementDisplay();
-        element->setVehicle(vlist->at(i));
-        vehicleList->add(element);
+        element->setVehicle(vList->at(i));
+        vehicleList->append(element);
     }
     return;
 }
