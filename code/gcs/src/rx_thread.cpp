@@ -89,6 +89,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
            {
                mutex.lock();
                vList->get(id)->appendWaypoint(waypoint, vList->get(id)->getColor() );
+             /*
                node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                   (int32_t)(waypoint->getLatitude()*1E7),
                                                   (int32_t)(waypoint->getLongitude()*1E7),
@@ -96,7 +97,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                    0,
                                                   waypoint->getID(),
                                                   waypoint->getType());
-
+            */
 
                mutex.unlock();
                emit message(QString("Added waypoint"));
@@ -149,6 +150,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
               if((type == 1) || (type == 2))
               {
                   mutex.lock();
+                  /*
                   node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                      (int32_t)(waypoint->getLatitude()*1E7),
                                                      (int32_t)(waypoint->getLongitude()*1E7),
@@ -156,6 +158,8 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                                                       0,
                                                      waypoint->getType(),
                                                      waypoint->getID());
+
+                  */
                   mutex.unlock();
                   emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
 
@@ -176,9 +180,13 @@ void rx_thread::send_telemetry_command(int vehicle)
     // 2 position stream
     // 3 heartbeat stream
 
+    QDateTime local(QDateTime::currentDateTime());
+    QDateTime UTC(local.toUTC());
+    float64_t x = UTC.toMSecsSinceEpoch();
+
     //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);
     mutex.lock();
-    node->send_vehicle_telemetry_command(vehicle,vehicle,0,1);
+    node->send_vehicle_telemetry_command(vehicle, x, vehicle, 0, 1);
     qDebug() << "Sent telemetry request";
     mutex.unlock();
     emit messageConfirm(QString("  Sent Telemetry Command to ID " + QString::number(vehicle)));
@@ -193,12 +201,14 @@ void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
     float64_t x = UTC.toMSecsSinceEpoch();
     //node->send_target_designation_command(dest_id,timestamp,vech_ID,payload_id, target_id,target_type,latitude,longitude,altitude);
     //target type?
+  /*
     node->send_target_designation_command(vehicle, x,
                                           vehicle, 1, 1, 0,
                                           lat,
                                           longi,
                                           alt);
-    //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
+*/
+//node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
 //emit target recieved out to main window
@@ -215,10 +225,12 @@ void rx_thread::send_manTargeting(double latitude, double longitude, double alti
     //node->send_target_designation_command(dest_id,timestamp,vech_ID,payload_id, target_id,target_type,latitude,longitude,altitude);
     //target type?
     //printf("lat: %f long: %f alt: %f",latitude,longitude,altitude);
+    /*
     node->send_target_designation_command(69, x,
                                           69, 1, 1, 0,
                                           latitude*1E7,longitude*1E7,altitude);
-    //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
+*/
+//node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
 //UAV arm
@@ -259,7 +271,7 @@ void rx_thread::drop(int vehicle)
     else
         node->send_payload_bay_command(46,x,1,1);
 }
-
+/*
 //Start Joystick commands
 void rx_thread::start_UGV_Joystick()
 {
@@ -275,7 +287,7 @@ void rx_thread::stop_UGV_Joystick()
     emit endUGVJoystick();
     emit messageConfirm(QString("End UGV joystick control"));
 }
-
+*/
 //Emit vehicle status to be displayed in GUI
 void rx_thread::vechStat(int vech, int status){  emit vechStatus(vech, status); }
 
@@ -600,7 +612,7 @@ void* vehicle_global_position_callback(int8_t id, com_header_t header, vehicle_g
     vp->set(ID)->setXVelocity(position.x_speed);
     vp->set(ID)->setYVelocity(position.y_speed);
     vp->set(ID)->setZVelocity(position.z_speed);
-    vp->set(ID)->setHeading(((float)position.heading)/1E6);
+    //vp->set(ID)->setHeading(((float)position.heading)/1E6);
     mutex.unlock();
     vp->update(header.node_src_id);
 //    nq->enqueue(header.node_src_id);
@@ -649,7 +661,7 @@ void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t 
     */
     return 0;
 }
-
+/*
 void* target_designation_command_callback(int8_t, com_header_t, target_designation_command_t target, comnet::node* node_ptr)
 {
     //Add target to the target list
@@ -682,7 +694,7 @@ void* vehicle_waypoint_command_callback(int8_t, com_header_t h, vehicle_waypoint
                               ((float)way.altitude)/1E7,
                               0,0,0));
    return 0;
-}
+}*/
 // ----------- PROCESS -----------
 // Start processing data.
 //dynamic alloc
@@ -712,13 +724,13 @@ void rx_thread::process() {
    char  ip[] = "0013A20040917974";
    char comport[] = "5";
    //node->add_udp(&link_id,self_port, ip);
-   node->add_zigBee(&link_id,57600, comport);
+   //node->add_zigBee(&link_id,57600, comport);
    qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
    //Dest id is for the node id that we want to send to
    //node->establish_udp(link_id,1,dest_port,ip);
-   node->establish_zigBee(link_id,3,ip);
+   //node->establish_zigBee(link_id,3,ip);
 
    //Start Node
    //node->start(); <- no longer needed due to comnet update
@@ -729,7 +741,7 @@ void rx_thread::process() {
    node->register_on_pong(*pong_callback);
    node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
    node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
-   node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
+  // node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
    node->register_on_vehicle_system_status(*vehicle_system_status_callback);
    node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
    node->register_on_vehicle_global_position(*vehicle_global_position_callback);
@@ -738,7 +750,7 @@ void rx_thread::process() {
    //request list
 
    //UGV Sends when
-   node->register_on_target_designation_command(*target_designation_command_callback);
+   //node->register_on_target_designation_command(*target_designation_command_callback);
 
    //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
    //connect(this, SIGNAL(startUGVJoystick()), joystick, SLOT(process()));

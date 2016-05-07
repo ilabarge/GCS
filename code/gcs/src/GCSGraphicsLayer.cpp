@@ -29,10 +29,10 @@ void GCSGraphicsLayer::addWaypointToGCS( Waypoint22* wp, QColor color){
 
     wp->setGraphic(color, EsriRuntimeQt::SimpleMarkerSymbolStyle::Square, decimalDegreesToPoint(wp->getLatitude(), wp->getLongitude()), 20);
 
-    addGraphic(wp->getLineGraphic());
+    //addGraphic(wp->getLineGraphic());
     addGraphic(wp->getGraphic());
 
-    qDebug() << "Waypoint added";
+    qDebug() << "Waypoint added " << wp->getLineGraphicID();
 }
 
 void GCSGraphicsLayer::addGraphicToGCS(EsriRuntimeQt::Graphic *graphic){
@@ -44,7 +44,6 @@ void GCSGraphicsLayer::updateWaypointGraphics(Waypoint22 *wp){
 
     wp->setLinePoints(decimalDegreesToPoint(wp->getLatitude(), wp->getLongitude()),
                       decimalDegreesToPoint(wp->getNextLatitude(), wp->getNextLongitude()));
-
 
     //updateGraphic(wp->getLineGraphicID(), wp->getLineGraphic());
     addGraphic(wp->getLineGraphic());

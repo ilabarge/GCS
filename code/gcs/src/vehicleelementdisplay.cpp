@@ -58,9 +58,15 @@ int VehicleElementDisplay::getID(){
 }
 
 void VehicleElementDisplay::setText(){
-    if(vechicle->getVehicleType() ==0){
-        VehicleType->setText("UAV");
-        //spelling?
+    if(vechicle->getVehicleType() == 0){
+        if(vechicle->getVehicleID() == 101)
+            VehicleType->setText("Telemaster");
+        else if(vechicle->getVehicleID() == 69)
+            VehicleType->setText("Sigkadet");
+        else if(vechicle->getVehicleID() == 102)
+            VehicleType->setText("QUAD 1");
+        else
+            VehicleType->setText("QUAD 2");
     }else if(vechicle->getVehicleType() == 1){
         VehicleType->setText("UGV");
     }else if(vechicle->getVehicleType() == 2){

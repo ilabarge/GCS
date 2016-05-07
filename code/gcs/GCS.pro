@@ -28,65 +28,47 @@ win32:CONFIG += \
   console
 
 SOURCES += \
-    src/main.cpp \
-    src/mainwindow.cpp \
-    src/MapView.cpp \
-    src/sidebar.cpp \
-    src/togglebutton.cpp \
-    src/gcs_toolbar.cpp \
-    src/networking.cpp \
-    src/rx_thread.cpp \
-    src/serialscanner.cpp \
-    src/nodequeue.cpp \
-    src/SerialPortSelect.cpp \
-    src/SerialCombobox.cpp \
-    src/telemetrygui.cpp \
-    src/waypointgui.cpp \
-    src/vehicleauthorizationgui.cpp \
-    src/targetinggui.cpp \
-    src/target.cpp \
-    src/targetlist.cpp \
-    src/ugv_state.cpp \
-    src/GCSGraphicsLayer.cpp \
-    src/MapSymbol22.cpp \
-    src/Waypoint22.cpp \
-    src/Vehicle22.cpp \
-    src/uavpayload.cpp \
-    src/InternetTest.cpp \
-    src/vehicle_list.cpp \
-    src/consolelog.cpp \
-    src/vehicleelementdisplay.cpp \
-    src/vehicleinfo.cpp \
-    src/MainWindowADI.cpp \
-    src/WidgetADI.cpp \
-    src/WidgetSix.cpp \
-    src/qfi_ADI.cpp \
-    src/LayoutSquare.cpp \
-    src/comnet/Joystick.cpp \
-    src/comnet/joystickinput.cpp \
-    src/comnet/src/message/AmyStuff.cpp \
+    src/comnet/src/message/AirVehicleGroundRelativeState.cpp \
+    src/comnet/src/message/CommunicationsPayloadCommand.cpp \
+    src/comnet/src/message/CommunicationsPayloadConfigurationCommand.cpp \
+    src/comnet/src/message/CommunicationsPayloadStatus.cpp \
+    src/comnet/src/message/ConnectionReply.cpp \
+    src/comnet/src/message/ConnectionRequest.cpp \
     src/comnet/src/message/Enter.cpp \
     src/comnet/src/message/Exit.cpp \
     src/comnet/src/message/PayloadBayCommand.cpp \
     src/comnet/src/message/PayloadBayModeCommand.cpp \
+    src/comnet/src/message/PayloadBayStatus.cpp \
+    src/comnet/src/message/PayloadDataRecorderCommand.cpp \
+    src/comnet/src/message/PayloadDataRecorderStatus.cpp \
+    src/comnet/src/message/PayloadOperatingStatus.cpp \
+    src/comnet/src/message/PayloadOperationCommand.cpp \
     src/comnet/src/message/Ping.cpp \
     src/comnet/src/message/Pong.cpp \
-    src/comnet/src/message/TargetDesignationCommand.cpp \
-    src/comnet/src/message/UGVBatteryStatus.cpp \
-    src/comnet/src/message/UGVJoystick.cpp \
+    src/comnet/src/message/RawData.cpp \
+    src/comnet/src/message/ROVStatusMessage.cpp \
+    src/comnet/src/message/TargetAcknowledgement.cpp \
+    src/comnet/src/message/TargetStatus.cpp \
+    src/comnet/src/message/UAVBattery.cpp \
+    src/comnet/src/message/UAVCollisionAvodianceMessage.cpp \
+    src/comnet/src/message/UAVCollisionAvodianceStatus.cpp \
+    src/comnet/src/message/UAVHeading.cpp \
+    src/comnet/src/message/UAVLocation.cpp \
+    src/comnet/src/message/UAVMissionStatus.cpp \
+    src/comnet/src/message/UAVSpeed.cpp \
+    src/comnet/src/message/UUVStatus.cpp \
     src/comnet/src/message/VehicleAttitude.cpp \
     src/comnet/src/message/VehicleAuthorizationReply.cpp \
     src/comnet/src/message/VehicleAuthorizationRequest.cpp \
     src/comnet/src/message/VehicleBodySensedState.cpp \
     src/comnet/src/message/VehicleGlobalPosition.cpp \
-    src/comnet/src/message/VehicleGroundRelativeState.cpp \
     src/comnet/src/message/VehicleIdentification.cpp \
     src/comnet/src/message/VehicleInertialState.cpp \
+    src/comnet/src/message/VehicleJoystickCommand.cpp \
     src/comnet/src/message/VehicleModeCommand.cpp \
     src/comnet/src/message/VehicleSystemStatus.cpp \
     src/comnet/src/message/VehicleTelemetryCommand.cpp \
     src/comnet/src/message/VehicleTerminationCommand.cpp \
-    src/comnet/src/message/VehicleWaypointCommand.cpp \
     src/comnet/src/comnet.cpp \
     src/comnet/src/comnet_marshal.cpp \
     src/comnet/src/comnet_message.cpp \
@@ -94,6 +76,7 @@ SOURCES += \
     src/comnet/src/comnet_protocol.cpp \
     src/comnet/src/cond.cpp \
     src/comnet/src/datalink.cpp \
+    src/comnet/src/error_handle.cpp \
     src/comnet/src/mutexCom.cpp \
     src/comnet/src/pqueue.cpp \
     src/comnet/src/rand_array.cpp \
@@ -102,134 +85,49 @@ SOURCES += \
     src/comnet/src/threadCom.cpp \
     src/comnet/src/udp.cpp \
     src/comnet/src/zigBee.cpp \
+    src/consolelog.cpp \
+    src/gcs_toolbar.cpp \
+    src/GCSGraphicsLayer.cpp \
+    src/InternetTest.cpp \
+    src/LayoutSquare.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/MainWindowADI.cpp \
+    src/MapSymbol22.cpp \
+    src/MapView.cpp \
+    src/messages.cpp \
+    src/networking.cpp \
+    src/nodequeue.cpp \
+    src/qfi_ADI.cpp \
+    src/rx_thread.cpp \
+    src/SerialCombobox.cpp \
+    src/SerialPortSelect.cpp \
+    src/serialscanner.cpp \
+    src/sidebar.cpp \
+    src/target.cpp \
+    src/targetinggui.cpp \
+    src/targetlist.cpp \
+    src/telemetrygui.cpp \
+    src/togglebutton.cpp \
+    src/uavpayload.cpp \
+    src/ugv_state.cpp \
+    src/Vehicle22.cpp \
+    src/vehicle_list.cpp \
+    src/vehicleauthorizationgui.cpp \
+    src/vehicleelementdisplay.cpp \
+    src/vehicleinfo.cpp \
+    src/Waypoint22.cpp \
+    src/waypointgui.cpp \
+    src/WidgetADI.cpp \
+    src/WidgetSix.cpp \
     #tests/DataValidation/testIt.cpp \
     tests/DataValidation/validateData.cpp \
     #tests/toolbar/tst_toolbartest.cpp \
     main.cpp \
-    vehiclelistdisplay.cpp \
-    src/messages.cpp \
-    src/comnet/src/error_handle.cpp
+    vehiclelistdisplay.cpp
+
 
 HEADERS += \
-    src/mainwindow.h \
-    src/MapView.h \
-    src/sidebar.h \
-    src/togglebutton.h \
-    src/gcs_toolbar.h \
-    src/networking.h \
-    src/rx_thread.h \
-    src/serialscanner.h \
-    src/comnet/include/cond.h \
-    src/comnet/include/comnet.h \
-    src/comnet/include/comnet_parser.h \
-    src/comnet/include/serial.h \
-    src/comnet/include/thread.h \
-    src/comnet/include/udp.h \
-    src/comnet/include/comnet_marshal.h \
-    src/comnet/include/comnet_message.h \
-    src/comnet/include/comnet_protocol.h \
-    src/nodequeue.h \
-    src/SerialPortSelect.h \
-    src/SerialCombobox.h \
-    src/comnet/joystickinput.h \ #(check usage)
-    src/telemetrygui.h \
-    src/waypointgui.h \
-    src/vehicleauthorizationgui.h \
-    src/targetinggui.h \
-    src/target.h \
-    src/targetlist.h \
-    src/ugv_state.h \
-    src/GCSGraphicsLayer.h \
-    src/MapSymbol22.h \
-    src/Waypoint22.h \
-    src/Vehicle22.h \
-    src/uavpayload.h \
-    src/InternetTest.h \
-    src/vehicle_list.h \
-    src/consolelog.h \
-    src/vehicleelementdisplay.h \
-    src/vehicleinfo.h \
-    src/MainWindowADI.h \
-    src/qfi_ADI.h \
-    src/ui_WidgetSix.h \
-    src/WidgetADI.h \
-    src/WidgetSix.h \
-    src/comnet/include/comnet_message.h \
-    src/comnet/joystickinput.h \
-    src/LayoutSquare.h \
-    src/comnet/include/mutexCom.h \
-    src/comnet/include/pqueue.h \
-    src/comnet/include/priority_queue.h \
-    src/comnet/include/random_numbers.h \ 
-    src/comnet/include/standard_logic.h \
-    src/comnet/include/threadCom.h \
-    src/comnet/include/zigBee.h \
-    src/comnet/include/libxbee3-3.0.11/conn.h \
-    src/comnet/include/libxbee3-3.0.11/frame.h \
-    src/comnet/include/libxbee3-3.0.11/internal.h \
-    src/comnet/include/libxbee3-3.0.11/ll.h \
-    src/comnet/include/libxbee3-3.0.11/log.h \
-    src/comnet/include/libxbee3-3.0.11/mode.h \
-    src/comnet/include/libxbee3-3.0.11/mutex.h \
-    src/comnet/include/libxbee3-3.0.11/net.h \
-    src/comnet/include/libxbee3-3.0.11/net_callbacks.h \
-    src/comnet/include/libxbee3-3.0.11/net_handlers.h \
-    src/comnet/include/libxbee3-3.0.11/net_io.h \
-    src/comnet/include/libxbee3-3.0.11/pkt.h \
-    src/comnet/include/libxbee3-3.0.11/prepare.h \
-    src/comnet/include/libxbee3-3.0.11/rx.h \
-    src/comnet/include/libxbee3-3.0.11/thread.h \
-    src/comnet/include/libxbee3-3.0.11/tx.h \
-    src/comnet/include/libxbee3-3.0.11/xbee.h \
-    src/comnet/include/libxbee3-3.0.11/xbee_int.h \
-    src/comnet/include/libxbee3-3.0.11/xbeep.h \
-    src/comnet/include/libxbee3-3.0.11/xsys.h \
-    src/comnet/include/libxbee3-3.0.11/xsys_darwin.h \
-    src/comnet/include/libxbee3-3.0.11/xsys_linux.h \
-    src/comnet/include/libxbee3-3.0.11/xsys_win32.h \
-    src/comnet/include/libxbee3-3.0.11/xsys_win32_winpthreads.h \
-    src/comnet/include/message/AmyStuff.h \
-    src/comnet/include/message/Enter.h \
-    src/comnet/include/message/Exit.h \
-    src/comnet/include/message/PayloadBayCommand.h \
-    src/comnet/include/message/PayloadBayModeCommand.h \
-    src/comnet/include/message/Ping.h \
-    src/comnet/include/message/Pong.h \
-    src/comnet/include/message/TargetDesignationCommand.h \
-    src/comnet/include/message/UGVBatteryStatus.h \
-    src/comnet/include/message/UGVJoystick.h \
-    src/comnet/include/message/VehicleAttitude.h \
-    src/comnet/include/message/VehicleAuthorizationReply.h \
-    src/comnet/include/message/VehicleAuthorizationRequest.h \
-    src/comnet/include/message/VehicleBodySensedState.h \
-    src/comnet/include/message/VehicleGlobalPosition.h \
-    src/comnet/include/message/VehicleGroundRelativeState.h \
-    src/comnet/include/message/VehicleIdentification.h \
-    src/comnet/include/message/VehicleInertialState.h \
-    src/comnet/include/message/VehicleModeCommand.h \
-    src/comnet/include/message/VehicleSystemStatus.h \
-    src/comnet/include/message/VehicleTelemetryCommand.h \
-    src/comnet/include/message/VehicleTerminationCommand.h \
-    src/comnet/include/message/VehicleWaypointCommand.h \
-    src/comnet/include/datalink.h \
-    src/comnet/include/mutex.h \
-    src/comnet/include/mutexCom.h \
-    src/comnet/include/pqueue.h \
-    src/comnet/include/priority_queue.h \
-    src/comnet/include/random_numbers.h \
-    src/comnet/include/serial.h \
-    src/comnet/include/standard_logic.h \
-    src/comnet/Joystick.h \
-    src/comnet/joystickinput.h \
-    tests/DataValidation/validate_data.h \
-    vehiclelistdisplay.h \
-    src/comnet/include/Joystick.h \
-    src/comnet/include/joystickinput.h \
-    src/comnet/include/protonet.h \
-    src/comnet/include/protonet_marshal.h \
-    src/comnet/include/protonet_message.h \
-    src/comnet/include/protonet_parser.h \
-    src/comnet/include/protonet_protocol.h \
     src/comnet/include/cryptotopp563/3way.h \
     src/comnet/include/cryptotopp563/adler32.h \
     src/comnet/include/cryptotopp563/aes.h \
@@ -368,9 +266,126 @@ HEADERS += \
     src/comnet/include/cryptotopp563/zdeflate.h \
     src/comnet/include/cryptotopp563/zinflate.h \
     src/comnet/include/cryptotopp563/zlib.h \
+    src/comnet/include/libxbee3-3.0.11/conn.h \
+    src/comnet/include/libxbee3-3.0.11/frame.h \
+    src/comnet/include/libxbee3-3.0.11/internal.h \
+    src/comnet/include/libxbee3-3.0.11/ll.h \
+    src/comnet/include/libxbee3-3.0.11/log.h \
+    src/comnet/include/libxbee3-3.0.11/mode.h \
+    src/comnet/include/libxbee3-3.0.11/mutex.h \
+    src/comnet/include/libxbee3-3.0.11/net.h \
+    src/comnet/include/libxbee3-3.0.11/net_callbacks.h \
+    src/comnet/include/libxbee3-3.0.11/net_handlers.h \
+    src/comnet/include/libxbee3-3.0.11/net_io.h \
+    src/comnet/include/libxbee3-3.0.11/pkt.h \
+    src/comnet/include/libxbee3-3.0.11/prepare.h \
+    src/comnet/include/libxbee3-3.0.11/rx.h \
+    src/comnet/include/libxbee3-3.0.11/thread.h \
+    src/comnet/include/libxbee3-3.0.11/tx.h \
+    src/comnet/include/libxbee3-3.0.11/xbee.h \
+    src/comnet/include/libxbee3-3.0.11/xbee_int.h \
+    src/comnet/include/libxbee3-3.0.11/xbeep.h \
+    src/comnet/include/libxbee3-3.0.11/xsys.h \
+    src/comnet/include/libxbee3-3.0.11/xsys_darwin.h \
+    src/comnet/include/libxbee3-3.0.11/xsys_linux.h \
+    src/comnet/include/libxbee3-3.0.11/xsys_win32.h \
+    src/comnet/include/libxbee3-3.0.11/xsys_win32_winpthreads.h \
+    src/comnet/include/message/AirVehicleGroundRelativeState.h \
+    src/comnet/include/message/CommunicationsPayloadCommand.h \
+    src/comnet/include/message/CommunicationsPayloadConfigurationCommand.h \
+    src/comnet/include/message/CommunicationsPayloadStatus.h \
+    src/comnet/include/message/ConnectionReply.h \
+    src/comnet/include/message/ConnectionRequest.h \
+    src/comnet/include/message/Enter.h \
+    src/comnet/include/message/Exit.h \
+    src/comnet/include/message/PayloadBayCommand.h \
+    src/comnet/include/message/PayloadBayModeCommand.h \
+    src/comnet/include/message/PayloadBayStatus.h \
+    src/comnet/include/message/PayloadDataRecorderCommand.h \
+    src/comnet/include/message/PayloadDataRecorderStatus.h \
+    src/comnet/include/message/PayloadOperatingStatus.h \
+    src/comnet/include/message/PayloadOperationCommand.h \
+    src/comnet/include/message/Ping.h \
+    src/comnet/include/message/Pong.h \
+    src/comnet/include/message/RawData.h \
+    src/comnet/include/message/ROVStatusMessage.h \
+    src/comnet/include/message/TargetAcknowledgement.h \
+    src/comnet/include/message/TargetStatus.h \
+    src/comnet/include/message/UAVBattery.h \
+    src/comnet/include/message/UAVCollisionAvodianceMessage.h \
+    src/comnet/include/message/UAVCollisionAvodianceStatus.h \
+    src/comnet/include/message/UAVHeading.h \
+    src/comnet/include/message/UAVLocation.h \
+    src/comnet/include/message/UAVMissionStatus.h \
+    src/comnet/include/message/UAVSpeed.h \
+    src/comnet/include/message/UUVStatus.h \
+    src/comnet/include/message/VehicleAttitude.h \
+    src/comnet/include/message/VehicleAuthorizationReply.h \
+    src/comnet/include/message/VehicleAuthorizationRequest.h \
+    src/comnet/include/message/VehicleBodySensedState.h \
+    src/comnet/include/message/VehicleGlobalPosition.h \
+    src/comnet/include/message/VehicleIdentification.h \
+    src/comnet/include/message/VehicleInertialState.h \
+    src/comnet/include/message/VehicleJoystickCommand.h \
+    src/comnet/include/message/VehicleModeCommand.h \
+    src/comnet/include/message/VehicleSystemStatus.h \
+    src/comnet/include/message/VehicleTelemetryCommand.h \
+    src/comnet/include/message/VehicleTerminationCommand.h \
+    src/comnet/include/comnet.h \
+    src/comnet/include/comnet_marshal.h \
+    src/comnet/include/comnet_message.h \
+    src/comnet/include/comnet_parser.h \
+    src/comnet/include/comnet_protocol.h \
+    src/comnet/include/cond.h \
     src/comnet/include/config.h \
+    src/comnet/include/datalink.h \
     src/comnet/include/error_handle.h \
-    src/messages.h
+    src/comnet/include/mutexCom.h \
+    src/comnet/include/pqueue.h \
+    src/comnet/include/priority_queue.h \
+    src/comnet/include/random_numbers.h \
+    src/comnet/include/serial.h \
+    src/comnet/include/standard_logic.h \
+    src/comnet/include/threadCom.h \
+    src/comnet/include/udp.h \
+    src/comnet/include/zigBee.h \
+    src/consolelog.h \
+    src/gcs_toolbar.h \
+    src/GCSGraphicsLayer.h \
+    src/InternetTest.h \
+    src/LayoutSquare.h \
+    src/mainwindow.h \
+    src/MainWindowADI.h \
+    src/MapSymbol22.h \
+    src/MapView.h \
+    src/messages.h \
+    src/networking.h \
+    src/nodequeue.h \
+    src/qfi_ADI.h \
+    src/rx_thread.h \
+    src/SerialCombobox.h \
+    src/SerialPortSelect.h \
+    src/serialscanner.h \
+    src/sidebar.h \
+    src/target.h \
+    src/targetinggui.h \
+    src/targetlist.h \
+    src/telemetrygui.h \
+    src/togglebutton.h \
+    src/uavpayload.h \
+    src/ugv_state.h \
+    src/ui_WidgetSix.h \
+    src/Vehicle22.h \
+    src/vehicle_list.h \
+    src/vehicleauthorizationgui.h \
+    src/vehicleelementdisplay.h \
+    src/vehicleinfo.h \
+    src/Waypoint22.h \
+    src/waypointgui.h \
+    src/WidgetADI.h \
+    src/WidgetSix.h \
+    tests/DataValidation/validate_data.h \
+    vehiclelistdisplay.h
 
 
 FORMS += \
@@ -417,9 +432,3 @@ INCLUDEPATH += $$PWD/src/comnet
 DEPENDPATH += $$PWD/src/comnet
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/ -lNGCP_COM
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/ -lNGCP_COMd
-else:unix: LIBS += -L$$PWD/src/comnet/ -lNGCP_COM
-
-INCLUDEPATH += $$PWD/src/comnet
-DEPENDPATH += $$PWD/src/comnet

@@ -47,7 +47,7 @@ public slots:
 
     void addWaypointToGCS( Waypoint22* wp, QColor color);
     void updateWaypointGraphics( Waypoint22* wp );
-    void removeWaypointGraphic( int waypointID, int lineID);
+    void removeWaypointGraphic(int waypointID, int lineID);
 };
 
 #endif // GCSGRAPHICSLAYER_H
