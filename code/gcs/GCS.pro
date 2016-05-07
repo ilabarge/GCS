@@ -432,3 +432,9 @@ INCLUDEPATH += $$PWD/src/comnet
 DEPENDPATH += $$PWD/src/comnet
 
 
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/release/ -lNGCP_COM
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/debug/ -lNGCP_COM
+else:unix: LIBS += -L$$PWD/src/comnet/ -lNGCP_COM
+
+INCLUDEPATH += $$PWD/src/comnet
+DEPENDPATH += $$PWD/src/comnet
