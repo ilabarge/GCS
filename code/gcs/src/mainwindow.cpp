@@ -269,6 +269,8 @@ void MainWindow::initNetworking(){
     vInfo->getList(vList22);
 
     targetList = new TargetList();
+    targetInfo->getList(targetList);
+
     network = new networking(vList22,targetList);
     connect(network,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
     connect(network,SIGNAL(vehicleStatus(int,int)),this,SLOT(vStatus(int,int)));
@@ -329,6 +331,7 @@ void MainWindow::initNetworkingConnects(){
 
 //    //Connect vehicle updates to vehicle info
     connect(network,SIGNAL(updateVechicle(int)),vInfo,SLOT(status(int)));
+    connect(network,SIGNAL(updateVechicle(int)),targetInfo,SLOT(status(int)));
 //    //Connect vehcil update with the attitued
     connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateADI(int)));
 }
@@ -350,6 +353,10 @@ void MainWindow::initWidgets(){
 
     consolelog = new ConsoleLog();
     consolelog->setMaximumSize(600,300);
+
+    targetInfo = new TargetInfo();
+    targetInfo->setMaximumSize(250, 250);
+
     //Add widgets to screen
     //Temp icons, make more pretty!!
     UGV_JOYSTICK = new QPushButton();
@@ -411,11 +418,12 @@ void MainWindow::initWidgets(){
     vInfo = new VehicleInfo();
     attitude = new MainWindowADI();
     attitude->setMaximumSize(300,300);
-    vInfo->setMaximumSize(350,300);
+    vInfo->setMaximumSize(400,300);
     lowerBar.addLayout(vehicleList,0,0);
     lowerBar.addWidget(attitude,0,1);
     lowerBar.addWidget(vInfo,0,2);
-    lowerBar.addLayout(&command_box,0,3);
+    lowerBar.addWidget(targetInfo,0,3);
+    lowerBar.addLayout(&command_box,0,4);
 
     //lowerBarWidget.setLayout(&lowerBar);
     mainLayout->addLayout(&lowerBar,3,0);
@@ -427,6 +435,7 @@ void MainWindow::initWidgets(){
     for(int i = 0; i < elementList->size(); i++){
         connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(elementSelect(int)));
         connect(elementList->at(i),SIGNAL(vechID(int)), vInfo,SLOT(displayVech(int)));
+        connect(elementList->at(i),SIGNAL(vechID(int)), targetInfo,SLOT(displayInfo(int)));
         connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(updateADI(int)));
     }
 
@@ -543,10 +552,12 @@ void MainWindow::update_vehicle_queue()
 //Updates the displayed targets.
 void MainWindow::update_targets(Target* t)
 {
-    qDebug() << "Latitude is:" << t->getLatitude();
-    qDebug() << "Longitude is:" << t->getLongitude();
+//    qDebug() << "Latitude is:" << t->getLatitude();
+//    qDebug() << "Longitude is:" << t->getLongitude;
+//    qDebug() << "Altitude is:" << t->getAltitude();
     t->setGraphic(Qt::red,EsriRuntimeQt::SimpleMarkerSymbolStyle::Cross,t->getLatitude()*10000000,t->getLongitude()*10000000,10, mv->getSpatialRef());
     t->setTargetID(mv->addGraphicToLayer(t->getGraphic()));
+
 }
 
 //Manually drop UAV and alert UGV of drop
@@ -703,8 +714,7 @@ void MainWindow::updateADI(int ID)
 
 void MainWindow::addTarget(float lat, float lon){
     Target target(lat, lon, 0, 0, 0, 0);
-    target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X,
-                      mv->decimalDegreesToPoint(lat, lon), 20);
+    target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X, mv->decimalDegreesToPoint(lat, lon), 20);
     mv->addGraphicToLayer((target.getGraphic()));
 }
 

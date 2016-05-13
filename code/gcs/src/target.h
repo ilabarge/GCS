@@ -9,7 +9,7 @@ class Target : public MapSymbol22
 {
 public:
     Target();
-    explicit Target(double lat,double longi,double alt,int payid, int targid, int targtype);
+    explicit Target(double lat, double longi, double alt, int payid, int targid, int targtype);
 
     double getLatitude();
     double getLongitude();

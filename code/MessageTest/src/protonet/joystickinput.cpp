@@ -4,7 +4,7 @@
 #include <chrono>
 #include <thread>
 #include <QDateTime>
-JoystickInput::JoystickInput(QObject *parent, protonet::node *n) :
+JoystickInput::JoystickInput(QObject *parent, comnet::node *n) :
     QObject(parent)
 {
     send = false;
@@ -74,7 +74,7 @@ void JoystickInput::process()
           joystick->sf::Joystick::update();
           int y_position = sf::Joystick::getAxisPosition(0,sf::Joystick::Y);
           int z_position = sf::Joystick::getAxisPosition(0,sf::Joystick::Z);
-          //Conversion to Raw Joystick input in order to send through protonet
+          //Conversion to Raw Joystick input in order to send through comnet
           int y = (y_position + 100) * 327;
           int z = (z_position + 100) * 327;
           //Range for resting point for joystick

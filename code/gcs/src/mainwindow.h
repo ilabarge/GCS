@@ -41,6 +41,7 @@
 #include "uavpayload.h"
 #include "targetinggui.h"
 #include "vehicleinfo.h"
+#include "targetinfo.h"
 #include "MainWindowADI.h"
 
 class MainWindow : public QMainWindow
@@ -98,6 +99,7 @@ private:
 
     ConsoleLog* consolelog;
     VehicleInfo* vInfo;
+    TargetInfo* targetInfo;
 
 
     QPushButton command;

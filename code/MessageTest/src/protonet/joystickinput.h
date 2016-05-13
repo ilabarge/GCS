@@ -6,14 +6,14 @@
 #include <QDebug>
 
 //GCS Includes
-#include <protonet.h>
+#include <comnet.h>
 #include <Joystick.h>
 
 class JoystickInput : public QObject
 {
     Q_OBJECT
 public:
-    explicit JoystickInput(QObject *parent = 0,protonet::node* = NULL);
+    explicit JoystickInput(QObject *parent = 0,comnet::node* = NULL);
     boolean send;
 
 signals:
@@ -23,7 +23,7 @@ public slots:
     void stop();
 
 private:
-    protonet::node* node;
+    comnet::node* node;
 
 };
 /*

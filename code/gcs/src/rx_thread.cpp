@@ -1,4 +1,5 @@
 #include "rx_thread.h"
+#include "qdebug.h"
 TargetList* targetList;
 vehicle_list* vp;
 QMutex mutex;
@@ -89,15 +90,16 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
            {
                mutex.lock();
                vList->get(id)->appendWaypoint(waypoint, vList->get(id)->getColor() );
-             /*
+
                node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                   (int32_t)(waypoint->getLatitude()*1E7),
                                                   (int32_t)(waypoint->getLongitude()*1E7),
-                                                  (int32_t)(waypoint->getAltitude()),//*1E7),
-                                                   0,
-                                                  waypoint->getID(),
-                                                  waypoint->getType());
-            */
+                                                  (int32_t)(waypoint->getAltitude())//*1E7)
+                                                   );
+                                                   //0,
+                                                  //waypoint->getID(),
+                                                  //waypoint->getType());
+
 
                mutex.unlock();
                emit message(QString("Added waypoint"));
@@ -150,16 +152,16 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
               if((type == 1) || (type == 2))
               {
                   mutex.lock();
-                  /*
+
                   node->send_vehicle_waypoint_command(vehicle,x,vehicle,
                                                      (int32_t)(waypoint->getLatitude()*1E7),
                                                      (int32_t)(waypoint->getLongitude()*1E7),
-                                                     (int32_t)(waypoint->getAltitude()*1E3),
-                                                      0,
-                                                     waypoint->getType(),
-                                                     waypoint->getID());
+                                                     (int32_t)(waypoint->getAltitude()*1E3));
+                                                      //0,
+                                                     //waypoint->getType(),
+                                                     //waypoint->getID());
 
-                  */
+
                   mutex.unlock();
                   emit messageConfirm(QString("  Sent Waypoint to ID " + QString::number(vehicle)));
 
@@ -201,13 +203,11 @@ void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
     float64_t x = UTC.toMSecsSinceEpoch();
     //node->send_target_designation_command(dest_id,timestamp,vech_ID,payload_id, target_id,target_type,latitude,longitude,altitude);
     //target type?
-  /*
-    node->send_target_designation_command(vehicle, x,
+    node->send_target_designation_command(vehicle, vehicle, x,
                                           vehicle, 1, 1, 0,
                                           lat,
                                           longi,
                                           alt);
-*/
 //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
@@ -225,11 +225,11 @@ void rx_thread::send_manTargeting(double latitude, double longitude, double alti
     //node->send_target_designation_command(dest_id,timestamp,vech_ID,payload_id, target_id,target_type,latitude,longitude,altitude);
     //target type?
     //printf("lat: %f long: %f alt: %f",latitude,longitude,altitude);
-    /*
-    node->send_target_designation_command(69, x,
+
+    node->send_target_designation_command(69, 69, x,
                                           69, 1, 1, 0,
                                           latitude*1E7,longitude*1E7,altitude);
-*/
+
 //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
@@ -451,7 +451,7 @@ void* ping_callback(int8_t id, com_header_t header, ping_t ping, comnet::node* n
 void* pong_callback(int8_t, com_header_t header, pong_t pong, comnet::node* node_ptr)
 {
    printf("got pong");
-   //node_ptr->send_ping(header.node_src_id,0);
+   node_ptr->send_ping(header.node_src_id,0);
    return 0;
 }
 
@@ -661,22 +661,34 @@ void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t 
     */
     return 0;
 }
-/*
-void* target_designation_command_callback(int8_t, com_header_t, target_designation_command_t target, comnet::node* node_ptr)
+
+void* target_designation_command_callback(int8_t, com_header_t header, target_designation_command_t target, comnet::node* node)
 {
     //Add target to the target list
-    //targetList->addTarget(&Target(((float)target.latitude)/1E7,
-      //                        ((float)target.longitude)/1E7,
-        //                      target.altitude,
-          //                    target.payload_ID,target.target_ID,target.target_type));
-
-    //Send recieved target command to uav
+    /*
+    targetList->addTarget(&Target(((float)target.latitude)/1E7,
+                              ((float)target.longitude)/1E7,
+                              target.altitude,
+                              target.payload_ID,target.target_ID,target.target_type));
+*/
+    int ID = header.node_src_id;
+    //Add target to the target list
+    Target* t = new Target();
+    t->setTargetID(ID);
+    t->setLatitude((float)target.latitude/1E7);
+    t->setLongitude((float)target.longitude/1E7);
+    t->setAltitude((float)target.altitude/1E7);
+    t->setPayloadID((float)target.payload_ID/1E7);
+    t->setTargetID((float)target.target_ID/1E7);
+    t->setTargetType((float)target.target_type/1E7);
+    targetList->addTarget(t);
+//Send recieved target command to uav
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     qDebug() << "latitude" << ((float)target.latitude)/1E7;
     qDebug() << "longitude" << ((float)target.longitude)/1E7;
-    np->send_target_designation_command(69,x,69,1,1,0,
+    np->send_target_designation_command(69,69,x,69,1,1,0,
                                           ((float)target.latitude)/1E7,
                                           ((float)target.longitude)/1E7,
                                           target.altitude);
@@ -686,15 +698,40 @@ void* target_designation_command_callback(int8_t, com_header_t, target_designati
     return 0;
 }
 
+/*
+void* target_status_callback(int8_t link_id, com_header_t header, target_status_t target_status, comnet::node* node_ptr)
+{
+    int ID = header.node_src_id;
+    if(!(targetList->inList(ID))){
+        //qDebug() << "adding target to list";
+        //Add target to the target list
+        Target* t = new Target();
+        t->setTargetID(ID);
+        t->setRadius((float)target_status.target_radius/1E7);
+        t->setAngle((float)target_status.target_angle/1E7);
+        t->setAltitude((float)target_status.target_altitude/1E7);
+    targetList->addTarget(t);
+    }
+    mutex.lock();
+
+    targetList->getTarget(ID)->setRadius(target_status.target_radius/1E7);
+    targetList->getTarget(ID)->setAngle(target_status.target_angle/1E7);
+    targetList->getTarget(ID)->setAltitude(target_status.target_altitude/1E7);
+
+    mutex.unlock();
+
+    return 0;
+}
+*/
 void* vehicle_waypoint_command_callback(int8_t, com_header_t h, vehicle_waypoint_command_t way, comnet::node* node_ptr)
 {
-    if(way.waypoint_type == 1)
+    //if(way.waypoint_type == 1)
     targetList->addTarget(&Target(((float)way.latitude)/1E7,
                               ((float)way.longitude)/1E7,
                               ((float)way.altitude)/1E7,
                               0,0,0));
    return 0;
-}*/
+}
 // ----------- PROCESS -----------
 // Start processing data.
 //dynamic alloc
@@ -715,22 +752,22 @@ void rx_thread::process() {
    joystick_thread->start();*/
 
    //Set link_id to 0
-   int8_t link_id(0);
+   int8_t link_id(1);
 
    //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
    qDebug() << "Self port for GCS: " << self_port;
-   //char  ip[] = "127.0.0.1";
-   char  ip[] = "0013A20040917974";
-   char comport[] = "5";
-   //node->add_udp(&link_id,self_port, ip);
+   char  ip[] = "127.0.0.1";
+   //char  ip[] = "0013A2004067E4A0";
+   char comport[] = "4";
+   node->add_udp(&link_id,self_port, ip);
    //node->add_zigBee(&link_id,57600, comport);
    qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
    //Dest id is for the node id that we want to send to
-   //node->establish_udp(link_id,1,dest_port,ip);
-   //node->establish_zigBee(link_id,3,ip);
+   node->establish_udp(link_id,1,dest_port,ip);
+   //node->establish_zigBee(link_id,6,ip);
 
    //Start Node
    //node->start(); <- no longer needed due to comnet update
@@ -741,16 +778,18 @@ void rx_thread::process() {
    node->register_on_pong(*pong_callback);
    node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
    node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
-  // node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
+   node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
    node->register_on_vehicle_system_status(*vehicle_system_status_callback);
    node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
    node->register_on_vehicle_global_position(*vehicle_global_position_callback);
    node->register_on_vehicle_attitude(*vehicle_attitude_callback);
+
+   //node->register_on_target_status(*target_status_callback);
    //ack vehicle got t
    //request list
 
    //UGV Sends when
-   //node->register_on_target_designation_command(*target_designation_command_callback);
+   node->register_on_target_designation_command(*target_designation_command_callback);
 
    //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
    //connect(this, SIGNAL(startUGVJoystick()), joystick, SLOT(process()));
@@ -760,6 +799,7 @@ void rx_thread::process() {
     * Ignoring as if emit it will close the thread prematurely, we will instead close
     * the thread upon the closing of the program. Network's deconstructor will close the thread
     */
+
 }
 //-----------------------------------------------------------------
 /*Setting up callbacks

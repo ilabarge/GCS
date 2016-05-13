@@ -59,7 +59,7 @@ int32_t udp_send(
 
 int32_t udp_close(sock_fd_t* fd);
 
-using namespace protonet;
+using namespace comnet;
 #ifdef __cplusplus
 class UDP : public datalink
 {

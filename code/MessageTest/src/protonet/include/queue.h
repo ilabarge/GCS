@@ -1,8 +1,8 @@
 /* 
 A threadsafe cross platform message queue.
 
-Used to transmit parsed protonet messages between
-the datalink handler and protonet event handler.
+Used to transmit parsed comnet messages between
+the datalink handler and comnet event handler.
 */
 
 #ifndef _QUEUE_H
@@ -14,9 +14,9 @@ the datalink handler and protonet event handler.
 /* User Includes */
 #include <cond.h>
 #include <mutex.h>
-#include <protonet_message.h>
+#include <comnet_message.h>
 
-namespace protonet
+namespace comnet
 {
 
 class proto_msg_queue

@@ -95,7 +95,6 @@ SOURCES += \
     src/MainWindowADI.cpp \
     src/MapSymbol22.cpp \
     src/MapView.cpp \
-    src/messages.cpp \
     src/networking.cpp \
     src/nodequeue.cpp \
     src/qfi_ADI.cpp \
@@ -124,148 +123,149 @@ SOURCES += \
     tests/DataValidation/validateData.cpp \
     #tests/toolbar/tst_toolbartest.cpp \
     main.cpp \
-    vehiclelistdisplay.cpp
+    vehiclelistdisplay.cpp \
+    src/targetinfo.cpp
 
 
 HEADERS += \
-    src/comnet/include/cryptotopp563/3way.h \
-    src/comnet/include/cryptotopp563/adler32.h \
-    src/comnet/include/cryptotopp563/aes.h \
-    src/comnet/include/cryptotopp563/algebra.h \
-    src/comnet/include/cryptotopp563/algparam.h \
-    src/comnet/include/cryptotopp563/arc4.h \
-    src/comnet/include/cryptotopp563/argnames.h \
-    src/comnet/include/cryptotopp563/asn.h \
-    src/comnet/include/cryptotopp563/authenc.h \
-    src/comnet/include/cryptotopp563/base32.h \
-    src/comnet/include/cryptotopp563/base64.h \
-    src/comnet/include/cryptotopp563/basecode.h \
-    src/comnet/include/cryptotopp563/bench.h \
-    src/comnet/include/cryptotopp563/blowfish.h \
-    src/comnet/include/cryptotopp563/blumshub.h \
-    src/comnet/include/cryptotopp563/camellia.h \
-    src/comnet/include/cryptotopp563/cast.h \
-    src/comnet/include/cryptotopp563/cbcmac.h \
-    src/comnet/include/cryptotopp563/ccm.h \
-    src/comnet/include/cryptotopp563/channels.h \
-    src/comnet/include/cryptotopp563/cmac.h \
-    src/comnet/include/cryptotopp563/config.h \
-    src/comnet/include/cryptotopp563/cpu.h \
-    src/comnet/include/cryptotopp563/crc.h \
-    src/comnet/include/cryptotopp563/cryptlib.h \
-    src/comnet/include/cryptotopp563/default.h \
-    src/comnet/include/cryptotopp563/des.h \
-    src/comnet/include/cryptotopp563/dh.h \
-    src/comnet/include/cryptotopp563/dh2.h \
-    src/comnet/include/cryptotopp563/dll.h \
-    src/comnet/include/cryptotopp563/dmac.h \
-    src/comnet/include/cryptotopp563/dsa.h \
-    src/comnet/include/cryptotopp563/eax.h \
-    src/comnet/include/cryptotopp563/ec2n.h \
-    src/comnet/include/cryptotopp563/eccrypto.h \
-    src/comnet/include/cryptotopp563/ecp.h \
-    src/comnet/include/cryptotopp563/elgamal.h \
-    src/comnet/include/cryptotopp563/emsa2.h \
-    src/comnet/include/cryptotopp563/eprecomp.h \
-    src/comnet/include/cryptotopp563/esign.h \
-    src/comnet/include/cryptotopp563/factory.h \
-    src/comnet/include/cryptotopp563/files.h \
-    src/comnet/include/cryptotopp563/filters.h \
-    src/comnet/include/cryptotopp563/fips140.h \
-    src/comnet/include/cryptotopp563/fltrimpl.h \
-    src/comnet/include/cryptotopp563/gcm.h \
-    src/comnet/include/cryptotopp563/gf256.h \
-    src/comnet/include/cryptotopp563/gf2_32.h \
-    src/comnet/include/cryptotopp563/gf2n.h \
-    src/comnet/include/cryptotopp563/gfpcrypt.h \
-    src/comnet/include/cryptotopp563/gost.h \
-    src/comnet/include/cryptotopp563/gzip.h \
-    src/comnet/include/cryptotopp563/hex.h \
-    src/comnet/include/cryptotopp563/hkdf.h \
-    src/comnet/include/cryptotopp563/hmac.h \
-    src/comnet/include/cryptotopp563/hrtimer.h \
-    src/comnet/include/cryptotopp563/ida.h \
-    src/comnet/include/cryptotopp563/idea.h \
-    src/comnet/include/cryptotopp563/integer.h \
-    src/comnet/include/cryptotopp563/iterhash.h \
-    src/comnet/include/cryptotopp563/lubyrack.h \
-    src/comnet/include/cryptotopp563/luc.h \
-    src/comnet/include/cryptotopp563/mars.h \
-    src/comnet/include/cryptotopp563/md2.h \
-    src/comnet/include/cryptotopp563/md4.h \
-    src/comnet/include/cryptotopp563/md5.h \
-    src/comnet/include/cryptotopp563/mdc.h \
-    src/comnet/include/cryptotopp563/mersenne.h \
-    src/comnet/include/cryptotopp563/misc.h \
-    src/comnet/include/cryptotopp563/modarith.h \
-    src/comnet/include/cryptotopp563/modes.h \
-    src/comnet/include/cryptotopp563/modexppc.h \
-    src/comnet/include/cryptotopp563/mqueue.h \
-    src/comnet/include/cryptotopp563/mqv.h \
-    src/comnet/include/cryptotopp563/nbtheory.h \
-    src/comnet/include/cryptotopp563/network.h \
-    src/comnet/include/cryptotopp563/nr.h \
-    src/comnet/include/cryptotopp563/oaep.h \
-    src/comnet/include/cryptotopp563/oids.h \
-    src/comnet/include/cryptotopp563/osrng.h \
-    src/comnet/include/cryptotopp563/panama.h \
-    src/comnet/include/cryptotopp563/pch.h \
-    src/comnet/include/cryptotopp563/pkcspad.h \
-    src/comnet/include/cryptotopp563/polynomi.h \
-    src/comnet/include/cryptotopp563/pssr.h \
-    src/comnet/include/cryptotopp563/pubkey.h \
-    src/comnet/include/cryptotopp563/pwdbased.h \
-    src/comnet/include/cryptotopp563/queue.h \
-    src/comnet/include/cryptotopp563/rabin.h \
-    src/comnet/include/cryptotopp563/randpool.h \
-    src/comnet/include/cryptotopp563/rc2.h \
-    src/comnet/include/cryptotopp563/rc5.h \
-    src/comnet/include/cryptotopp563/rc6.h \
-    src/comnet/include/cryptotopp563/rdrand.h \
-    src/comnet/include/cryptotopp563/resource.h \
-    src/comnet/include/cryptotopp563/rijndael.h \
-    src/comnet/include/cryptotopp563/ripemd.h \
-    src/comnet/include/cryptotopp563/rng.h \
-    src/comnet/include/cryptotopp563/rsa.h \
-    src/comnet/include/cryptotopp563/rw.h \
-    src/comnet/include/cryptotopp563/safer.h \
-    src/comnet/include/cryptotopp563/salsa.h \
-    src/comnet/include/cryptotopp563/seal.h \
-    src/comnet/include/cryptotopp563/secblock.h \
-    src/comnet/include/cryptotopp563/seckey.h \
-    src/comnet/include/cryptotopp563/seed.h \
-    src/comnet/include/cryptotopp563/serpent.h \
-    src/comnet/include/cryptotopp563/serpentp.h \
-    src/comnet/include/cryptotopp563/sha.h \
-    src/comnet/include/cryptotopp563/sha3.h \
-    src/comnet/include/cryptotopp563/shacal2.h \
-    src/comnet/include/cryptotopp563/shark.h \
-    src/comnet/include/cryptotopp563/simple.h \
-    src/comnet/include/cryptotopp563/skipjack.h \
-    src/comnet/include/cryptotopp563/smartptr.h \
-    src/comnet/include/cryptotopp563/socketft.h \
-    src/comnet/include/cryptotopp563/sosemanuk.h \
-    src/comnet/include/cryptotopp563/square.h \
-    src/comnet/include/cryptotopp563/stdcpp.h \
-    src/comnet/include/cryptotopp563/strciphr.h \
-    src/comnet/include/cryptotopp563/tea.h \
-    src/comnet/include/cryptotopp563/tiger.h \
-    src/comnet/include/cryptotopp563/trdlocal.h \
-    src/comnet/include/cryptotopp563/trunhash.h \
-    src/comnet/include/cryptotopp563/ttmac.h \
-    src/comnet/include/cryptotopp563/twofish.h \
-    src/comnet/include/cryptotopp563/validate.h \
-    src/comnet/include/cryptotopp563/vmac.h \
-    src/comnet/include/cryptotopp563/wait.h \
-    src/comnet/include/cryptotopp563/wake.h \
-    src/comnet/include/cryptotopp563/whrlpool.h \
-    src/comnet/include/cryptotopp563/winpipes.h \
-    src/comnet/include/cryptotopp563/words.h \
-    src/comnet/include/cryptotopp563/xtr.h \
-    src/comnet/include/cryptotopp563/xtrcrypt.h \
-    src/comnet/include/cryptotopp563/zdeflate.h \
-    src/comnet/include/cryptotopp563/zinflate.h \
-    src/comnet/include/cryptotopp563/zlib.h \
+    src/comnet/include/cryptopp563/3way.h \
+    src/comnet/include/cryptopp563/adler32.h \
+    src/comnet/include/cryptopp563/aes.h \
+    src/comnet/include/cryptopp563/algebra.h \
+    src/comnet/include/cryptopp563/algparam.h \
+    src/comnet/include/cryptopp563/arc4.h \
+    src/comnet/include/cryptopp563/argnames.h \
+    src/comnet/include/cryptopp563/asn.h \
+    src/comnet/include/cryptopp563/authenc.h \
+    src/comnet/include/cryptopp563/base32.h \
+    src/comnet/include/cryptopp563/base64.h \
+    src/comnet/include/cryptopp563/basecode.h \
+    src/comnet/include/cryptopp563/bench.h \
+    src/comnet/include/cryptopp563/blowfish.h \
+    src/comnet/include/cryptopp563/blumshub.h \
+    src/comnet/include/cryptopp563/camellia.h \
+    src/comnet/include/cryptopp563/cast.h \
+    src/comnet/include/cryptopp563/cbcmac.h \
+    src/comnet/include/cryptopp563/ccm.h \
+    src/comnet/include/cryptopp563/channels.h \
+    src/comnet/include/cryptopp563/cmac.h \
+    src/comnet/include/cryptopp563/config.h \
+    src/comnet/include/cryptopp563/cpu.h \
+    src/comnet/include/cryptopp563/crc.h \
+    src/comnet/include/cryptopp563/cryptlib.h \
+    src/comnet/include/cryptopp563/default.h \
+    src/comnet/include/cryptopp563/des.h \
+    src/comnet/include/cryptopp563/dh.h \
+    src/comnet/include/cryptopp563/dh2.h \
+    src/comnet/include/cryptopp563/dll.h \
+    src/comnet/include/cryptopp563/dmac.h \
+    src/comnet/include/cryptopp563/dsa.h \
+    src/comnet/include/cryptopp563/eax.h \
+    src/comnet/include/cryptopp563/ec2n.h \
+    src/comnet/include/cryptopp563/eccrypto.h \
+    src/comnet/include/cryptopp563/ecp.h \
+    src/comnet/include/cryptopp563/elgamal.h \
+    src/comnet/include/cryptopp563/emsa2.h \
+    src/comnet/include/cryptopp563/eprecomp.h \
+    src/comnet/include/cryptopp563/esign.h \
+    src/comnet/include/cryptopp563/factory.h \
+    src/comnet/include/cryptopp563/files.h \
+    src/comnet/include/cryptopp563/filters.h \
+    src/comnet/include/cryptopp563/fips140.h \
+    src/comnet/include/cryptopp563/fltrimpl.h \
+    src/comnet/include/cryptopp563/gcm.h \
+    src/comnet/include/cryptopp563/gf256.h \
+    src/comnet/include/cryptopp563/gf2_32.h \
+    src/comnet/include/cryptopp563/gf2n.h \
+    src/comnet/include/cryptopp563/gfpcrypt.h \
+    src/comnet/include/cryptopp563/gost.h \
+    src/comnet/include/cryptopp563/gzip.h \
+    src/comnet/include/cryptopp563/hex.h \
+    src/comnet/include/cryptopp563/hkdf.h \
+    src/comnet/include/cryptopp563/hmac.h \
+    src/comnet/include/cryptopp563/hrtimer.h \
+    src/comnet/include/cryptopp563/ida.h \
+    src/comnet/include/cryptopp563/idea.h \
+    src/comnet/include/cryptopp563/integer.h \
+    src/comnet/include/cryptopp563/iterhash.h \
+    src/comnet/include/cryptopp563/lubyrack.h \
+    src/comnet/include/cryptopp563/luc.h \
+    src/comnet/include/cryptopp563/mars.h \
+    src/comnet/include/cryptopp563/md2.h \
+    src/comnet/include/cryptopp563/md4.h \
+    src/comnet/include/cryptopp563/md5.h \
+    src/comnet/include/cryptopp563/mdc.h \
+    src/comnet/include/cryptopp563/mersenne.h \
+    src/comnet/include/cryptopp563/misc.h \
+    src/comnet/include/cryptopp563/modarith.h \
+    src/comnet/include/cryptopp563/modes.h \
+    src/comnet/include/cryptopp563/modexppc.h \
+    src/comnet/include/cryptopp563/mqueue.h \
+    src/comnet/include/cryptopp563/mqv.h \
+    src/comnet/include/cryptopp563/nbtheory.h \
+    src/comnet/include/cryptopp563/network.h \
+    src/comnet/include/cryptopp563/nr.h \
+    src/comnet/include/cryptopp563/oaep.h \
+    src/comnet/include/cryptopp563/oids.h \
+    src/comnet/include/cryptopp563/osrng.h \
+    src/comnet/include/cryptopp563/panama.h \
+    src/comnet/include/cryptopp563/pch.h \
+    src/comnet/include/cryptopp563/pkcspad.h \
+    src/comnet/include/cryptopp563/polynomi.h \
+    src/comnet/include/cryptopp563/pssr.h \
+    src/comnet/include/cryptopp563/pubkey.h \
+    src/comnet/include/cryptopp563/pwdbased.h \
+    src/comnet/include/cryptopp563/queue.h \
+    src/comnet/include/cryptopp563/rabin.h \
+    src/comnet/include/cryptopp563/randpool.h \
+    src/comnet/include/cryptopp563/rc2.h \
+    src/comnet/include/cryptopp563/rc5.h \
+    src/comnet/include/cryptopp563/rc6.h \
+    src/comnet/include/cryptopp563/rdrand.h \
+    src/comnet/include/cryptopp563/resource.h \
+    src/comnet/include/cryptopp563/rijndael.h \
+    src/comnet/include/cryptopp563/ripemd.h \
+    src/comnet/include/cryptopp563/rng.h \
+    src/comnet/include/cryptopp563/rsa.h \
+    src/comnet/include/cryptopp563/rw.h \
+    src/comnet/include/cryptopp563/safer.h \
+    src/comnet/include/cryptopp563/salsa.h \
+    src/comnet/include/cryptopp563/seal.h \
+    src/comnet/include/cryptopp563/secblock.h \
+    src/comnet/include/cryptopp563/seckey.h \
+    src/comnet/include/cryptopp563/seed.h \
+    src/comnet/include/cryptopp563/serpent.h \
+    src/comnet/include/cryptopp563/serpentp.h \
+    src/comnet/include/cryptopp563/sha.h \
+    src/comnet/include/cryptopp563/sha3.h \
+    src/comnet/include/cryptopp563/shacal2.h \
+    src/comnet/include/cryptopp563/shark.h \
+    src/comnet/include/cryptopp563/simple.h \
+    src/comnet/include/cryptopp563/skipjack.h \
+    src/comnet/include/cryptopp563/smartptr.h \
+    src/comnet/include/cryptopp563/socketft.h \
+    src/comnet/include/cryptopp563/sosemanuk.h \
+    src/comnet/include/cryptopp563/square.h \
+    src/comnet/include/cryptopp563/stdcpp.h \
+    src/comnet/include/cryptopp563/strciphr.h \
+    src/comnet/include/cryptopp563/tea.h \
+    src/comnet/include/cryptopp563/tiger.h \
+    src/comnet/include/cryptopp563/trdlocal.h \
+    src/comnet/include/cryptopp563/trunhash.h \
+    src/comnet/include/cryptopp563/ttmac.h \
+    src/comnet/include/cryptopp563/twofish.h \
+    src/comnet/include/cryptopp563/validate.h \
+    src/comnet/include/cryptopp563/vmac.h \
+    src/comnet/include/cryptopp563/wait.h \
+    src/comnet/include/cryptopp563/wake.h \
+    src/comnet/include/cryptopp563/whrlpool.h \
+    src/comnet/include/cryptopp563/winpipes.h \
+    src/comnet/include/cryptopp563/words.h \
+    src/comnet/include/cryptopp563/xtr.h \
+    src/comnet/include/cryptopp563/xtrcrypt.h \
+    src/comnet/include/cryptopp563/zdeflate.h \
+    src/comnet/include/cryptopp563/zinflate.h \
+    src/comnet/include/cryptopp563/zlib.h \
     src/comnet/include/libxbee3-3.0.11/conn.h \
     src/comnet/include/libxbee3-3.0.11/frame.h \
     src/comnet/include/libxbee3-3.0.11/internal.h \
@@ -358,7 +358,6 @@ HEADERS += \
     src/MainWindowADI.h \
     src/MapSymbol22.h \
     src/MapView.h \
-    src/messages.h \
     src/networking.h \
     src/nodequeue.h \
     src/qfi_ADI.h \
@@ -385,7 +384,8 @@ HEADERS += \
     src/WidgetADI.h \
     src/WidgetSix.h \
     tests/DataValidation/validate_data.h \
-    vehiclelistdisplay.h
+    vehiclelistdisplay.h \
+    src/targetinfo.h
 
 
 FORMS += \
@@ -404,8 +404,8 @@ RESOURCES += \
 DEFINES+= NOMINMAX\
          SFML_STATIC
 
-INCLUDEPATH += $$PWD/src/comnet/include/cryptotopp563
-DEPENDPATH += $$PWD/src/comnet/include/cryptotopp563
+INCLUDEPATH += $$PWD/src/comnet/include/cryptopp563
+DEPENDPATH += $$PWD/src/comnet/include/cryptopp563
 INCLUDEPATH += $$PWD/src/comnet/include/libxbee3-3.0.11
 DEPENDPATH += $$PWD/src/comnet/include/libxbee3-3.0.11
 INCLUDEPATH += $$PWD/src/comnet/include
@@ -415,26 +415,21 @@ DEPENDPATH += $$PWD/src/comnet/
 INCLUDEPATH += $$PWD/src/
 DEPENDPATH += $$PWD/src/
 
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/ -llibxbee3
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/ -llibxbee3
-else:unix: LIBS += -L$$PWD/src/comnet/ -llibxbee3
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/release/ -lNGCP_COM
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/debug/ -lNGCP_COM
+else:unix: LIBS += -L$$PWD/src/comnet/ -lNGCP_COM
 
 INCLUDEPATH += $$PWD/src/comnet
 DEPENDPATH += $$PWD/src/comnet
 
+unix|win32: LIBS += -L$$PWD/src/comnet/ -llibxbee3
+
+INCLUDEPATH += $$PWD/src/comnet
+DEPENDPATH += $$PWD/src/comnet
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/ -lcryptlib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/ -lcryptlibd
 else:unix: LIBS += -L$$PWD/src/comnet/ -lcryptlib
-
-INCLUDEPATH += $$PWD/src/comnet
-DEPENDPATH += $$PWD/src/comnet
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/release/ -lNGCP_COM
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/debug/ -lNGCP_COM
-else:unix: LIBS += -L$$PWD/src/comnet/ -lNGCP_COM
 
 INCLUDEPATH += $$PWD/src/comnet
 DEPENDPATH += $$PWD/src/comnet

@@ -12,7 +12,8 @@ public:
     explicit TargetList(QObject *parent = 0);
     void addTarget(Target*);
     void removeTarget(int);
-    Target getTarget(int);
+    Target *getTarget(int);
+    bool inList(int);
 
 signals:
     void newTarget(Target*);

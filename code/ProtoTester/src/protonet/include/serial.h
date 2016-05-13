@@ -52,7 +52,7 @@ int32_t serial_send(
 	uint8_t* buf,
 	int32_t tx_len);
 
-using namespace protonet;
+using namespace comnet;
 /* 
 Datalink class is inherited to provide abstraction from transport layers 
 The serial port is as a one-to-one connection with a specified node.

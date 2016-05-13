@@ -1,6 +1,6 @@
 #include "rx_thread.h"
 QMutex mutex;
-protonet::node *np;
+comnet::node *np;
 rx_thread *rx;
 
 // ------- CONSTRUCTOR -------
@@ -144,9 +144,9 @@ void rx_thread::hold()
     return -1;
 }*/
 
-// --------- PROTONET CALLBACKS ---------
+// --------- COMNET CALLBACKS ---------
 //Clean up code!!
-void* enter_callback(int8_t id, proto_header_t header, enter_t enter, protonet::node* node)
+void* enter_callback(int8_t id, proto_header_t header, enter_t enter, comnet::node* node)
 {
     //printf("got enter");
     //upon enter message add vehicle to vector if it doesn't exist already
@@ -163,7 +163,7 @@ void* enter_callback(int8_t id, proto_header_t header, enter_t enter, protonet::
     return 0;
 }
 
-void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::node* node)
+void* ping_callback(int8_t id, proto_header_t header, ping_t ping, comnet::node* node)
 {
    printf("got ping");
    qDebug() << "got ping";
@@ -172,13 +172,13 @@ void* ping_callback(int8_t id, proto_header_t header, ping_t ping, protonet::nod
    return 0;
 }
 
-void* pong_callback(int8_t, proto_header_t header, pong_t pong, protonet::node* node_ptr)
+void* pong_callback(int8_t, proto_header_t header, pong_t pong, comnet::node* node_ptr)
 {
    printf("got pong");
    return 0;
 }
 
-void* vehicle_authorization_request_callback(int8_t id, proto_header_t header, vehicle_authorization_request_t vehicle, protonet::node* node_ptr)
+void* vehicle_authorization_request_callback(int8_t id, proto_header_t header, vehicle_authorization_request_t vehicle, comnet::node* node_ptr)
 {
    qDebug("Got Vehicle Authorization Request");
    rx->authorizationRequest();
@@ -187,7 +187,7 @@ void* vehicle_authorization_request_callback(int8_t id, proto_header_t header, v
 }
 
 
-void* vehicle_telemetry_command_callback(int8_t, proto_header_t, vehicle_telemetry_command_t, protonet::node* node_ptr)
+void* vehicle_telemetry_command_callback(int8_t, proto_header_t, vehicle_telemetry_command_t, comnet::node* node_ptr)
 {
     qDebug("Got vehicle telemetry request");
     rx->telemetryRequest();
@@ -195,7 +195,7 @@ void* vehicle_telemetry_command_callback(int8_t, proto_header_t, vehicle_telemet
 }
 
 //Runs after we send a request to a vehicle
-void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, vehicle_authorization_reply_t vehicle, protonet::node* node_ptr)
+void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, vehicle_authorization_reply_t vehicle, comnet::node* node_ptr)
 {
    printf("Got Vehicle Authorization Reply");
    int ID = header.node_src_id;
@@ -219,7 +219,7 @@ void* vehicle_authorization_reply_callback(int8_t id, proto_header_t header, veh
 }
 
 //Gives system status
-void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_system_status_t status, protonet::node* node_ptr)
+void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_system_status_t status, comnet::node* node_ptr)
 {
     printf("=============\nsystem status\n");
     int ID = header.node_src_id;
@@ -246,7 +246,7 @@ void* vehicle_system_status_callback(int8_t, proto_header_t header, vehicle_syst
     return 0;
 }
 
-void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_inertial_state_t inertial, protonet::node* node_ptr)
+void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_inertial_state_t inertial, comnet::node* node_ptr)
 {
     int ID = header.node_src_id;
     //Is the vehicle id in list?
@@ -278,7 +278,7 @@ void* vehicle_inertial_state_callback(int8_t id, proto_header_t header, vehicle_
     return 0;
 }
 
-void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle_global_position_t position, protonet::node* node_ptr)
+void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle_global_position_t position, comnet::node* node_ptr)
 {
     qDebug() << "globalpos" << header.node_src_id;
     int ID = header.node_src_id;
@@ -322,7 +322,7 @@ void* vehicle_global_position_callback(int8_t id, proto_header_t header, vehicle
     return 0;
 }
 
-void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_t attitude, protonet::node* node_ptr)
+void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_t attitude, comnet::node* node_ptr)
 {
     //Finds index of vehicle
     int ID = header.node_src_id;
@@ -345,7 +345,7 @@ void* vehicle_attitude_callback(int8_t, proto_header_t header, vehicle_attitude_
     return 0;
 }
 
-void* target_designation_command_callback(int8_t, proto_header_t, target_designation_command_t target, protonet::node* node_ptr)
+void* target_designation_command_callback(int8_t, proto_header_t, target_designation_command_t target, comnet::node* node_ptr)
 {
     //Add target to the target list
     //targetList->addTarget(&Target(((float)target.latitude)/1E7,
@@ -371,7 +371,7 @@ void* target_designation_command_callback(int8_t, proto_header_t, target_designa
     return 0;
 }
 
-void* vehicle_waypoint_command_callback(int8_t, proto_header_t h, vehicle_waypoint_command_t way, protonet::node* node_ptr)
+void* vehicle_waypoint_command_callback(int8_t, proto_header_t h, vehicle_waypoint_command_t way, comnet::node* node_ptr)
 {
     if(way.waypoint_type == 1)
     /*targetList->addTarget(&Target(((float)way.latitude)/1E7,
@@ -388,8 +388,8 @@ void* vehicle_waypoint_command_callback(int8_t, proto_header_t h, vehicle_waypoi
 void rx_thread::process() {
    // allocate resources using new here
 
-    //Create Protonet Node
-   node = new protonet::node(node_id);
+    //Create Comnet Node
+   node = new comnet::node(node_id);
 
    //Have the methods outside of class (i.e. callbacks) be able to have access to node
    np = node;
@@ -411,7 +411,7 @@ void rx_thread::process() {
    qDebug() << "Dest port for Tester: " << dest_port;
 
    //Start Node
-   //node->start(); <- no longer needed due to protonet update
+   //node->start(); <- no longer needed due to comnet update
 
    /*Begin Callback Register functions*/
    node->register_on_ping(*ping_callback);

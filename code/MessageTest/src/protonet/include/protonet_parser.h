@@ -1,11 +1,11 @@
-#ifndef PROTONET_PARSER_H_
-#define PROTONET_PARSER_H_
+#ifndef COMNET_PARSER_H_
+#define COMNET_PARSER_H_
 
 /*System Includes */
 #include <stdint.h>
 
 /* User Includes */
-#include <protonet_message.h>
+#include <comnet_message.h>
 
 /* Keep track of the bytes we are parsing */
 typedef enum parse_state_e{
@@ -44,8 +44,8 @@ typedef struct parse_data
 int32_t parse_init(parse_data_t* parse_data);
 
 /* 
-Extracts sections of a protonet message from each byte
-Returns 1 if a valid protonet message has been received
+Extracts sections of a comnet message from each byte
+Returns 1 if a valid comnet message has been received
 */
 int32_t parse_message(
 		uint8_t rx_byte, /*in*/

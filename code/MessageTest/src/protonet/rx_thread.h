@@ -16,7 +16,7 @@
 #include <string>
 
 //GCS Includes
-#include "protonet.h"
+#include "comnet.h"
 #include "joystickinput.h"
 
 class rx_thread : public QObject
@@ -31,12 +31,12 @@ public:
     void authorizationRequest();
 
 private:
-    //Protonet node setup
+    //Comnet node setup
     uint8_t node_id;
     uint16_t self_port;
     uint16_t dest_port;
     char serial_port[25];
-    protonet::node *node;
+    comnet::node *node;
     //Thread and object for joystick control
 //    QThread *joystick_thread;
 //    JoystickInput *joystick;
@@ -50,7 +50,7 @@ public slots:
     //Communicates vehicle updating
     void update_vech_queue();
 
-    //Protonet send messages
+    //Comnet send messages
     void send_vehicle_auth_request(int);
     void send_telemetry_command(int);
     void send_targeting(int, float, float, float);

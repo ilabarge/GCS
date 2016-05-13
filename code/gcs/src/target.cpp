@@ -10,7 +10,7 @@ Target::Target()
     target_type = NULL;
 }
 
-Target::Target(double lat,double longi,double alt,int payid, int targid, int targtype)
+Target::Target(double lat,double longi,double alt, int payid, int targid, int targtype)
 {
     altitude = alt;
     latitude = lat;

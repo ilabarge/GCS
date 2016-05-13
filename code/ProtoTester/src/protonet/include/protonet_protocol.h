@@ -3,7 +3,7 @@
 #ifndef _PROTOCOL_H_
 #define _PROTOCOL_H_
 
-#include <protonet_message.h>
+#include <comnet_message.h>
 #include <message/Enter.h>
 #include <message/Exit.h>
 #include <message/Ping.h>

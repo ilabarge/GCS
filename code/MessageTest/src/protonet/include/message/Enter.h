@@ -5,8 +5,8 @@
 #ifndef _ENTER_H_
 #define _ENTER_H_
 
-#include <protonet_marshal.h>
-#include <protonet_message.h>
+#include <comnet_marshal.h>
+#include <comnet_message.h>
 
 typedef struct {
    float64_t timestamp;

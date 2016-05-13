@@ -36,7 +36,7 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
 }
 
 /**
- * @brief networking::networking creates the thread to handle protonet messages
+ * @brief networking::networking creates the thread to handle comnet messages
  */
 networking::networking()
 {
