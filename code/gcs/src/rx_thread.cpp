@@ -21,6 +21,8 @@ rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, ve
     //connect(q,SIGNAL(target(float,float)),this,SLOT(target(float,float)));
     //Connect for callback for new vehicle list
     connect(v,SIGNAL(update(int)),this,SLOT(update(int)));
+    connect(tgt,SIGNAL(update(int)),this,SLOT(fupdateTarget(int)));
+    connect(tgt,SIGNAL(updateDisplay(int)),this,SLOT(updateTargetDisplay(int)));
     connect(v,SIGNAL(update(int)),this,SLOT(sendMessage(int)));
 }
 
@@ -29,6 +31,10 @@ void rx_thread::update_vech_queue() { emit update_queue();}
 void rx_thread::print_port() {  qDebug() << serial_port; }
 
 void rx_thread::update(int vechID) { emit updateVech(vechID);}
+
+void rx_thread::updateTarget(int targID) { emit updateTarg(targID);}
+
+void rx_thread::updateTargetDisplay(int targID) { emit updateTargDisplay(targID);}
 // ------- DECONSTRUCTOR -------
 rx_thread::~rx_thread() {
     qDebug() << "Rx Deconstrutor";
@@ -229,7 +235,6 @@ void rx_thread::send_manTargeting(double latitude, double longitude, double alti
     node->send_target_designation_command(69, 69, x,
                                           69, 1, 1, 0,
                                           latitude*1E7,longitude*1E7,altitude);
-
 //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
@@ -425,9 +430,9 @@ void* enter_callback(int8_t id, com_header_t header, enter_t enter, comnet::node
         v->setVehicleID(header.node_src_id);
         vp->append(v);
     }
-    QDateTime local(QDateTime::currentDateTime());
-    QDateTime UTC(local.toUTC());
-    float64_t x = UTC.toMSecsSinceEpoch();
+//    QDateTime local(QDateTime::currentDateTime());
+//    QDateTime UTC(local.toUTC());
+//    float64_t x = UTC.toMSecsSinceEpoch();
     //IMPORTANT:send vehicle authorization request on user input
     //emmit Authorization_Request();
     //Request is as follows, vech id, timestamp, our id, link key (100 for now),
@@ -634,7 +639,7 @@ void* vehicle_global_position_callback(int8_t id, com_header_t header, vehicle_g
     return 0;
 }
 
-void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t attitude, comnet::node* node_ptr)
+void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t attitude, comnet::node*)
 {
     //Finds index of vehicle
     int ID = header.node_src_id;
@@ -671,17 +676,38 @@ void* target_designation_command_callback(int8_t, com_header_t header, target_de
                               target.altitude,
                               target.payload_ID,target.target_ID,target.target_type));
 */
-    int ID = header.node_src_id;
+    //int ID = header.node_src_id;
+
+    int ID = target.target_ID;
+
+    mutex.lock();
+    if(!(targetList->inList(ID))){
     //Add target to the target list
-    Target* t = new Target();
-    t->setTargetID(ID);
-    t->setLatitude((float)target.latitude/1E7);
-    t->setLongitude((float)target.longitude/1E7);
-    t->setAltitude((float)target.altitude/1E7);
-    t->setPayloadID((float)target.payload_ID/1E7);
-    t->setTargetID((float)target.target_ID/1E7);
-    t->setTargetType((float)target.target_type/1E7);
-    targetList->addTarget(t);
+        targetList->addTarget(new Target((float)target.latitude/1E7, (float)target.longitude/1E7, (float)target.altitude/1E6, target.payload_ID, target.target_ID, target.target_type, header.node_src_id));
+        //Target* t = new Target();
+//        t->setTargetID(ID);
+//        t->setLatitude(target.latitude/1E7);
+//        t->setLongitude(target.longitude/1E7);
+//        t->setAltitude(target.altitude/1E6);
+//        t->setPayloadID(target.payload_ID);
+//        t->setTargetID(target.target_ID);
+//        t->setTargetType(target.target_type);
+        //targetList->addTarget(t);
+        targetList->updateDisplay(ID);
+    }
+    else
+    {
+        targetList->getTarget(ID)->setLatitude((float)target.latitude/1E7);
+        targetList->getTarget(ID)->setLongitude((float)target.longitude/1E7);
+        targetList->getTarget(ID)->setAltitude((float)target.altitude/1E6);
+        targetList->getTarget(ID)->setPayloadID(target.payload_ID);
+        targetList->getTarget(ID)->setTargetID(target.target_ID);
+        targetList->getTarget(ID)->setTargetType(target.target_type);
+        targetList->getTarget(ID)->setVehicleID(header.node_src_id);
+        targetList->update(ID);
+    }
+    mutex.unlock();
+    /*
 //Send recieved target command to uav
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
@@ -695,6 +721,8 @@ void* target_designation_command_callback(int8_t, com_header_t header, target_de
     //???
     //nq->targetRec(((float)target.latitude)/1E7,
                   //((float)target.longitude)/1E7);
+
+    */
     return 0;
 }
 
@@ -722,7 +750,7 @@ void* target_status_callback(int8_t link_id, com_header_t header, target_status_
 
     return 0;
 }
-*/
+
 void* vehicle_waypoint_command_callback(int8_t, com_header_t h, vehicle_waypoint_command_t way, comnet::node* node_ptr)
 {
     //if(way.waypoint_type == 1)
@@ -731,7 +759,7 @@ void* vehicle_waypoint_command_callback(int8_t, com_header_t h, vehicle_waypoint
                               ((float)way.altitude)/1E7,
                               0,0,0));
    return 0;
-}
+}*/
 // ----------- PROCESS -----------
 // Start processing data.
 //dynamic alloc
@@ -759,7 +787,7 @@ void rx_thread::process() {
    qDebug() << "Self port for GCS: " << self_port;
    char  ip[] = "127.0.0.1";
    //char  ip[] = "0013A2004067E4A0";
-   char comport[] = "4";
+   //char comport[] = "4";
    node->add_udp(&link_id,self_port, ip);
    //node->add_zigBee(&link_id,57600, comport);
    qDebug() << "Dest port for GCS: " << dest_port;
@@ -778,7 +806,7 @@ void rx_thread::process() {
    node->register_on_pong(*pong_callback);
    node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
    node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
-   node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
+   //node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
    node->register_on_vehicle_system_status(*vehicle_system_status_callback);
    node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
    node->register_on_vehicle_global_position(*vehicle_global_position_callback);

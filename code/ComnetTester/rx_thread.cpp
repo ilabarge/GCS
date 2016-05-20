@@ -44,7 +44,8 @@ void rx_thread::send_Ping()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_ping(1,x);
+    //node->send_ping(1,x);
+    node->send_target_designation_command(1,1,x,69,16,17,0,3109.45,8452.821,28);
 }
 
 //Vech authorization request
@@ -381,7 +382,7 @@ void rx_thread::send_GPS()
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     node->send_vehicle_global_position(1, x, 69, 234.056, 1117.821, 0, 0, 4, 35, 7);
-    node->send_target_designation_command(1,1,x,69,1,1,0,234.056, 1117.821, 0);
+    //node->send_target_designation_command(1,1,x,69,1,1,0,1109.45, 452.821, 0);
     //node->send_target_status(1,x,1109.45,.452,3578.9);
     qDebug() << "sent GPS";
 }

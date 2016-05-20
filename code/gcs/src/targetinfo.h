@@ -24,8 +24,8 @@ public:
 signals:
 
 public slots:
-    void status(int);
-    void displayInfo(int);
+    void tStatus(int);
+    void displayTargetInfo(int tID);
 
 private:
     QGridLayout *info;

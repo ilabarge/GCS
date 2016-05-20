@@ -47,6 +47,10 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
     //New Vehicle Information recieved
     connect(rx,SIGNAL(updateVech(int)),this,SLOT(updateVech(int)));
 
+    //New Target Information recieved
+    connect(rx,SIGNAL(updateTarg(int)),this,SLOT(updateTarg(int)));
+    connect(rx,SIGNAL(updateTargDisplay(int)),this,SLOT(updateTargDisplay(int)));
+
     //Update the location of the target found
     connect(rx,SIGNAL(newTarget(Target*)),this,SLOT(update_target_disp(Target*)));
 
@@ -110,6 +114,10 @@ void networking::update_vehicle_queue() { emit update_queue(); }
 
 //Update Vehicle with given ID
 void networking::updateVech(int ID) {emit updateVechicle(ID); }
+
+//Update Target with given ID
+void networking::updateTarg(int ID) {emit updateTarget(ID); }
+void networking::updateTargDisplay(int ID) {emit updateTargetDisplay(ID); }
 
 //Sending waypoint
 void networking::send_waypoint(Waypoint22* w, int id){ qDebug() << "in networking";emit waypoint(w, id); }

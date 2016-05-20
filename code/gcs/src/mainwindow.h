@@ -141,7 +141,7 @@ private:
     int currentVech;
 private slots:
     void update_vehicle_queue();
-    void update_targets(Target*);
+    void update_targets(Target *);
     void mapReady();
     void vStatus(int, int);
     //for uav drop
@@ -169,6 +169,7 @@ signals:
     void removeLayerGraphic(int gID);
     //for uav drop
     void drop(int);
+    void addTarget(EsriRuntimeQt::Graphic*);
 };
 
 #endif // MAINWINDOW_H

@@ -14,9 +14,13 @@ public:
     void removeTarget(int);
     Target *getTarget(int);
     bool inList(int);
+    void updateTarget(int);
+    void updateTargetDisplay(int);
 
 signals:
     void newTarget(Target*);
+    void update(int);
+    void updateDisplay(int);
 
 public slots:
 private:

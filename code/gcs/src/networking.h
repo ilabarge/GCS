@@ -34,6 +34,10 @@ public slots:
     //Update Vehicle with ID
     void updateVech(int);
 
+    //Update Target with ID
+    void updateTarg(int);
+    void updateTargDisplay(int);
+
     //Basic Comnet
     void send_ping(int);
 
@@ -90,6 +94,9 @@ signals:
 
     //Update Vehicle at position
     void updateVechicle(int);
+    //Update Target
+    void updateTarget(int);
+    void updateTargetDisplay(int);
 
     //Emit values for specific commands
     void waypoint(Waypoint22*, int);

@@ -286,6 +286,7 @@ void MainWindow::initNetworkingConnects(){
     connect(serialSelect,SIGNAL(serialPortSelected(QString)),network,SLOT(network_serial_set(QString)));
 //    //update targets
     connect(network, SIGNAL(newTarget(Target*)),this,SLOT(update_targets(Target*)));
+    connect(this, SIGNAL(addTarget(EsriRuntimeQt::Graphic*)), mv->getVehicleLayer(), SLOT(addGraphicToGCS(EsriRuntimeQt::Graphic*)));
 
 //    //TEST METHOD FOR NEW SIGNAL
     connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateVech(int)));
@@ -331,7 +332,8 @@ void MainWindow::initNetworkingConnects(){
 
 //    //Connect vehicle updates to vehicle info
     connect(network,SIGNAL(updateVechicle(int)),vInfo,SLOT(status(int)));
-    connect(network,SIGNAL(updateVechicle(int)),targetInfo,SLOT(status(int)));
+    connect(network,SIGNAL(updateTarget(int)),targetInfo,SLOT(tStatus(int)));
+    connect(network,SIGNAL(updateTargetDisplay(int)),targetInfo,SLOT(displayTargetInfo(int)));
 //    //Connect vehcil update with the attitued
     connect(network,SIGNAL(updateVechicle(int)),this,SLOT(updateADI(int)));
 }
@@ -435,7 +437,7 @@ void MainWindow::initWidgets(){
     for(int i = 0; i < elementList->size(); i++){
         connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(elementSelect(int)));
         connect(elementList->at(i),SIGNAL(vechID(int)), vInfo,SLOT(displayVech(int)));
-        connect(elementList->at(i),SIGNAL(vechID(int)), targetInfo,SLOT(displayInfo(int)));
+        connect(elementList->at(i),SIGNAL(vechID(int)), targetInfo,SLOT(displayTargetInfo(int)));
         connect(elementList->at(i),SIGNAL(vechID(int)),this,SLOT(updateADI(int)));
     }
 
@@ -555,9 +557,8 @@ void MainWindow::update_targets(Target* t)
 //    qDebug() << "Latitude is:" << t->getLatitude();
 //    qDebug() << "Longitude is:" << t->getLongitude;
 //    qDebug() << "Altitude is:" << t->getAltitude();
-    t->setGraphic(Qt::red,EsriRuntimeQt::SimpleMarkerSymbolStyle::Cross,t->getLatitude()*10000000,t->getLongitude()*10000000,10, mv->getSpatialRef());
-    t->setTargetID(mv->addGraphicToLayer(t->getGraphic()));
-
+    t->setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X, mv->getVehicleLayer()->decimalDegreesToPoint(t->getLatitude(), t->getLongitude()), 10);
+    mv->addGraphicToLayer(t->getGraphic());
 }
 
 //Manually drop UAV and alert UGV of drop
@@ -713,8 +714,8 @@ void MainWindow::updateADI(int ID)
 /* BEGIN SLOTS */
 
 void MainWindow::addTarget(float lat, float lon){
-    Target target(lat, lon, 0, 0, 0, 0);
-    target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X, mv->decimalDegreesToPoint(lat, lon), 20);
+    Target target(lat, lon, 0, 0, 0, 0, 0);
+    target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::Cross, mv->decimalDegreesToPoint(lat, lon), 20);
     mv->addGraphicToLayer((target.getGraphic()));
 }
 

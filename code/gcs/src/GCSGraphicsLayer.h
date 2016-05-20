@@ -7,6 +7,7 @@
 
 //Our Headers
 #include "Waypoint22.h"
+#include "target.h"
 
 class GCSGraphicsLayer : public EsriRuntimeQt::GraphicsLayer
 {

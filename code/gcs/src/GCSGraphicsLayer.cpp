@@ -37,8 +37,8 @@ void GCSGraphicsLayer::addWaypointToGCS( Waypoint22* wp, QColor color){
 
 void GCSGraphicsLayer::addGraphicToGCS(EsriRuntimeQt::Graphic *graphic){
     addGraphic(graphic);
-    qDebug() << "Adding";
 }
+
 
 void GCSGraphicsLayer::updateWaypointGraphics(Waypoint22 *wp){
 

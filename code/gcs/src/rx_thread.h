@@ -62,7 +62,7 @@ public slots:
     void send_telemetry_command(int);
     void send_targeting(int, float, float, float);
     void send_manTargeting(double,double,double);
-    void target_added(Target*);
+    void target_added(Target *);
 
     //target recieved
     void target(float,float);
@@ -95,6 +95,9 @@ public slots:
     void setNetworkSerial(QString);
     void update(int);
 
+    void updateTarget(int);
+    void updateTargetDisplay(int);
+
     //Send message with int vehicle id to airweb
     void sendMessage(int);
 
@@ -111,6 +114,9 @@ signals:
 
     //Has value of ID of vech
     void updateVech(int);
+
+    void updateTarg(int);
+    void updateTargDisplay(int);
 
     void message(QString);
     void messageAlert(QString);

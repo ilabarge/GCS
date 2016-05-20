@@ -9,7 +9,7 @@ class Target : public MapSymbol22
 {
 public:
     Target();
-    explicit Target(double lat, double longi, double alt, int payid, int targid, int targtype);
+    explicit Target(double lat, double longi, double alt, int payid, int targid, int targtype, int vechid);
 
     double getLatitude();
     double getLongitude();
@@ -17,6 +17,7 @@ public:
     int getPayloadID();
     int getTargetID();
     int getTargetType();
+    int getVehicleID();
 
     void setLatitude(double);
     void setLongitude(double);
@@ -24,6 +25,7 @@ public:
     void setPayloadID(int);
     void setTargetID(int);
     void setTargetType(int);
+    void setVehicleID(int);
 
 private:
     double altitude;
@@ -32,6 +34,7 @@ private:
     int payload_id;
     int target_id;
     int target_type;
+    int vehicle_id;
 };
 
 #endif // TARGET_H

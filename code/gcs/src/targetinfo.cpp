@@ -1,4 +1,5 @@
 #include "targetinfo.h"
+#include "qdebug.h"
 
 TargetInfo::TargetInfo(QWidget *parent) :
     QMainWindow(parent){
@@ -46,7 +47,7 @@ TargetInfo::TargetInfo(QWidget *parent) :
 }
 
 // Display updated information about the target
-void TargetInfo::status(int tID) {
+void TargetInfo::tStatus(int tID) {
     Target *t = tl->getTarget(tID);
     // Updated vehicle must match currently selected vehicle
     if (currentTarget == tID) {
@@ -60,16 +61,20 @@ void TargetInfo::status(int tID) {
     }
 }
 
-void TargetInfo::displayInfo(int tID) {
-    currentTarget = tID;
-    Target *t = tl->getTarget(tID);
-    vechUp->setText(QString::number(tID));
-    payUp->setText(QString::number(t->getPayloadID()));
-    targUp->setText(QString::number(t->getTargetID()));
-    typeUp->setText(QString::number(t->getTargetType()));
-    latUp->setText(QString::number(t->getLatitude()));
-    lonUp->setText(QString::number(t->getLongitude()));
-    altUp->setText(QString::number(t->getAltitude()));
+void TargetInfo::displayTargetInfo(int tID) {
+    if(tl->inList(tID)){
+        currentTarget = tID;
+        Target *t = tl->getTarget(tID);
+        vechUp->setText(QString::number(t->getVehicleID()));
+        payUp->setText(QString::number(t->getPayloadID()));
+        targUp->setText(QString::number(t->getTargetID()));
+        typeUp->setText(QString::number(t->getTargetType()));
+        latUp->setText(QString::number(t->getLatitude()));
+        lonUp->setText(QString::number(t->getLongitude()));
+        altUp->setText(QString::number(t->getAltitude()));
+    }
+    else
+        vechUp->setText(QString::number(tID));
 }
 
 void TargetInfo::getList(TargetList *t) {
