@@ -288,7 +288,7 @@ void node::add_zigBee(int8_t* link_id, uint32_t baudRate, char device_path[50])
 
 void node::establish_zigBee(int8_t link_id, uint8_t node_id, std::string address64Hex)
 {
-	if (datalinks[link_id]->get_datalink_type() == ZIGBEE_TYPE && datalinks[link_id]->is_connected())
+    if ((datalinks[link_id]->get_datalink_type() == ZIGBEE_TYPE) && datalinks[link_id]->is_connected())
 	{
 		((ZigBee*)datalinks[link_id])->establish(node_id, address64Hex);
 	}

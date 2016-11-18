@@ -1,6 +1,6 @@
 /* System Includes */
 #include <string.h>
-
+#include <QDebug>
 /* User Includes */
 #include <datalink.h>
 #include <comnet_parser.h>
@@ -77,12 +77,13 @@ void* datalink::datalink_handler()
 	parse_init(&parse_data);
 
 	while(1)
-	{
+    {
 		recv(rx_buf, &rx_len);
 		if(rx_len >0)
-		{	
+        {	qDebug("RECV");
 			for(i=0;i<rx_len;i++)
-			{
+            {
+
 				/* Parser returns a 1 if a message is received */
 				if(parse_message(rx_buf[i], &parse_data, &rx_msg))
 				{		
@@ -92,7 +93,7 @@ void* datalink::datalink_handler()
 					However, the message data will not be unpacked
 					in the event that the destination node ID does 
 					not match this node's ID.
-					*/
+                    */
 					queue->add(&rx_msg); 
 				}
 			}
@@ -111,7 +112,7 @@ void* datalink::thread_helper(void* context)
 /* returns datalink type */
 datalink_type_t datalink::get_datalink_type()
 {
-	return datalink_type;
+    return (datalink_type_t)datalink_type;
 }
 /* returns true if connected */
 int32_t datalink::is_connected()

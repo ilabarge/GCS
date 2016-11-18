@@ -381,7 +381,9 @@ void rx_thread::send_GPS()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_global_position(1, x, 69, 234.056, 1117.821, 0, 0, 4, 35, 7);
+    double lat = 3109.45;
+    double lon = -117.8215;
+    node->send_vehicle_global_position(1, x, 69, (int32_t)lat, (int32_t)lon*1E6, 0, 0, 4, 35, 7);
     //node->send_target_designation_command(1,1,x,69,1,1,0,1109.45, 452.821, 0);
     //node->send_target_status(1,x,1109.45,.452,3578.9);
     qDebug() << "sent GPS";

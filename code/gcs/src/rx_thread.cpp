@@ -21,7 +21,7 @@ rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, ve
     //connect(q,SIGNAL(target(float,float)),this,SLOT(target(float,float)));
     //Connect for callback for new vehicle list
     connect(v,SIGNAL(update(int)),this,SLOT(update(int)));
-    connect(tgt,SIGNAL(update(int)),this,SLOT(fupdateTarget(int)));
+    connect(tgt,SIGNAL(update(int)),this,SLOT(updateTarget(int)));
     connect(tgt,SIGNAL(updateDisplay(int)),this,SLOT(updateTargetDisplay(int)));
     connect(v,SIGNAL(update(int)),this,SLOT(sendMessage(int)));
 }
@@ -203,6 +203,7 @@ void rx_thread::send_telemetry_command(int vehicle)
 //Send targeting informaiton to vehicle
 void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 {
+    qDebug() << "received target";
     //Target id = 1, Payload ID = 1
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
@@ -276,7 +277,7 @@ void rx_thread::drop(int vehicle)
     else
         node->send_payload_bay_command(46,x,1,1);
 }
-/*
+
 //Start Joystick commands
 void rx_thread::start_UGV_Joystick()
 {
@@ -292,7 +293,7 @@ void rx_thread::stop_UGV_Joystick()
     emit endUGVJoystick();
     emit messageConfirm(QString("End UGV joystick control"));
 }
-*/
+
 //Emit vehicle status to be displayed in GUI
 void rx_thread::vechStat(int vech, int status){  emit vechStatus(vech, status); }
 
@@ -305,7 +306,7 @@ void rx_thread::setNetworkSerial(QString serial)
     char *serialp = portN.data();
 
     //Set link_id to 0
-    int8_t link_id(0);
+    int8_t link_id(1);
     mutex.lock();
     //Add serial at link id, baud rate, serial port
     node->add_serial(&link_id, 9600, serialp);
@@ -385,7 +386,7 @@ void rx_thread::hold()
 }
 
 void rx_thread::sendMessage(int ID){
-    qDebug() << "Sending UDP message";
+    //qDebug() << "Sending UDP message";
 //    QJsonObject obj;
 //    obj.insert("vehicleID", ID);
 //    obj.insert("alt", vp->get(ID)->getAltitude());
@@ -422,7 +423,8 @@ int checkVehicles(uint32_t vehicle_ID)
 //Clean up code!!
 void* enter_callback(int8_t id, com_header_t header, enter_t enter, comnet::node* node)
 {
-    //printf("got enter");
+    printf("got enter");
+    qDebug() << "got enter";
     //upon enter message add vehicle to vector if it doesn't exist already
     //Send reply
     if(checkVehicles(header.node_src_id) == -1){
@@ -445,7 +447,7 @@ void* enter_callback(int8_t id, com_header_t header, enter_t enter, comnet::node
 void* ping_callback(int8_t id, com_header_t header, ping_t ping, comnet::node* node)
 {
    printf("got ping");
-   qDebug() << "got ping" << endl;
+   qDebug() << "got ping";
    //qDebug() << "Ping timestamp:" << ping.timestamp << endl;
    //qDebug() << "Sending pong response." << endl;
    //send a pong as a reply
@@ -456,6 +458,7 @@ void* ping_callback(int8_t id, com_header_t header, ping_t ping, comnet::node* n
 void* pong_callback(int8_t, com_header_t header, pong_t pong, comnet::node* node_ptr)
 {
    printf("got pong");
+   qDebug() << "got pong";
    node_ptr->send_ping(header.node_src_id,0);
    return 0;
 }
@@ -614,12 +617,45 @@ void* vehicle_global_position_callback(int8_t id, com_header_t header, vehicle_g
     vp->set(ID)->setAltitude(position.altitude/1E6);
     vp->set(ID)->setLongitude(((float)position.longitude)/1E7);
     vp->set(ID)->setLatitude(((float)position.latitude)/1E7);
+//    qDebug() << "position.latitude = " << (float)position.latitude;
+//    qDebug() << "latitude/1E7 = " << (float)position.latitude/1E7;
     vp->set(ID)->setXVelocity(position.x_speed);
     vp->set(ID)->setYVelocity(position.y_speed);
     vp->set(ID)->setZVelocity(position.z_speed);
     //vp->set(ID)->setHeading(((float)position.heading)/1E6);
     mutex.unlock();
     vp->update(header.node_src_id);
+
+//    int tID = 1;
+
+//    mutex.lock();
+//    if(!(targetList->inList(tID))){
+//    //Add target to the target list
+//        targetList->addTarget(new Target((float)position.latitude/1E7, (float)position.longitude/1E7, (float)position.altitude/1E6, 0, tID, 0, header.node_src_id));
+//        //Target* t = new Target();
+////        t->setTargetID(ID);
+////        t->setLatitude(target.latitude/1E7);
+////        t->setLongitude(target.longitude/1E7);
+////        t->setAltitude(target.altitude/1E6);
+////        t->setPayloadID(target.payload_ID);
+////        t->setTargetID(target.target_ID);
+////        t->setTargetType(target.target_type);
+//        //targetList->addTarget(t);
+//        targetList->updateDisplay(ID);
+//    }
+//    else
+//    {
+//        targetList->getTarget(ID)->setLatitude((float)position.latitude/1E7);
+//        targetList->getTarget(ID)->setLongitude((float)position.longitude/1E7);
+//        targetList->getTarget(ID)->setAltitude((float)position.altitude/1E6);
+//        targetList->getTarget(ID)->setPayloadID(0);
+//        targetList->getTarget(ID)->setTargetID(tID);
+//        targetList->getTarget(ID)->setTargetType(0);
+//        targetList->getTarget(ID)->setVehicleID(header.node_src_id);
+//        targetList->update(ID);
+//    }
+//    mutex.unlock();
+    /*
 //    nq->enqueue(header.node_src_id);
     //Call database update in thread?
     //int checkLong = vp->at(i)->ts.at(0)->getLongitude() - vp->at(i)->getLatitude();
@@ -669,6 +705,7 @@ void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t 
 
 void* target_designation_command_callback(int8_t, com_header_t header, target_designation_command_t target, comnet::node* node)
 {
+    qDebug() << "target received";
     //Add target to the target list
     /*
     targetList->addTarget(&Target(((float)target.latitude)/1E7,
@@ -767,7 +804,7 @@ void rx_thread::process() {
    // allocate resources using new here
 
     //Create comnet Node
-   node = new comnet::node(node_id);
+   node = new comnet::node(1);
 
    //Have the methods outside of class (i.e. callbacks) be able to have access to node
    np = node;
@@ -780,37 +817,45 @@ void rx_thread::process() {
    joystick_thread->start();*/
 
    //Set link_id to 0
-   int8_t link_id(1);
+   int8_t link_id;
 
    //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
    qDebug() << "Self port for GCS: " << self_port;
    char  ip[] = "127.0.0.1";
-   //char  ip[] = "0013A2004067E4A0";
-   //char comport[] = "4";
+//   char  ip[] = "0013A20040917A31";
+   //char  ipUGV[] = "0013A2004067E4A0";
+//   char comport[] = "4";
    node->add_udp(&link_id,self_port, ip);
-   //node->add_zigBee(&link_id,57600, comport);
-   qDebug() << "Dest port for GCS: " << dest_port;
+//   try {
+//    node->add_zigBee(&link_id,57600, comport);
+//   } catch (comnet::error::ConnectionException e) {
+//       printf("%s", e.what());
+//   }
+    qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
    //Dest id is for the node id that we want to send to
    node->establish_udp(link_id,1,dest_port,ip);
-   //node->establish_zigBee(link_id,6,ip);
+//   node->establish_zigBee(link_id,5,ip);
+   //node->establish_zigBee(link_id,6,ipUGV);
+//   printf("INIT COMPLETED\n");
+//   qDebug() << "INIT COMPLETED\n";
 
    //Start Node
    //node->start(); <- no longer needed due to comnet update
 
    /*Begin Callback Register functions*/
-   node->register_on_enter(*enter_callback);
-   node->register_on_ping(*ping_callback);
-   node->register_on_pong(*pong_callback);
+   node->register_on_enter(enter_callback);
+   node->register_on_ping(ping_callback);
+   node->register_on_pong(pong_callback);
    node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
    node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
    //node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
    node->register_on_vehicle_system_status(*vehicle_system_status_callback);
    node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
    node->register_on_vehicle_global_position(*vehicle_global_position_callback);
-   node->register_on_vehicle_attitude(*vehicle_attitude_callback);
+  // node->register_on_vehicle_attitude(*vehicle_attitude_callback);
 
    //node->register_on_target_status(*target_status_callback);
    //ack vehicle got t
@@ -818,6 +863,7 @@ void rx_thread::process() {
 
    //UGV Sends when
    node->register_on_target_designation_command(*target_designation_command_callback);
+
 
    //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
    //connect(this, SIGNAL(startUGVJoystick()), joystick, SLOT(process()));

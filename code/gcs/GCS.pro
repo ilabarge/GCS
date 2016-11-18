@@ -124,7 +124,9 @@ SOURCES += \
     #tests/toolbar/tst_toolbartest.cpp \
     main.cpp \
     vehiclelistdisplay.cpp \
-    src/targetinfo.cpp
+    src/targetinfo.cpp \
+    src/Joystick.cpp \
+    src/joystickinput.cpp
 
 
 HEADERS += \
@@ -385,7 +387,9 @@ HEADERS += \
     src/WidgetSix.h \
     tests/DataValidation/validate_data.h \
     vehiclelistdisplay.h \
-    src/targetinfo.h
+    src/targetinfo.h \
+    src/Joystick.h \
+    src/joystickinput.h
 
 
 FORMS += \

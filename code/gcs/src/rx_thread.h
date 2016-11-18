@@ -24,7 +24,7 @@
 #include "comnet.h"
 #include "Vehicle22.h"
 #include "nodequeue.h"
-//#include "joystickinput.h"
+#include "joystickinput.h"
 #include "targetlist.h"
 #include "vehicle_list.h"
 
@@ -44,8 +44,8 @@ private:
     uint16_t dest_port;
     char serial_port[25];
     comnet::node *node;
-    //QThread *joystick_thread;
-    //JoystickInput *joystick;
+    QThread *joystick_thread;
+    JoystickInput *joystick;
     vehicle_list* vList;
     boolean send;
     void hold();
@@ -78,8 +78,8 @@ public slots:
     void disarm_uav(int);
 
     //UGV Joystick
-    //void start_UGV_Joystick();
-    //void stop_UGV_Joystick();
+    void start_UGV_Joystick();
+    void stop_UGV_Joystick();
 
     //UGV state change
     void ManualToAuto();

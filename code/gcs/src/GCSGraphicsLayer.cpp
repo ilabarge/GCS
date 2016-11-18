@@ -28,7 +28,6 @@ void GCSGraphicsLayer::addWaypointToGCS( Waypoint22* wp, QColor color){
                       decimalDegreesToPoint(wp->getNextLatitude(), wp->getNextLongitude()));
 
     wp->setGraphic(color, EsriRuntimeQt::SimpleMarkerSymbolStyle::Square, decimalDegreesToPoint(wp->getLatitude(), wp->getLongitude()), 20);
-
     //addGraphic(wp->getLineGraphic());
     addGraphic(wp->getGraphic());
 

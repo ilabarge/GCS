@@ -557,7 +557,7 @@ void MainWindow::update_targets(Target* t)
 //    qDebug() << "Latitude is:" << t->getLatitude();
 //    qDebug() << "Longitude is:" << t->getLongitude;
 //    qDebug() << "Altitude is:" << t->getAltitude();
-    t->setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X, mv->getVehicleLayer()->decimalDegreesToPoint(t->getLatitude(), t->getLongitude()), 10);
+    t->setGraphic(Qt::black, EsriRuntimeQt::SimpleMarkerSymbolStyle::X, mv->getVehicleLayer()->decimalDegreesToPoint(t->getLatitude(), t->getLongitude()), 30);
     mv->addGraphicToLayer(t->getGraphic());
 }
 
@@ -715,7 +715,7 @@ void MainWindow::updateADI(int ID)
 
 void MainWindow::addTarget(float lat, float lon){
     Target target(lat, lon, 0, 0, 0, 0, 0);
-    target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::Cross, mv->decimalDegreesToPoint(lat, lon), 20);
+    target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X, mv->getVehicleLayer()->decimalDegreesToPoint(lat, lon), 10);
     mv->addGraphicToLayer((target.getGraphic()));
 }
 
