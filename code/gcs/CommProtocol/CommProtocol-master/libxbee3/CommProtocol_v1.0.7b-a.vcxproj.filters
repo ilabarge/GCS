@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\architecture\os\os_threads.cpp">
+      <Filter>Source Files\architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\architecture\os\os_mutex.cpp">
+      <Filter>Source Files\architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\console\console.cc">
+      <Filter>Source Files\console</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\abstractpacket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\headerpacket.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\comms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\callback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\hash\ngcphash.cpp">
+      <Filter>Source Files\hash</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\udp.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\serial.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\seriallink.cc">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\commxbee.cc">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\xbeelink.cc">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\udplink.cc">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\tcpsocket.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\crc32.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\network\parser.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\serialization\marshal.cpp">
+      <Filter>Source Files\serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\serialization\objectstream.cpp">
+      <Filter>Source Files\serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\ping\pinger.cpp">
+      <Filter>Source Files\ping</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\ping\pingmanager.cpp">
+      <Filter>Source Files\ping</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\ping\pingpacket.cpp">
+      <Filter>Source Files\ping</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\pkg\packetmanager.cc">
+      <Filter>Source Files\pkg</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\pkg\packethashtable.cpp">
+      <Filter>Source Files\pkg</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\debug\log.cc">
+      <Filter>Source Files\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\encryption\aes_encryption.cpp">
+      <Filter>Source Files\encryption</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\encryption\encryptor.cc">
+      <Filter>Source Files\encryption</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\encryption\decryptor.cc">
+      <Filter>Source Files\encryption</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\api.h">
+      <Filter>Header Files\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\macros.h">
+      <Filter>Header Files\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\cond.h">
+      <Filter>Header Files\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\win32_pipes.h">
+      <Filter>Header Files\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\posix_pipes.h">
+      <Filter>Header Files\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\pipe_config.h">
+      <Filter>Header Files\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\pipes.h">
+      <Filter>Header Files\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\connection\socket-config.h">
+      <Filter>Header Files\architecture\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\connection\serial_status.h">
+      <Filter>Header Files\architecture\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\connection\serial-config_win32.h">
+      <Filter>Header Files\architecture\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\connection\serial-config_linux.h">
+      <Filter>Header Files\architecture\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\connection\serial-config.h">
+      <Filter>Header Files\architecture\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\connection\transport_type.h">
+      <Filter>Header Files\architecture\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\linux-config\linux-config.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\windows-config\win32-config.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\mac-config\mac-config.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\include_defines.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\arch.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\os_mutex.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\os_threads.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\thread-config.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\mutex-config.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\comm_mutex.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\comm_thread.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\comm_semaphore.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\architecture\os\comm_monitor.h">
+      <Filter>Header Files\architecture\os</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\comparable.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\comparator.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\standard_comparator.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\rbtree.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\btree.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\auto_queue.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\auto_vector.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\circle_linked_list.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\double_linked_list.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\single_linked_list.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\linked_queue.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\thread_safe_list.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\interface\generic.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\interface\interface_list.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\interface\interface_queue.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\interface\interface_map.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\interface\interface_tree.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\data_structures\interface\interface_stack.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\allocator\allocator.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\allocator\commpointer.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\allocator\newallocator.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\tools\allocator\stackallocator.h">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\console\code.h">
+      <Filter>Header Files\console</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\console\console.h">
+      <Filter>Header Files\console</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\console\parse_engine.h">
+      <Filter>Header Files\console</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\console\piping.h">
+      <Filter>Header Files\console</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\commproto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\commnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\comms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\abstractpacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\headerpacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\callback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\hash\ngcphash.h">
+      <Filter>Header Files\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\network_graph\algorithms\algorithms.h">
+      <Filter>Header Files\network\network_graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\network_graph\network_edge.h">
+      <Filter>Header Files\network\network_graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\network_graph\network_graph.h">
+      <Filter>Header Files\network\network_graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\network_graph\network_graph_builder.h">
+      <Filter>Header Files\network\network_graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\network_graph\network_node.h">
+      <Filter>Header Files\network\network_graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\udp.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\serial.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\seriallink.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\commxbee.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\xbeelink.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\udplink.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\commsocket.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\commslink.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\crc32.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\network\parser.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\serialization\marshal.h">
+      <Filter>Header Files\serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\serialization\objectstream.h">
+      <Filter>Header Files\serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\ping\pinger.h">
+      <Filter>Header Files\ping</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\ping\pingmanager.h">
+      <Filter>Header Files\ping</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\ping\pingpacket.h">
+      <Filter>Header Files\ping</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\pkg\packetmanager.h">
+      <Filter>Header Files\pkg</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\pkg\packettable.h">
+      <Filter>Header Files\pkg</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\pkg\packethashtable.h">
+      <Filter>Header Files\pkg</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\pkg\packetfactory.h">
+      <Filter>Header Files\pkg</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\debug\comms_debug.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\debug\error_status.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\debug\log.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\encryption\encryption_interface.h">
+      <Filter>Header Files\encryption</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\encryption\comm_random.h">
+      <Filter>Header Files\encryption</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\encryption\decryptor.h">
+      <Filter>Header Files\encryption</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\include\CommProto\encryption\encryptor.h">
+      <Filter>Header Files\encryption</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CommProto\src\encryption\aes_encryption.h">
+      <Filter>Source Files\encryption</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files\network\network_graph">
+      <UniqueIdentifier>{83981843-02E6-38FB-B87A-F234332BF99D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{C0FE20C7-3699-3107-849C-2EC787A88CC6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{15648A55-F0EB-3EA0-8A0B-658C4198C194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\architecture\os">
+      <UniqueIdentifier>{ED0C6337-6DD4-391C-923E-C244522D97B3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\architecture\connection">
+      <UniqueIdentifier>{77D82499-304D-3BE4-BC91-54690169D137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\architecture">
+      <UniqueIdentifier>{5FD995C6-B7BF-3536-9FF0-38E31F80B16E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hash">
+      <UniqueIdentifier>{CFFCFB05-7D33-3FC9-B175-2BE871B0C307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network">
+      <UniqueIdentifier>{9704E04D-F6FC-3BC0-BFE9-D8418B0A5B9E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\serialization">
+      <UniqueIdentifier>{0E0B581D-6445-3DDD-9282-2357F0E84AC5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ping">
+      <UniqueIdentifier>{AC7522CC-8A41-39FF-997A-C731D6D5B257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\pkg">
+      <UniqueIdentifier>{7406B1DE-5312-359D-98BF-1D7CF2B3D50E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\debug">
+      <UniqueIdentifier>{0D52A31A-96D8-3176-B90D-66A401F491B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\encryption">
+      <UniqueIdentifier>{25A5F160-1D02-315C-8382-2F2522BDDD62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\console">
+      <UniqueIdentifier>{2D2272FE-2BEE-3682-918B-E9FD3631E2CF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\architecture">
+      <UniqueIdentifier>{0A5E53BF-CE4A-3A8C-8B8D-D2B176DD9A08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\hash">
+      <UniqueIdentifier>{9C1814F1-79FD-3385-822D-360BB6602323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tools">
+      <UniqueIdentifier>{74AE206A-37D5-3330-96B2-C76083C3F52F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\network">
+      <UniqueIdentifier>{92E6F19E-0DA7-3778-B083-F227A364A881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\serialization">
+      <UniqueIdentifier>{62384CBD-2EA3-3A4C-81AD-5949858B8F71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ping">
+      <UniqueIdentifier>{4732823C-6EDD-3CDE-9963-F64D802CF2DA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pkg">
+      <UniqueIdentifier>{80375DCF-3A08-34FA-BDD7-227497550620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\debug">
+      <UniqueIdentifier>{6DE2A65B-7379-33B4-9B4E-AB723B9938DD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\encryption">
+      <UniqueIdentifier>{60D53725-0959-3E0D-A931-F28299DFC379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\console">
+      <UniqueIdentifier>{63F95ACD-B4F4-3680-8216-243B3D8E3996}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

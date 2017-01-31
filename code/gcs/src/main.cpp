@@ -19,6 +19,11 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_WIN
+    // Force usage of OpenGL ES through ANGLE on Windows
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+#endif
+
     QApplication application(argc, argv);
     
     MainWindow mw;

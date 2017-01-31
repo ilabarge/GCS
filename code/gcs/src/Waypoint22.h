@@ -20,7 +20,7 @@ public:
 
     explicit Waypoint22(QObject *parent = 0);
     Waypoint22(int id,     int type,        double lat,
-               double lon, double altitude, int vehicleType);
+               double lon, double altitude, int vehicleType, EsriRuntimeQt::SpatialReference spatialReference);
 
     /* START GETTERS */
     double getAltitude(){ return alt; }
@@ -32,8 +32,9 @@ public:
     double getNextLatitude(){ return nextLat; }
     double getNextLongitude(){ return nextLon; }
 
-    int getLineGraphicID(){ return lineGraphic.uid(); }
-    EsriRuntimeQt::Graphic getLineGraphic(){ return lineGraphic; }
+    //ESRI 10.2.5 update change uid to uniqueId
+    int getLineGraphicID(){ return lineGraphic->uniqueId(); }
+    EsriRuntimeQt::Graphic* getLineGraphic(){ return lineGraphic; }
     EsriRuntimeQt::Polyline getLine(){ return line; }
     /* END GETTERS */
 
@@ -46,6 +47,7 @@ public:
     void clearNextWaypoint();
     void setLineGraphic(EsriRuntimeQt::Graphic graphic);
     bool setLinePoints(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2);
+    bool setLinePoints2(EsriRuntimeQt::Point p1, EsriRuntimeQt::Point p2);
     void setWaypointOrigin(double lat, double lon);
     bool setNextWaypoint(double lat, double lon);
     void updateLineGraphic();
@@ -61,11 +63,15 @@ private:
     double nextLat;
     double nextLon;
 
+    QList<EsriRuntimeQt::Point> points;
+    QList<QList<EsriRuntimeQt::Point>> pathList;
+
     // Graphics members
     int lineGraphicID;
     EsriRuntimeQt::Polyline line;
     EsriRuntimeQt::SimpleLineSymbol lineSymb;
-    EsriRuntimeQt::Graphic lineGraphic;
+    EsriRuntimeQt::Graphic *lineGraphic;
+    EsriRuntimeQt::SpatialReference spatialReference;
 
 signals:
 

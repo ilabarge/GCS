@@ -113,7 +113,7 @@ public:
      * @param v     The vehicle to add.
      * @return      true on success, false on fail.
      */
-    bool addGraphicToLayer(EsriRuntimeQt::Graphic& graphic);
+    bool addGraphicToLayer(EsriRuntimeQt::Graphic *graphic);
 
     //Conversion Methods
     /**
@@ -137,9 +137,15 @@ public:
 
     QString MapView::pointToDecimalDegrees(EsriRuntimeQt::Point p);
 
-    GCSGraphicsLayer* getVehicleLayer(){ return &grLayer; }
+    GCSGraphicsLayer* getVehicleLayer(){ return grLayer; }
 
     QList<double> coordinateStringToDoubles(QString coordinates);
+
+    /** Returns the spatial reference of the map to be used to set points
+     * @brief getSpatialRef
+     * @return
+     */
+    EsriRuntimeQt::SpatialReference getSpatialRef() { return spatialRef; }
 
 public slots:
     void onMapReady();
@@ -155,17 +161,22 @@ public slots:
     void targetLayerOn(bool isOn);
 
 private slots:
-    void onMousePress(QMouseEvent event);
+    void onMousePress(QMouseEvent &event);
 
 signals:
     void MapReady();
     void coordDesignated(double, double);
 
 private:
-    EsriRuntimeQt::Map m_map;
-    EsriRuntimeQt::ArcGISLocalTiledLayer m_tiledLayer;
-    EsriRuntimeQt::ArcGISTiledMapServiceLayer m_tiledServiceLayer;
-    EsriRuntimeQt::ArcGISTiledMapServiceLayer imageryLayer;
+    EsriRuntimeQt::Map *m_map;
+    //Update 10.2.5
+    /*changed layers to pointers as they are singletons
+     meaning that we cannot copy the values of the map layer
+     we must copy the address of the created object*/
+    EsriRuntimeQt::ArcGISLocalTiledLayer *m_tiledLayer;
+    EsriRuntimeQt::ArcGISTiledMapServiceLayer *m_tiledServiceLayer;
+    EsriRuntimeQt::ArcGISTiledMapServiceLayer *imageryLayer;
+
     //  EsriRuntimeQt::ArcGISDynamicMapServiceLayer m_dynamicServiceLayer;
     //  EsriRuntimeQt::LocalMapService m_localMapService;
     //  EsriRuntimeQt::ArcGISDynamicMapServiceLayer m_dynamicLocalServiceLayer;
@@ -174,14 +185,14 @@ private:
     //  EsriRuntimeQt::GraphicsLayer m_graphicsLayer;
     //  EsriRuntimeQt::ArcGISFeatureLayer m_featureLayer;
 
-    GCSGraphicsLayer uavLayer;
-    GCSGraphicsLayer ugvLayer;
-    GCSGraphicsLayer waypointLayer;
-    GCSGraphicsLayer opspaceLayer;
-    GCSGraphicsLayer targetLayer;
-    GCSGraphicsLayer satelliteLayer;
+    GCSGraphicsLayer *uavLayer;
+    GCSGraphicsLayer *ugvLayer;
+    GCSGraphicsLayer *waypointLayer;
+    GCSGraphicsLayer *opspaceLayer;
+    GCSGraphicsLayer *targetLayer;
+    GCSGraphicsLayer *satelliteLayer;
 
-    GCSGraphicsLayer grLayer;
+    GCSGraphicsLayer *grLayer;
     EsriRuntimeQt::SpatialReference spatialRef;
     InternetTest it;
 };

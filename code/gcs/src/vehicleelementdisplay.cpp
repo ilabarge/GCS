@@ -1,4 +1,4 @@
-#include "vehicleelementdisplay.h"
+ #include "vehicleelementdisplay.h"
 
 VehicleElementDisplay::VehicleElementDisplay(QWidget *parent) :
     QWidget(parent)
@@ -58,10 +58,22 @@ int VehicleElementDisplay::getID(){
 }
 
 void VehicleElementDisplay::setText(){
-    if(vechicle->getVehicleType() ==0){
-        VehicleType->setText("UAV");
-    }else{
+    if(vechicle->getVehicleType() == 0){
+        if(vechicle->getVehicleID() == 101)
+            VehicleType->setText("Telemaster");
+        else if(vechicle->getVehicleID() == 69)
+            VehicleType->setText("Sigkadet");
+        else if(vechicle->getVehicleID() == 102)
+            VehicleType->setText("QUAD 1");
+        else
+            VehicleType->setText("QUAD 2");
+    }else if(vechicle->getVehicleType() == 1){
         VehicleType->setText("UGV");
+    }else if(vechicle->getVehicleType() == 2){
+        VehicleType->setText("UUV");
+    }
+    else {
+        VehicleType->setText("ROV");
     }
     VehicleNo->setText(QString::number(vechicle->getVehicleID()));
 }

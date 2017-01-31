@@ -24,7 +24,7 @@
 #include "gcs_toolbar.h"
 #include "networking.h"
 #include "SerialPortSelect.h"
-#include "database/DataDaemon.h"
+//#include "database/DataDaemon.h"
 #include "targetlist.h"
 #include "MapSymbol22.h"
 #include "Waypoint22.h"
@@ -41,6 +41,7 @@
 #include "uavpayload.h"
 #include "targetinggui.h"
 #include "vehicleinfo.h"
+#include "targetinfo.h"
 #include "MainWindowADI.h"
 
 class MainWindow : public QMainWindow
@@ -64,7 +65,10 @@ public:
     void initNetworkingConnects();
 
     //Initialize database
-    void initDatabase();
+   // void initDatabase();
+
+    double getLatitude();
+    double getLongitude();
 
     //Widgets
     QPushButton* quitButton;
@@ -91,11 +95,11 @@ private:
     VehicleAuthorizationGUI *Authorize;
     UGV_state* UGV_States;
     UAVPayload* UAV_Payload;
-    QLabel* uavModeLabel;
     targetingGUI* targeting;
 
     ConsoleLog* consolelog;
     VehicleInfo* vInfo;
+    TargetInfo* targetInfo;
 
 
     QPushButton command;
@@ -119,10 +123,10 @@ private:
     NodeQueue* vUpdate;
 
     //Database
-    DataDaemon* database;
+    //DataDaemon* database;
 
     vehicle_list *vList22;
-    Vehicle22 *v46, *v69, *v2, *v101, *v102;
+    Vehicle22 *v1251, *v35, *v46, *v69, *v103, *v101, *v102;
 
     QPushButton* sendcmd;
     QPushButton* ugvDrop;
@@ -137,7 +141,7 @@ private:
     int currentVech;
 private slots:
     void update_vehicle_queue();
-    void update_targets(Target*);
+    void update_targets(Target *);
     void mapReady();
     void vStatus(int, int);
     //for uav drop
@@ -161,10 +165,11 @@ private slots:
 
 signals:
     void update_vehicle(int vehicle);
-    void updateIDGraphic(int gID, EsriRuntimeQt::Graphic graphic);
+    void updateIDGraphic(int gID, EsriRuntimeQt::Graphic *graphic);
     void removeLayerGraphic(int gID);
     //for uav drop
     void drop(int);
+    void addTarget(EsriRuntimeQt::Graphic*);
 };
 
 #endif // MAINWINDOW_H

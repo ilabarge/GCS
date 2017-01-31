@@ -11,8 +11,20 @@
 //
 
 //ArcGIS Headers
+namespace EsriRuntimeQt
+{
+class MapGraphicsView;
+class Map;
+class ArcGISLocalTiledLayer;
+class ArcGISTiledMapServiceLayer;
+class ArcGISDynamicMapServiceLayer;
+class ArcGISFeatureLayer;
+class GraphicsLayer;
+class FeatureLayer;
+}
+#include "ArcGISRuntime.h"
+
 #include <MapGraphicsView.h>
-#include <ArcGISRuntime.h>
 
 //Our Headers
 #include "MapView.h"
@@ -23,47 +35,60 @@
 MapView::MapView(QWidget* parent)
 {
     //Set to openGL rendering
-    EsriRuntimeQt::ArcGISRuntime::setRenderEngine(EsriRuntimeQt::RenderEngine::OpenGL);
-    m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(m_map, parent);
-    m_map.setWrapAroundEnabled(false);
-    m_map.setEsriLogoVisible(false);
+    //EsriRuntimeQt::ArcGISRuntime::setRenderEngine(EsriRuntimeQt::RenderEngine::OpenGL);
+    m_map = new EsriRuntimeQt::Map(this);
+    m_mapGraphicsView = EsriRuntimeQt::MapGraphicsView::create(m_map, this);
+    m_map->setWrapAroundEnabled(false);
+    m_map->setEsriLogoVisible(false);
 
-    connect(&m_map,SIGNAL(mapReady()), this, SLOT(onMapReady()));
-    connect(&m_map, SIGNAL(mousePress(QMouseEvent)), this, SLOT(onMousePress(QMouseEvent)));
+    connect(m_map, SIGNAL(mousePress(QMouseEvent&)), this, SLOT(onMousePress(QMouseEvent&)));
 
     if(it.isConnected()){
+        qDebug() << "Internet present";
         //// ArcGIS Online Tiled Basemap Layer
-        m_tiledServiceLayer = EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
-        m_map.addLayer(m_tiledServiceLayer);
-        imageryLayer = EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
-        m_map.addLayer(imageryLayer);
+        m_tiledServiceLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", this);
+        m_map->addLayer(m_tiledServiceLayer);
+        imageryLayer = new EsriRuntimeQt::ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", this);
+        m_map->addLayer(imageryLayer);
     }
     else{
+        qDebug() << "No internet";
         //// Local Tiled Basemap Layer using: sdk/samples/data/tpks/Topographic.tpk
         QString path = EsriRuntimeQt::ArcGISRuntime::installDirectory();
         path.append("/sdk/samples/data");
+        qDebug() << "Path: " << path;
         QDir dataDir(path); // using QDir to convert to correct file separator
         QString pathSampleData = dataDir.path() + QDir::separator();
+        qDebug() << "path sample : " << pathSampleData;
         QString tiledBaseMapLayer = pathSampleData + "tpks" + QDir::separator() + "Topographic.tpk";
-        m_tiledLayer = EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer);
-        m_map.addLayer(m_tiledLayer);
+        qDebug() << "tiled base layer " << tiledBaseMapLayer;
+        m_tiledLayer =  new EsriRuntimeQt::ArcGISLocalTiledLayer(tiledBaseMapLayer, this);
+        m_map->addLayer(m_tiledLayer);
     }
 
 //    Note for points:
 //          Top-left : -2.0037508342787E7,2.0037508342787E7
 //          Center   : 0,0
+    grLayer = new GCSGraphicsLayer();
+    targetLayer = new GCSGraphicsLayer();
+    uavLayer = new GCSGraphicsLayer();
+    ugvLayer = new GCSGraphicsLayer();
+    waypointLayer = new GCSGraphicsLayer();
+    opspaceLayer = new GCSGraphicsLayer();
+    satelliteLayer = new GCSGraphicsLayer();
 
-    m_map.addLayer(grLayer);
-    m_map.addLayer(targetLayer);
-    m_map.addLayer(uavLayer);
-    m_map.addLayer(ugvLayer);
-    m_map.addLayer(waypointLayer);
-    m_map.addLayer(opspaceLayer);
-    m_map.addLayer(satelliteLayer);
+
+    m_map->addLayer(grLayer);
+    m_map->addLayer(targetLayer);
+    m_map->addLayer(uavLayer);
+    m_map->addLayer(ugvLayer);
+    m_map->addLayer(waypointLayer);
+    m_map->addLayer(opspaceLayer);
+    m_map->addLayer(satelliteLayer);
 
     //// ArcGIS Online Dynamic Map Service Layer
     //m_dynamicServiceLayer = EsriRuntimeQt::ArcGISDynamicMapServiceLayer("http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StateCityHighway_USA/MapServer");
-    //m_map.addLayer(m_dynamicServiceLayer);
+    //m_map->addLayer(m_dynamicServiceLayer);
 
     //Local Dynamic Layer using: sdk/samples/data/mpks/USCitiesStates.mpk
     /*
@@ -102,7 +127,7 @@ MapView::MapView(QWidget* parent)
     EsriRuntimeQt::SimpleMarkerSymbol redCircle(Qt::red, 8, EsriRuntimeQt::SimpleMarkerSymbolStyle::Circle);
     EsriRuntimeQt::Graphic graphic1(point1, redCircle);
     m_graphicsLayer.addGraphic(graphic1);
-    m_map.addLayer(m_graphicsLayer);
+    m_map->addLayer(m_graphicsLayer);
     */
 
     // Feature Layer
@@ -116,36 +141,36 @@ MapView::MapView(QWidget* parent)
     {
         //Layer can also be created directly by specifying the layer in the url
         m_featureLayer = EsriRuntimeQt::ArcGISFeatureLayer(layerInfoList.at(0).url());
-        m_map.addLayer(m_featureLayer);
+        m_map->addLayer(m_featureLayer);
     }
     */
 
     //// connect to signal that is emitted when the map is ready
-    // connect(&m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
+    connect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
 }
 
 void MapView::UAVLayerVisible(bool visible){
-    uavLayer.setVisible(visible);
+    uavLayer->setVisible(visible);
 }
 
 void MapView::UGVLayerVisible(bool visible){
-    ugvLayer.setVisible(visible);
+    ugvLayer->setVisible(visible);
 }
 
 void MapView::waypointLayerVisible(bool visible){
-    waypointLayer.setVisible(visible);
+    waypointLayer->setVisible(visible);
 }
 
 void MapView::zoneLayerVisible(bool visible){
-    opspaceLayer.setVisible(visible);
+    opspaceLayer->setVisible(visible);
 }
 
 void MapView::targetLayerVisible(bool visible){
-    targetLayer.setVisible(visible);
+    targetLayer->setVisible(visible);
 }
 
 void MapView::satelliteLayerVisible(bool visible){
-    satelliteLayer.setVisible(visible);
+    satelliteLayer->setVisible(visible);
 }
 
 MapView::~MapView()
@@ -177,9 +202,7 @@ MapView::~MapView()
     //disconnect(&m_localFeatureService, SIGNAL(serviceCreationFailure(const QString&)), this, SLOT(onFeatureServiceCreationFailure(const QString&)));
 
     // disconnect signal for Map
-    //disconnect(&m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
-
-    m_map.dispose();
+    disconnect(m_map, SIGNAL(mapReady()), this, SLOT(onMapReady()));
     delete m_mapGraphicsView;
 }
 
@@ -191,7 +214,7 @@ void MapView::onLocalServiceCreationSuccess(const QString& url, const QString& n
 
    // create the ArcGISDynamicMapServiceLayer using the LocalMapService's url
    m_dynamicLocalServiceLayer = EsriRuntimeQt::ArcGISDynamicMapServiceLayer(m_localMapService.urlMapService());
-   m_map.addLayer(m_dynamicLocalServiceLayer);
+   m_map->addLayer(m_dynamicLocalServiceLayer);
 }
 */
 
@@ -223,7 +246,7 @@ void MapView::onFeatureServiceCreationSuccess(const QString& url, const QString&
   }
 
   m_localFeatureLayer = EsriRuntimeQt::ArcGISFeatureLayer(serviceUrl);
-  m_map.addLayer(m_localFeatureLayer);
+  m_map->addLayer(m_localFeatureLayer);
 }
 */
 
@@ -236,62 +259,64 @@ void MapView::onFeatureServiceCreationFailure(const QString& name)
 */
 
 void MapView::onMapReady(){
-    spatialRef = m_map.spatialReference();
-    grLayer.setSpatialReference(spatialRef);
+    spatialRef = m_map->spatialReference();
+    m_map->setExtent(EsriRuntimeQt::Envelope(-23042400, 36094, -2983530, 8016267, m_map->spatialReference()));
+    m_map->zoom(0.05);
+    //m_map->addLayer(grLayer);
     qDebug() << "Map Ready.";
     emit MapReady();
 }
 
 bool MapView::moveVehicleGraphic(Vehicle22& vehicle, const EsriRuntimeQt::Point point){
-    grLayer.moveGraphic(vehicle.getGraphicID(), point);
+    grLayer->moveGraphic(vehicle.getGraphicID(), point);
     return true;
 }
 
 bool MapView::moveVehicleGraphic(Vehicle22& vehicle, double lat, double lon){
-    grLayer.moveGraphic(vehicle.getGraphicID(), decimalDegreesToPoint(lat,lon));
+    grLayer->moveGraphic(vehicle.getGraphicID(), decimalDegreesToPoint(lat,lon));
     return true;
 }
 
 bool MapView::moveLayerGraphic(Layers layer, EsriRuntimeQt::Graphic& graphic, const EsriRuntimeQt::Point p){
     //TODO: Add behavior
+    //ESRI update 10.2.5 change uid to uniqueId
     switch(layer){
         case UGV:
-            ugvLayer.moveGraphic(graphic.uid(), p);
+            ugvLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case UAV:
-            uavLayer.moveGraphic(graphic.uid(), p);
+            uavLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case TARGET:
-            targetLayer.moveGraphic(graphic.uid(), p);
+            targetLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case SATELLITE:
-            satelliteLayer.moveGraphic(graphic.uid(), p);
+            satelliteLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case WAYPOINT:
-            waypointLayer.moveGraphic(graphic.uid(), p);
+            waypointLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         case ZONE:
-            opspaceLayer.moveGraphic(graphic.uid(), p);
+            opspaceLayer->moveGraphic(graphic.uniqueId(), p);
             break;
         default:
             break;
     }
 
-    grLayer.moveGraphic(graphic.uid(), p);
+    grLayer->moveGraphic(graphic.uniqueId(), p);
     return true;
 }
 
 bool MapView::moveLayerGraphic(Layers layer, EsriRuntimeQt::Graphic& graphic, double lat, double lon){
     //TODO: Add behavior
-    grLayer.moveGraphic(graphic.uid(), decimalDegreesToPoint(lat,lon));
+    grLayer->moveGraphic(graphic.uniqueId(), decimalDegreesToPoint(lat,lon));
     return true;
 }
 
 //bool MapView::addGraphicToLayer(EsriRuntimeQt::GraphicsLayer& layer, EsriRuntimeQt::Graphic& graphic){
-bool MapView::addGraphicToLayer(EsriRuntimeQt::Graphic& graphic){
+bool MapView::addGraphicToLayer(EsriRuntimeQt::Graphic *graphic){
     //layer.addGraphic(graphic);
-    grLayer.addGraphic(graphic);
-
+    grLayer->addGraphic(graphic);
     return true;
 }
 
@@ -305,21 +330,23 @@ EsriRuntimeQt::Point MapView::decimalDegreesToPoint(double lat, double lon){
 }
 
 QString MapView::pointToDecimalDegrees(EsriRuntimeQt::Point p){
-    return EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(p, spatialRef, 8);
+    return EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(p, 8);
 }
 
 bool MapView::rotateVehicleGraphic(Vehicle22& vehicle, int angle){
     vehicle.setAngle(angle);
-    grLayer.updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
+    grLayer->updateGraphic(vehicle.getGraphicID(), vehicle.getGraphic());
     return true;
 }
     
-void MapView::onMousePress(QMouseEvent event){
+void MapView::onMousePress(QMouseEvent &event){
+    EsriRuntimeQt::Point point = m_map->toMapPoint(event.pos().x(), event.pos().y());
+    spatialRef = m_map->spatialReference();
     if(event.button() == Qt::LeftButton){
         qDebug() << "x: " << event.x() << " y: " << event.y();
-        EsriRuntimeQt::Point point = m_map.toMapPoint(event.x(), event.y());
+        //EsriRuntimeQt::Point point = m_map->toMapPoint(event.x(), event.y());
         QList<double> latLon = coordinateStringToDoubles(EsriRuntimeQt::CoordinateConversion::PointToDecimalDegrees(
-                                      EsriRuntimeQt::Point(point.x(), point.y()), spatialRef, 9));
+                                      EsriRuntimeQt::Point(point.x(), point.y(),spatialRef), 9));
         emit coordDesignated(latLon.at(0), latLon.at(1));
     }
 }
@@ -348,26 +375,26 @@ QList<double> MapView::coordinateStringToDoubles(QString coordinates){
 }
 
 void MapView::uavLayerOn(bool isOn) {
-    uavLayer.setVisible(isOn);
+    uavLayer->setVisible(isOn);
 }
 
 void MapView::ugvLayerOn(bool isOn) {
-    ugvLayer.setVisible(isOn);
+    ugvLayer->setVisible(isOn);
 }
 
 void MapView::satelliteLayerOn(bool isOn) {
-    satelliteLayer.setVisible(isOn);
-    imageryLayer.setVisible(isOn);
+    satelliteLayer->setVisible(isOn);
+    imageryLayer->setVisible(isOn);
 }
 
 void MapView::waypointLayerOn(bool isOn) {
-    waypointLayer.setVisible(isOn);
+    waypointLayer->setVisible(isOn);
 }
 
 void MapView::opspaceLayerOn(bool isOn) {
-    opspaceLayer.setVisible(isOn);
+    opspaceLayer->setVisible(isOn);
 }
 
 void MapView::targetLayerOn(bool isOn) {
-    targetLayer.setVisible(isOn);
+    targetLayer->setVisible(isOn);
 }

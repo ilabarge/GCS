@@ -149,12 +149,12 @@ void vehicle_list::updateVech(int vechID)
 
 bool vehicle_list::inList(int ID)
 {
-    qDebug() << "vehicle_list: IS" << ID << "INLIST?";
+    //qDebug() << "vehicle_list: IS" << ID << "INLIST?";
     for(std::vector<Vehicle22*>::iterator it = vlist.begin(); it!= vlist.end(); ++it)
     {
         if(ID == (*it)->getVehicleID())
         {
-            qDebug() << ID << "IS IN LIST";
+            //qDebug() << ID << "IS IN LIST";
             return true;
         }
         //qDebug() <<  "ID" << (*it)->getVehicleID() << "pos " << p;

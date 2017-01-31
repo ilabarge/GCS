@@ -62,7 +62,7 @@ int32_t datalink_init(
 #ifdef __cplusplus
 
 
-namespace protonet
+namespace comnet
 {
 	/* Allows datalink to keep track of storage/inheritance */
 	typedef enum datalink_type_e

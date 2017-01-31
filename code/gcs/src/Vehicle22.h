@@ -49,6 +49,7 @@ public:
     void setXVelocity(double xVelocity);
     void setYVelocity(double yVelocity);
     void setZVelocity(double zVelocity);
+    void setDepth(double depth);
     /* END SETTERS */
 
     /* START GETTERS */
@@ -76,6 +77,7 @@ public:
     double getYVelocity(){ return yVel; }
     double getZVelocity(){ return zVel; }
     bool getNeedsUpdate(){ return needsUpdate; }
+    double getDepth();
 
     // Waypoints
     Waypoint22* getWaypoint(int index);
@@ -89,7 +91,7 @@ public:
     std::vector<Waypoint22*> waypoints;
 
 signals:
-    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic graphic);
+    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic *graphic);
     void addWaypointGraphic(Waypoint22*, QColor);
     void updateWaypointGraphics(Waypoint22* wp );
     void removeWaypointGraphic(int waypointID, int lineID);
@@ -119,7 +121,7 @@ private:
     double xVel;
     double yVel;
     double zVel;
-
+    double depth;
     bool needsUpdate;
     /* END DATA VARIABLES */
 

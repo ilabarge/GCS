@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "vehicleelementdisplay.h"
 #include "vehicle_list.h"
+#include <CommProto/commproto.h>
 
 class VehicleListDisplay : public QWidget
 {
@@ -20,6 +21,7 @@ public slots:
 private:
     QVector<VehicleElementDisplay*> *vehicleList;
     vehicle_list *vList;
+    comnet::CommNode *node;
 };
 
 #endif // VEHICLELISTDISPLAY_H

@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\conn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\frame.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\ll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\log.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\mode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\mutex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\pkt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\prepare.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\rx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\thread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\tx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\ver.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\xbee.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\xsys.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\common.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\at.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\dataExp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\identify.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\io.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\mode5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\conn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\mode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\mutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\pkt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\prepare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\rx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\tx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\xbee.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\xbeep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\xbee_int.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\xsys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\at.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\dataExp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\identify.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\io.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\modes\xbee5\mode5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\amari\Documents\gcs\code\gcs\CommProtocol\CommProtocol-master\libxbee3\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{C0FE20C7-3699-3107-849C-2EC787A88CC6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{15648A55-F0EB-3EA0-8A0B-658C4198C194}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

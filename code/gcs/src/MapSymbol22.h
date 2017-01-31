@@ -1,6 +1,18 @@
 #ifndef MAPSYMBOL22_H
 #define MAPSYMBOL22_H
 
+namespace EsriRuntimeQt
+{
+class MapGraphicsView;
+class Map;
+class ArcGISLocalTiledLayer;
+class ArcGISTiledMapServiceLayer;
+class ArcGISDynamicMapServiceLayer;
+class ArcGISFeatureLayer;
+class GraphicsLayer;
+class FeatureLayer;
+}
+
 #include <QObject>
 #include <QColor>
 #include <QString>
@@ -28,7 +40,7 @@ public:
      * -1: Bad image URL
      *  0: Success
      */
-    int setGraphic(const QString url, const int width, const int height);
+    int setGraphic(const QString url, const int width, const int height, EsriRuntimeQt::SpatialReference spatialReference);
 
     /**
      * @brief MapSymbol::setGraphic
@@ -42,19 +54,20 @@ public:
      * -1: Bad image URL
      *  0: Success
      */
-    int setGraphic(const QString url, double lat, double lon, int width, int height);
+    int setGraphic(const QString url, double lat, double lon, int width, int height, EsriRuntimeQt::SpatialReference spatialReference);
 
-    int setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMarkerSymbolStyle shape, double x, double y, int size);
+    int setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMarkerSymbolStyle shape, double x, double y, int size, EsriRuntimeQt::SpatialReference spatialReference);
     int setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMarkerSymbolStyle shape, EsriRuntimeQt::Point p, int size);
     bool setPoint(EsriRuntimeQt::Point point);
     bool setAngle(double angle);
     void setColor(QColor color);
 
-    EsriRuntimeQt::Graphic getGraphic(){ return graphic; }
+    EsriRuntimeQt::Graphic* getGraphic(){ return graphic; }
     EsriRuntimeQt::Point getPoint(){ return curr_Point; }
     EsriRuntimeQt::PictureMarkerSymbol getPMS(){ return pmSymbol; }
     EsriRuntimeQt::PictureMarkerSymbol getSMS(){ return smSymbol; }
-    int getGraphicID(){ return graphic.uid(); }
+    //ESRI 10.2.5 update change from uid to uniqueID
+    int getGraphicID(){ return graphic->uniqueId(); }
     QColor getColor(){ return color; }
 
     EsriRuntimeQt::Point decimalDegreesToPoint(double lat, double lon);
@@ -63,7 +76,7 @@ public:
 
 protected:
     QColor color;
-    EsriRuntimeQt::Graphic graphic;
+    EsriRuntimeQt::Graphic *graphic;
     EsriRuntimeQt::Point curr_Point;
     EsriRuntimeQt::PictureMarkerSymbol pmSymbol;
     EsriRuntimeQt::SimpleMarkerSymbol smSymbol;
@@ -73,7 +86,7 @@ protected:
 
 signals:
     void GCSRemoveGraphic(int graphicID);
-    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic graphic);
+    void GCSUpdateGraphic(int gID, EsriRuntimeQt::Graphic *graphic);
 
 public slots:
 

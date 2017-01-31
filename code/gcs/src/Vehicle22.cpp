@@ -153,6 +153,17 @@ void Vehicle22::setZVelocity(double zVel) {
     needsUpdate = true;
 }
 
+void Vehicle22::setDepth(double depth)
+{
+    QMutexLocker l(&mx);
+    this->depth = depth;
+}
+
+double Vehicle22::getDepth()
+{
+    return depth;
+}
+
 Waypoint22* Vehicle22::getWaypoint(int index){
     if(!validIndex(index)){ return NULL; }
 
@@ -249,7 +260,6 @@ int Vehicle22::numWaypoints(){
 }
 
 void Vehicle22::updateWaypoints(int first, int middle, int last){
-
     //Don't need mutex because it's a private function
     //and is only called after a mutex lock.
 

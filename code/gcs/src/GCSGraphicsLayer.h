@@ -7,6 +7,7 @@
 
 //Our Headers
 #include "Waypoint22.h"
+#include "target.h"
 
 class GCSGraphicsLayer : public EsriRuntimeQt::GraphicsLayer
 {
@@ -36,19 +37,18 @@ public:
 
     QString pointToDecimalDegrees(EsriRuntimeQt::Point p);
 
-    void setSpatialReference(EsriRuntimeQt::SpatialReference ref);
+private:
+    EsriRuntimeQt::Polyline polyLine;
+    EsriRuntimeQt::Graphic *initialLine;
 
 public slots:
     void removeLayerGraphic( int gID );
-    void updateLayerGraphic( int gID, EsriRuntimeQt::Graphic graphic );
-    void addGraphicToGCS( EsriRuntimeQt::Graphic );
+    void updateLayerGraphic( int gID, EsriRuntimeQt::Graphic *graphic );
+    void addGraphicToGCS(EsriRuntimeQt::Graphic *);
 
     void addWaypointToGCS( Waypoint22* wp, QColor color);
     void updateWaypointGraphics( Waypoint22* wp );
-    void removeWaypointGraphic( int waypointID, int lineID);
-
-private:
-    EsriRuntimeQt::SpatialReference spatialRef;
+    void removeWaypointGraphic(int waypointID, int lineID);
 };
 
 #endif // GCSGRAPHICSLAYER_H
