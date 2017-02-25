@@ -1,7 +1,7 @@
 #include "rx_thread.h"
 #include "qdebug.h"
 #undef interface
-#include <packets/Packets.hpp>
+#include <Packets.hpp>
 #include <CommProto/commproto.h>
 
 TargetList* targetList;
