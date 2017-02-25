@@ -14,7 +14,7 @@ class JoystickInput : public QObject
     Q_OBJECT
 public:
     explicit JoystickInput(QObject *parent = 0,comnet::node* = NULL);
-    boolean send;
+    bool send;
 
 signals:
 

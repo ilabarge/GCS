@@ -30,7 +30,7 @@ int MapSymbol22::setGraphic( const QColor& color, const EsriRuntimeQt::SimpleMar
 }
 
 int MapSymbol22::setGraphic(const QString url, const int width, const int height, EsriRuntimeQt::SpatialReference spatialReference){
-    return setGraphic(url, -13102400, 4046094, width, height, spatialReference);
+    return setGraphic(url, -13115400, 4036594, width, height, spatialReference);
 }
 
 int MapSymbol22::setGraphic(const QString url, double x, double y, const int width, const int height, EsriRuntimeQt::SpatialReference spatialReference){

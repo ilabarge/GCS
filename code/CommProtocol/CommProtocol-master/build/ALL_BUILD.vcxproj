@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{CC379B2E-76AF-35A0-85BA-17E4FC874ABF}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Geri\Downloads\gcs\CommProtocol\CommProto\include;C:\Users\Geri\Downloads\gcs\CommProtocol\libxbee3;C:\Users\Geri\Downloads\gcs\CommProtocol\Encryption\cryptopp563;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Geri\Downloads\gcs\CommProtocol\CommProto\include;C:\Users\Geri\Downloads\gcs\CommProtocol\libxbee3;C:\Users\Geri\Downloads\gcs\CommProtocol\Encryption\cryptopp563;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Geri\Downloads\gcs\CommProtocol\CommProto\include;C:\Users\Geri\Downloads\gcs\CommProtocol\libxbee3;C:\Users\Geri\Downloads\gcs\CommProtocol\Encryption\cryptopp563;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Geri\Downloads\gcs\CommProtocol\CommProto\include;C:\Users\Geri\Downloads\gcs\CommProtocol\libxbee3;C:\Users\Geri\Downloads\gcs\CommProtocol\Encryption\cryptopp563;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Geri/Downloads/gcs/CommProtocol -BC:/Users/Geri/Downloads/gcs/CommProtocol/build --check-stamp-file C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\macros.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\archfiles.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\tools-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\console.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\CommProto-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\hash-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\network-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\serialization-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\ping.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\pkg.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\comnet_debug.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\encryption.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\visualc.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Geri/Downloads/gcs/CommProtocol -BC:/Users/Geri/Downloads/gcs/CommProtocol/build --check-stamp-file C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\macros.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\archfiles.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\tools-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\console.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\CommProto-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\hash-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\network-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\serialization-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\ping.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\pkg.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\comnet_debug.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\encryption.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\visualc.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Geri/Downloads/gcs/CommProtocol -BC:/Users/Geri/Downloads/gcs/CommProtocol/build --check-stamp-file C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\macros.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\archfiles.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\tools-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\console.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\CommProto-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\hash-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\network-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\serialization-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\ping.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\pkg.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\comnet_debug.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\encryption.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\visualc.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Geri/Downloads/gcs/CommProtocol -BC:/Users/Geri/Downloads/gcs/CommProtocol/build --check-stamp-file C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/Geri/Downloads/gcs/CommProtocol/CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\macros.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\archfiles.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\tools-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\console.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\CommProto-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\hash-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\network-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\serialization-config.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\ping.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\pkg.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\comnet_debug.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\encryption.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\cmake\visualc.cmake;C:\Users\Geri\Downloads\gcs\CommProtocol\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/ZERO_CHECK.vcxproj">
+      <Project>2DB4DEE9-A2B6-3AE4-B093-B5BB5FF0735E</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/tests/classes/cpp/serial/CommProtoSerial.vcxproj">
+      <Project>82F60C47-0C45-324F-A3B9-DBDE2CE91DD7</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/tests/classes/cpp/udp/CommProtoUdp.vcxproj">
+      <Project>6DF48DEA-9D7E-36F7-B8B8-535D6E8E85B3</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/tests/classes/cpp/xbee/CommProtoXBee.vcxproj">
+      <Project>85789EB3-DFD5-3D54-8A08-3F05C65EF5E2</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/CommProtocol64_v1.0.7b-a.vcxproj">
+      <Project>4202B070-096E-366D-9468-93C603675494</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/unit/Visionary.vcxproj">
+      <Project>6DFE2F7E-03CF-38EE-A819-E5B6725B04EA</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/Encryption/cryptopp563/cryptopp-object.vcxproj">
+      <Project>E4C4B6D3-F834-338E-92BD-E894D0FDEB68</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/Encryption/cryptopp563/cryptopp-static.vcxproj">
+      <Project>4D38A076-FE98-3AE9-97DF-295BC87B2CF0</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/Geri/Downloads/gcs/CommProtocol/build/libxbee3/libxbee3.vcxproj">
+      <Project>B67E4A86-1044-3664-8E24-F89CD9806519</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+  </ImportGroup>
+</Project>

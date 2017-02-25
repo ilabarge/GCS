@@ -1,0 +1,69 @@
+Checking whether the ASM_MASM compiler is GNU using "--version" did not match "(GNU assembler)|(GCC)|(Free Software Foundation)":
+MASM : warning A4018:invalid command-line option : --version
+MASM : fatal error A1017:missing source filename
+Microsoft (R) Macro Assembler Version 12.00.31101.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Checking whether the ASM_MASM compiler is HP using "-V" did not match "HP C":
+MASM : warning A4018:invalid command-line option : -V
+MASM : fatal error A1017:missing source filename
+Microsoft (R) Macro Assembler Version 12.00.31101.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Checking whether the ASM_MASM compiler is Intel using "--version" did not match "(ICC)":
+MASM : warning A4018:invalid command-line option : --version
+MASM : fatal error A1017:missing source filename
+Microsoft (R) Macro Assembler Version 12.00.31101.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Checking whether the ASM_MASM compiler is SunPro using "-V" did not match "Sun C":
+MASM : warning A4018:invalid command-line option : -V
+MASM : fatal error A1017:missing source filename
+Microsoft (R) Macro Assembler Version 12.00.31101.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Checking whether the ASM_MASM compiler is XL using "-qversion" did not match "XL C":
+MASM : warning A4018:invalid command-line option : -qversion
+MASM : fatal error A1017:missing source filename
+Microsoft (R) Macro Assembler Version 12.00.31101.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Determining if the include file pthread.h exists failed with the following output:
+Change Dir: C:/Users/Geri/Downloads/gcs/CommProtocol/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/MSBuild/12.0/bin/MSBuild.exe" "cmTC_2d3be.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=12.0"
+Microsoft (R) Build Engine version 12.0.31101.0
+[Microsoft .NET Framework, version 4.0.30319.42000]
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Build started 1/13/2017 5:55:57 PM.
+Project "C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\cmTC_2d3be.vcxproj" on node 1 (default targets).
+PrepareForBuild:
+  Creating directory "cmTC_2d3be.dir\Debug\".
+  Creating directory "C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\Debug\".
+  Creating directory "cmTC_2d3be.dir\Debug\cmTC_2d3be.tlog\".
+InitializeBuildStatus:
+  Creating "cmTC_2d3be.dir\Debug\cmTC_2d3be.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  C:\Users\Geri\Desktop\GCS\VC\bin\CL.exe /c /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_2d3be.dir\Debug\\" /Fd"cmTC_2d3be.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:queue C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\CheckIncludeFile.c
+  Microsoft (R) C/C++ Optimizing Compiler Version 18.00.31101 for x86
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  cl /c /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_2d3be.dir\Debug\\" /Fd"cmTC_2d3be.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:queue C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\CheckIncludeFile.c
+  
+  CheckIncludeFile.c
+C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\CheckIncludeFile.c(1): fatal error C1083: Cannot open include file: 'pthread.h': No such file or directory [C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\cmTC_2d3be.vcxproj]
+Done Building Project "C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\cmTC_2d3be.vcxproj" (default targets) -- FAILED.
+
+Build FAILED.
+
+"C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\cmTC_2d3be.vcxproj" (default target) (1) ->
+(ClCompile target) -> 
+  C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\CheckIncludeFile.c(1): fatal error C1083: Cannot open include file: 'pthread.h': No such file or directory [C:\Users\Geri\Downloads\gcs\CommProtocol\build\CMakeFiles\CMakeTmp\cmTC_2d3be.vcxproj]
+
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:00.70
+
+

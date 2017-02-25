@@ -1,12 +1,18 @@
 #include "rx_thread.h"
 #include "qdebug.h"
+#undef interface
+#include <packets/Packets.hpp>
+#include <CommProto/commproto.h>
+
 TargetList* targetList;
 vehicle_list* vp;
 QMutex mutex;
 comnet::node *np;
 
+
 // ------- CONSTRUCTOR -------
 rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, vehicle_list* v, TargetList* tgt){
+
     // you could copy data from constructor arguments to internal variables here.
     this->node_id = node_id;
     this->self_port = self_port;
@@ -963,3 +969,4 @@ vehicle_body_sensed_state_t state, comnet::node* node_ptr)
    return 0;
 }
 */
+

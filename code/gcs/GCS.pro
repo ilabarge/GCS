@@ -422,33 +422,49 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/release/ -lNGCP
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/debug/ -lNGCP_COM
 else:unix: LIBS += -L$$PWD/src/comnet/ -lNGCP_COM
 
-INCLUDEPATH += $$PWD/src/comnet
-DEPENDPATH += $$PWD/src/comnet
 
-unix|win32: LIBS += -L$$PWD/src/comnet/ -llibxbee3
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/release/ -lCommProtocol64_v1.0.7b-a
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/debug/ -lCommProtocol64_v1.0.7b-a
+else:unix: LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/ -lCommProtocol64_v1.0.7b-a
 
-INCLUDEPATH += $$PWD/src/comnet
-DEPENDPATH += $$PWD/src/comnet
+INCLUDEPATH += $$PWD/../CommProtocol/CommProtocol-master/CommProto/include
+DEPENDPATH += $$PWD/../CommProtocol/CommProtocol-master/CommProto/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/release/libCommProtocol64_v1.0.7b-a.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/debug/libCommProtocol64_v1.0.7b-a.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/release/CommProtocol64_v1.0.7b-a.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/debug/CommProtocol64_v1.0.7b-a.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/libCommProtocol64_v1.0.7b-a.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/release/ -lcryptopp-static
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/debug/ -lcryptopp-static
+else:unix: LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/ -lcryptopp-static
+
+INCLUDEPATH += $$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/debug
+DEPENDPATH += $$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/debug
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/release/libcryptopp-static.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/debug/libcryptopp-static.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/release/cryptopp-static.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/debug/cryptopp-static.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../CommProtocol/CommProtocol-master/build/Encryption/cryptopp563/libcryptopp-static.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/libxbee3/release/ -llibxbee3
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/libxbee3/debug/ -llibxbee3
+else:unix: LIBS += -L$$PWD/../CommProtocol/CommProtocol-master/build/libxbee3/ -llibxbee3
+
+INCLUDEPATH += $$PWD/../CommProtocol/CommProtocol-master/build/libxbee3/Debug
+DEPENDPATH += $$PWD/../CommProtocol/CommProtocol-master/build/libxbee3/Debug
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/comnet/ -lcryptlib
-else:win32:/CommProtocol/CommProtocol-master/CommProto/include
-DEPENDPATH += $$PWD/CommProtocol/CommProtocol-master/CommProto/include
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/CommProtocol/CommProtocol-master/libxbee3/release/libCommProtocol_v1.0.7b-a.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/CommProtocol/CommProtocol-master/libxbee3/debug/libCommProtocol_v1.0.7b-a.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/CommProtocol/CommProtocol-master/libxbee3/release/CommProtocol_v1.0.7b-a.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/CommProtocol/CommProtocol-master/libxbee3/debug/CommProtocol_v1.0.7b-a.lib
-else:unix: PRCONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/ -lcryptlibd
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/comnet/ -lcryptlibd
 else:unix: LIBS += -L$$PWD/src/comnet/ -lcryptlib
 
 INCLUDEPATH += $$PWD/src/comnet
 DEPENDPATH += $$PWD/src/comnet
 
-build/debug/CommProtocol_v1.0.7b-a.lib
-else:unix: PRE_TARGETDEPS += $$PWD/CommProtocol/CommProtocol-master/build/libCommProtocol_v1.0.7b-a.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/CommProtocol/CommProtocol-master/libxbee3/release/ -lCommProtocol_v1.0.7b-a
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/CommProtocol/CommProtocol-master/libxbee3/debug/ -lCommProtocol_v1.0.7b-a
-else:unix: LIBS += -L$$PWD/CommProtocol/CommProtocol-master/libxbee3/ -lCommProtocol_v1.0.7b-a
-
-INCLUDEPATH += $$PWDE_TARGETDEPS += $$PWD/CommProtocol/CommProtocol-master/libxbee3/libCommProtocol_v1.0.7b-a.a
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/src/comnet/libcryptlib.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/src/comnet/libcryptlibd.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/src/comnet/cryptlib.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/src/comnet/cryptlibd.lib
+else:unix: PRE_TARGETDEPS += $$PWD/src/comnet/libcryptlib.a

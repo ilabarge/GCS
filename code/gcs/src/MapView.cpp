@@ -258,10 +258,11 @@ void MapView::onFeatureServiceCreationFailure(const QString& name)
 }
 */
 
+
 void MapView::onMapReady(){
     spatialRef = m_map->spatialReference();
-    m_map->setExtent(EsriRuntimeQt::Envelope(-23042400, 36094, -2983530, 8016267, m_map->spatialReference()));
-    m_map->zoom(0.05);
+    m_map->setExtent(EsriRuntimeQt::Envelope(-23242790, 45150, -2988530, 8027777, m_map->spatialReference()));
+    m_map->zoom(0.0002);
     //m_map->addLayer(grLayer);
     qDebug() << "Map Ready.";
     emit MapReady();

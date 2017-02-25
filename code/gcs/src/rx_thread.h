@@ -47,7 +47,7 @@ private:
     QThread *joystick_thread;
     JoystickInput *joystick;
     vehicle_list* vList;
-    boolean send;
+    bool send;
     void hold();
 public slots:
     void process();
@@ -121,6 +121,8 @@ signals:
     void message(QString);
     void messageAlert(QString);
     void messageConfirm(QString);
+
+
 };
 
 #endif // RX_THREAD_H
