@@ -22,6 +22,10 @@
 
 //GCS Includes
 #include "comnet.h"
+// interface conflicts with a namespace inside CommProto
+#undef interface
+#include <CommProto/commproto.h>
+#include <Packets.hpp>
 //#include "Vehicle22.h"
 //#include "nodequeue.h"
 //#include "joystickinput.h"
@@ -43,7 +47,7 @@ private:
     uint16_t self_port;
     uint16_t dest_port;
     char serial_port[25];
-    comnet::node *node;
+    comnet::Comms *node;
     //QThread *joystick_thread;
     //JoystickInput *joystick;
     //vehicle_list* vList;
