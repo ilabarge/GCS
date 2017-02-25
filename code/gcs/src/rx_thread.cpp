@@ -1,13 +1,29 @@
+/*
+ *
+ * TODO(): Legacy Comnet code was commented out, Look for them and replace with CommProtocol v2
+ *         Signatures and handles. (callbacks). An example is provided below in the process() function call
+ *         of this thread object on how to register your callbacks.
+ *
+ */
 #include "rx_thread.h"
 #include "qdebug.h"
-#undef interface
+
+// CommProto Default Packets.
 #include <Packets.hpp>
-#include <CommProto/commproto.h>
+
+
+using namespace ngcp;
+// These don't do anything, only make it easier to read.
+#define CALLBACK_REGISTER_BLOCK
+#define END_CALLBACK_REGISTER_BLOCK
+
+// set 0 to disable XBEE, 1 to switch to xbee connections. This is for debugging!!
+#define XBEE 1
 
 TargetList* targetList;
 vehicle_list* vp;
 QMutex mutex;
-comnet::node *np;
+comnet::Comms *np;
 
 
 // ------- CONSTRUCTOR -------
@@ -57,7 +73,8 @@ void rx_thread::send_ping(int id)
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_ping(id,x);
+    //node->send_ping(id,x);
+    // TODO(): Will need to supply a ping command for yourselves.
 }
 
 //Vech authorization request
@@ -68,7 +85,14 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     mutex.lock();
-    node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
+    //node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
+    ngcp::VehicleAuthorizationRequest request;
+    request.vehicle_id = vehicle;
+    request.authorized_services = 0;
+    request.granted_services = 0;
+    request.vehicle_type = 0;
+    // Assuming our vehicle number is also the dest_id.
+    node->Send(request, vehicle);
     qDebug() << "Sent auth request";
     mutex.unlock();
     emit messageConfirm(QString("Sent vehicle authorization request to ID " + QString::number(vehicle)));
@@ -103,11 +127,18 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                mutex.lock();
                vList->get(id)->appendWaypoint(waypoint, vList->get(id)->getColor() );
 
-               node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                  (int32_t)(waypoint->getLatitude()*1E7),
-                                                  (int32_t)(waypoint->getLongitude()*1E7),
-                                                  (int32_t)(waypoint->getAltitude())//*1E7)
-                                                   );
+               //node->send_vehicle_waypoint_command(vehicle,x,vehicle,
+               //                                   (int32_t)(waypoint->getLatitude()*1E7),
+               //                                   (int32_t)(waypoint->getLongitude()*1E7),
+               //                                   (int32_t)(waypoint->getAltitude())//*1E7)
+                //                                   );
+               VehicleWaypointCommand command;
+               command.longitude = waypoint->getLongitude() * 1e7; // no need to cast to int (retains precision)
+               command.latitude = waypoint->getLatitude() * 1e7;
+               command.altitude = waypoint->getAltitude();
+               command.vehicle_id = vehicle;
+               // assuming vehicle is also the dest_id.
+               node->Send(command, vehicle);
                                                    //0,
                                                   //waypoint->getID(),
                                                   //waypoint->getType());
@@ -165,13 +196,20 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
               {
                   mutex.lock();
 
-                  node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                                                     (int32_t)(waypoint->getLatitude()*1E7),
-                                                     (int32_t)(waypoint->getLongitude()*1E7),
-                                                     (int32_t)(waypoint->getAltitude()*1E3));
+                  //node->send_vehicle_waypoint_command(vehicle,x,vehicle,
+                  //                                   (int32_t)(waypoint->getLatitude()*1E7),
+                  //                                   (int32_t)(waypoint->getLongitude()*1E7),
+                  //                                   (int32_t)(waypoint->getAltitude()*1E3));
                                                       //0,
                                                      //waypoint->getType(),
                                                      //waypoint->getID());
+                  VehicleWaypointCommand command;
+                  command.longitude = waypoint->getLongitude() * 1e7; // no need to cast to int (this retains precision)
+                  command.latitude = waypoint->getLatitude() * 1e7;
+                  command.altitude = waypoint->getAltitude();
+                  command.vehicle_id = vehicle;
+                  // assuming vehicle is also the dest_id.
+                  node->Send(command, vehicle);
 
 
                   mutex.unlock();
@@ -200,7 +238,7 @@ void rx_thread::send_telemetry_command(int vehicle)
 
     //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);
     mutex.lock();
-    node->send_vehicle_telemetry_command(vehicle, x, vehicle, 0, 1);
+    //node->send_vehicle_telemetry_command(vehicle, x, vehicle, 0, 1);
     qDebug() << "Sent telemetry request";
     mutex.unlock();
     emit messageConfirm(QString("  Sent Telemetry Command to ID " + QString::number(vehicle)));
@@ -216,11 +254,11 @@ void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
     float64_t x = UTC.toMSecsSinceEpoch();
     //node->send_target_designation_command(dest_id,timestamp,vech_ID,payload_id, target_id,target_type,latitude,longitude,altitude);
     //target type?
-    node->send_target_designation_command(vehicle, vehicle, x,
-                                          vehicle, 1, 1, 0,
-                                          lat,
-                                          longi,
-                                          alt);
+    //node->send_target_designation_command(vehicle, vehicle, x,
+    //                                      vehicle, 1, 1, 0,
+    //                                      lat,
+    //                                      longi,
+    //                                      alt);
 //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
@@ -239,9 +277,9 @@ void rx_thread::send_manTargeting(double latitude, double longitude, double alti
     //target type?
     //printf("lat: %f long: %f alt: %f",latitude,longitude,altitude);
 
-    node->send_target_designation_command(69, 69, x,
-                                          69, 1, 1, 0,
-                                          latitude*1E7,longitude*1E7,altitude);
+    //node->send_target_designation_command(69, 69, x,
+     //                                     69, 1, 1, 0,
+     //                                     latitude*1E7,longitude*1E7,altitude);
 //node->send_payload_bay_command(dest_id,timestamp,payload_id,bay_mode);
 }
 
@@ -253,7 +291,7 @@ void rx_thread::arm_uav(int vehicle)
     float64_t x = UTC.toMSecsSinceEpoch();
     //vehicle id, timestamp, payload bay, mode (0 disarm 1 arm)
     qDebug() << "arming";
-    node->send_payload_bay_mode_command(vehicle,x,1,1);
+    //node->send_payload_bay_mode_command(vehicle,x,1,1);
 }
 
 //UAV disarm
@@ -263,7 +301,7 @@ void rx_thread::disarm_uav(int vehicle)
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     //vehicle id, timestamp, payload bay, mode (0 disarm 1 arm)
-    node->send_payload_bay_mode_command(vehicle,x,1,0);
+    //node->send_payload_bay_mode_command(vehicle,x,1,0);
 }
 
 //UAV drop payload
@@ -276,12 +314,13 @@ void rx_thread::drop(int vehicle)
     if(vehicle == 69)
     {
         //vehicle id, timestamp, payload bay, mode (0 reset 1 drop)
-        node->send_payload_bay_command(vehicle,x,1,1);
+        //node->send_payload_bay_command(vehicle,x,1,1);
         //send to UGV for ack to end of mission
-        node->send_payload_bay_command(46,x,1,1);
+        //node->send_payload_bay_command(46,x,1,1);
     }
-    else
-        node->send_payload_bay_command(46,x,1,1);
+    else {
+        //node->send_payload_bay_command(46,x,1,1);
+    }
 }
 
 //Start Joystick commands
@@ -315,10 +354,10 @@ void rx_thread::setNetworkSerial(QString serial)
     int8_t link_id(1);
     mutex.lock();
     //Add serial at link id, baud rate, serial port
-    node->add_serial(&link_id, 9600, serialp);
+    //node->add_serial(&link_id, 9600, serialp);
 
     //Establish serial
-    node->establish_serial(link_id,1);
+    //node->establish_serial(link_id,1);
     mutex.unlock();
     qDebug() << "node serial set is: " << serialp;
 }
@@ -335,7 +374,7 @@ void rx_thread::ManualToAuto()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0x12);
+    //node->send_vehicle_mode_command(46,x,46,0x12);
 }
 
 void rx_thread::AutoToManual()
@@ -343,7 +382,7 @@ void rx_thread::AutoToManual()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0x10);
+    //node->send_vehicle_mode_command(46,x,46,0x10);
 }
 
 void rx_thread::Reset()
@@ -351,7 +390,7 @@ void rx_thread::Reset()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0x00);
+    //node->send_vehicle_mode_command(46,x,46,0x00);
 }
 
 //Function motor commands
@@ -364,7 +403,7 @@ void rx_thread::DisableMotor()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0xFF);
+    //node->send_vehicle_mode_command(46,x,46,0xFF);
 }
 
 void rx_thread::ToggleMotor()
@@ -372,7 +411,7 @@ void rx_thread::ToggleMotor()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0xF7);
+    //node->send_vehicle_mode_command(46,x,46,0xF7);
 }
 
 void rx_thread::EnableMotor()
@@ -380,7 +419,7 @@ void rx_thread::EnableMotor()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0xF0);
+    //node->send_vehicle_mode_command(46,x,46,0xF0);
 }
 
 /** Test to see if need to wait after sending message
@@ -457,7 +496,7 @@ void* ping_callback(int8_t id, com_header_t header, ping_t ping, comnet::node* n
    //qDebug() << "Ping timestamp:" << ping.timestamp << endl;
    //qDebug() << "Sending pong response." << endl;
    //send a pong as a reply
-   node->send_pong(header.node_src_id,0);
+   //node->send_pong(header.node_src_id,0);
    return 0;
 }
 
@@ -465,7 +504,7 @@ void* pong_callback(int8_t, com_header_t header, pong_t pong, comnet::node* node
 {
    printf("got pong");
    qDebug() << "got pong";
-   node_ptr->send_ping(header.node_src_id,0);
+   //node_ptr->send_ping(header.node_src_id,0);
    return 0;
 }
 
@@ -803,14 +842,34 @@ void* vehicle_waypoint_command_callback(int8_t, com_header_t h, vehicle_waypoint
                               0,0,0));
    return 0;
 }*/
+
+
+
+// Callback function that we will be using to link to Ping packet.
+// Custom ping packet!
+error_t VehicleAuthorizationRequestCallback(
+const comnet::Header &header, VehicleAuthorizationRequest &packet, comnet::Comms &node)
+{
+  std::cout << "=::RECEIVED PACKET::=" << std::endl;
+  std::cout << std::endl << "Source node: " <<
+  (int32_t)header.source_id << std::endl;
+  std::cout << "Message: " << std::endl;
+  std::cout << packet.vehicle_id << std::endl;
+  std::cout << packet.vehicle_type << std::endl;
+  std::cout << packet.authorized_services << std::endl;
+  std::cout << packet.granted_services << std::endl;
+  return comnet::CALLBACK_SUCCESS | comnet::CALLBACK_DESTROY_PACKET;
+}
+
+
+
 // ----------- PROCESS -----------
 // Start processing data.
 //dynamic alloc
 void rx_thread::process() {
    // allocate resources using new here
-
     //Create comnet Node
-   node = new comnet::node(1);
+   node = new comnet::Comms(1);
 
    //Have the methods outside of class (i.e. callbacks) be able to have access to node
    np = node;
@@ -828,11 +887,34 @@ void rx_thread::process() {
    //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
    qDebug() << "Self port for GCS: " << self_port;
+
+#if !XBEE
    char  ip[] = "127.0.0.1";
-//   char  ip[] = "0013A20040917A31";
-   //char  ipUGV[] = "0013A2004067E4A0";
-//   char comport[] = "4";
-   node->add_udp(&link_id,self_port, ip);
+   char port_str[4];
+   sprintf(port_str, "%d", self_port);
+   node->InitConnection(UDP_LINK, port_str, ip);
+   // testing a connection to yourself.
+   node->AddAddress(6, ip, self_port);
+#else
+   char  ip[] = "0013A20040917A31";
+   char  ipUGV[] = "0013A2004067E4A0";
+   // this value might change depending on your machine. Check which port your xbee is connected to and
+   // make sure this value is the xbee port.
+   char commport[] = "COM4";
+   // Will initialize YOUR home address. This is your sender/receiver.
+   qDebug() << "Initializing xbee home";
+   if (!node->InitConnection(ZIGBEE_LINK, commport, ip, 57600)) {
+     qDebug() << "Failed to initialize xbee home!";
+   }
+   // What is ugv node id again?
+   // Add the address you wish to talk to.
+   if (!node->AddAddress(6, ipUGV)) {
+     qDebug() << "Failed to connect to ugv xbee!";
+   }
+#endif
+
+   //node->add_udp(&link_id,self_port, ip);
+
 //   try {
 //    node->add_zigBee(&link_id,57600, comport);
 //   } catch (comnet::error::ConnectionException e) {
@@ -842,7 +924,7 @@ void rx_thread::process() {
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
    //Dest id is for the node id that we want to send to
-   node->establish_udp(link_id,1,dest_port,ip);
+   //node->establish_udp(link_id,1,dest_port,ip);
 //   node->establish_zigBee(link_id,5,ip);
    //node->establish_zigBee(link_id,6,ipUGV);
 //   printf("INIT COMPLETED\n");
@@ -850,17 +932,32 @@ void rx_thread::process() {
 
    //Start Node
    //node->start(); <- no longer needed due to comnet update
+    // Due to new library, things are more explicit, giving you more control.
+   node->Run();
 
    /*Begin Callback Register functions*/
-   node->register_on_enter(enter_callback);
-   node->register_on_ping(ping_callback);
-   node->register_on_pong(pong_callback);
-   node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
-   node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
+   // TODO(): Mimick the registration of these callbacks and redesign to use CommProtocol callback signatures.
+   //  node->LinkCallback() is the call to register. allocated values are taken care of by the CommProto state machine.
+
+   CALLBACK_REGISTER_BLOCK
+   node->LinkCallback(new VehicleAuthorizationRequest(),  new comnet::Callback((comnet::callback_t )VehicleAuthorizationRequestCallback));
+   node->LinkCallback(new VehicleInertialState(),         new comnet::Callback(nullptr)); // <- replace nullptr with function callback that handles the corresponding Packet.
+   node->LinkCallback(new VehicleModeCommand(),           new comnet::Callback(nullptr));
+   node->LinkCallback(new VehicleWaypointCommand(),       new comnet::Callback(nullptr));
+   node->LinkCallback(new VehicleAuthorizationReply(),    new comnet::Callback(nullptr));
+   node->LinkCallback(new VehicleInertialState(),         new comnet::Callback(nullptr));
+   node->LinkCallback(new VehicleSystemStatus(),          new comnet::Callback(nullptr));
+   END_CALLBACK_REGISTER_BLOCK
+
+   //node->register_on_enter(enter_callback);
+   //node->register_on_ping(ping_callback);
+   //node->register_on_pong(pong_callback);
+   //node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
+   //node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
    //node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
-   node->register_on_vehicle_system_status(*vehicle_system_status_callback);
-   node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
-   node->register_on_vehicle_global_position(*vehicle_global_position_callback);
+   //node->register_on_vehicle_system_status(*vehicle_system_status_callback);
+   //node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
+   //node->register_on_vehicle_global_position(*vehicle_global_position_callback);
   // node->register_on_vehicle_attitude(*vehicle_attitude_callback);
 
    //node->register_on_target_status(*target_status_callback);
@@ -868,7 +965,7 @@ void rx_thread::process() {
    //request list
 
    //UGV Sends when
-   node->register_on_target_designation_command(*target_designation_command_callback);
+   //node->register_on_target_designation_command(*target_designation_command_callback);
 
 
    //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));

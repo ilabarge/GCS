@@ -219,6 +219,7 @@ Makefile: ..\gcs\GCS.pro ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\win32-msvc2013\
 		..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\resolve_config.prf \
 		..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\exclusive_builds_post.prf \
 		..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\default_post.prf \
+		..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\esri_runtime_qt10_2_6.prf \
 		..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\qml_debug.prf \
 		..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\win32\rtti.prf \
 		..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\precompile_header.prf \
@@ -396,6 +397,7 @@ Makefile: ..\gcs\GCS.pro ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\win32-msvc2013\
 ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\resolve_config.prf:
 ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\exclusive_builds_post.prf:
 ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\default_post.prf:
+..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\esri_runtime_qt10_2_6.prf:
 ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\qml_debug.prf:
 ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\win32\rtti.prf:
 ..\..\..\..\Qt\5.8\5.8\msvc2013\mkspecs\features\precompile_header.prf:
