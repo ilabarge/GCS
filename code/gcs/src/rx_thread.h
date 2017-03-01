@@ -22,6 +22,10 @@
 
 //GCS Includes
 #include "comnet.h"
+// New CommProto library.
+// Qt is a troll...
+#undef interface
+#include <CommProto/commproto.h>
 #include "Vehicle22.h"
 #include "nodequeue.h"
 #include "joystickinput.h"
@@ -43,7 +47,7 @@ private:
     uint16_t self_port;
     uint16_t dest_port;
     char serial_port[25];
-    comnet::node *node;
+    comnet::Comms *node;
     QThread *joystick_thread;
     JoystickInput *joystick;
     vehicle_list* vList;
@@ -125,4 +129,6 @@ signals:
 
 };
 
+// Why would Qt Do this??
+#define interface __STRUCT__
 #endif // RX_THREAD_H

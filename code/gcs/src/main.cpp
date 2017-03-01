@@ -15,7 +15,7 @@
 #include <QApplication>
 
 #include <CommProto/commproto.h>
-#include <packets/Packets.hpp>
+#include <Packets.hpp>
 
 //Our headers
 #include "mainwindow.h"
@@ -25,24 +25,12 @@
 
 using namespace ngcp;
 // Callback function that we will be using to link to Ping packet.
-error_t VehicleAuthorizationRequestCallback(
-const comnet::Header &header, VehicleAuthorizationRequest &packet, comnet::Comms &node)
-{
- std::cout << "=::RECEIVED PACKET::=" << std::endl;
- std::cout << std::endl << "Source node: " <<
- (int32_t)header.source_id << std::endl;
- std::cout << "Message: " << std::endl;
- std::cout << packet.vehicle_id << std::endl;
- std::cout << packet.vehicle_type << std::endl;
- std::cout << packet.authorized_services << std::endl;
- std::cout << packet.granted_services << std::endl;
+extern error_t VehicleAuthorizationRequestCallback(
+  const comnet::Header &header, VehicleAuthorizationRequest &packet, comnet::Comms &node);
 
- return comnet::CALLBACK_SUCCESS | comnet::CALLBACK_DESTROY_PACKET;
-}
 
 int main(int argc, char *argv[])
 {
-
 
    std::condition_variable cond;
 
@@ -119,7 +107,6 @@ int main(int argc, char *argv[])
     //}
       std::cout << "Ending..." << std::endl;
   //  std::cin.ignore();
-
 #ifdef Q_OS_WIN
     // Force usage of OpenGL ES through ANGLE on Windows
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);

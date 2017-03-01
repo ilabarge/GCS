@@ -1,9 +1,12 @@
 #include "rx_thread.h"
 #include <QDebug>
+#include <stdio.h>
+#include <stdlib.h>
+
 //TargetList* targetList;
 //vehicle_list* vp;
 QMutex mutex;
-comnet::node *np;
+comnet::Comms *np;
 
 // ------- CONSTRUCTOR -------
 rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, QString serial){
@@ -45,7 +48,7 @@ void rx_thread::send_Ping()
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     //node->send_ping(1,x);
-    node->send_target_designation_command(1,1,x,69,16,17,0,3109.45,8452.821,28);
+    //node->send_target_designation_command(1,1,x,69,16,17,0,3109.45,8452.821,28);
 }
 
 //Vech authorization request
@@ -56,7 +59,8 @@ void rx_thread::send_vehicle_auth_request(int vehicle)
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     mutex.lock();
-    node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
+    // TODO(): REPLACE WITH NODE->SEND -> From packets.
+    //node->send_vehicle_authorization_request(vehicle,x,vehicle,100,1,0);
     qDebug() << "Sent auth request";
     mutex.unlock();
     emit messageConfirm(QString("Sent vehicle authorization request to ID " + QString::number(vehicle)));
@@ -183,7 +187,7 @@ void rx_thread::send_telemetry_command(int vehicle)
 
     //node->send_vehicle_telemetry_command(dest_id,vehicle_id,telemetry_select,telemetry_rate);
     mutex.lock();
-    node->send_vehicle_telemetry_command(vehicle,x,vehicle,0,1);
+    //node->send_vehicle_telemetry_command(vehicle,x,vehicle,0,1);
     qDebug() << "Sent telemetry request";
     mutex.unlock();
     emit messageConfirm(QString("  Sent Telemetry Command to ID " + QString::number(vehicle)));
@@ -238,7 +242,11 @@ void rx_thread::arm_uav(int vehicle)
     float64_t x = UTC.toMSecsSinceEpoch();
     //vehicle id, timestamp, payload bay, mode (0 disarm 1 arm)
     qDebug() << "arming";
-    node->send_payload_bay_mode_command(vehicle,x,1,1);
+    //node->send_payload_bay_mode_command(vehicle,x,1,1);
+    ngcp::VehicleModeCommand command;
+    command.vehicle_id = vehicle;
+    command.vehicle_mode = 1;
+    node->Send(command, vehicle);
 }
 
 //UAV disarm
@@ -248,7 +256,11 @@ void rx_thread::disarm_uav(int vehicle)
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
     //vehicle id, timestamp, payload bay, mode (0 disarm 1 arm)
-    node->send_payload_bay_mode_command(vehicle,x,1,0);
+    //node->send_payload_bay_mode_command(vehicle,x,1,0);
+    ngcp::VehicleModeCommand command;
+    command.vehicle_id = vehicle;
+    command.vehicle_mode = 0;
+    node->Send(command, vehicle);
 }
 
 //UAV drop payload
@@ -261,12 +273,13 @@ void rx_thread::drop(int vehicle)
     if(vehicle == 69)
     {
         //vehicle id, timestamp, payload bay, mode (0 reset 1 drop)
-        node->send_payload_bay_command(vehicle,x,1,1);
+        //node->send_payload_bay_command(vehicle,x,1,1);
         //send to UGV for ack to end of mission
-        node->send_payload_bay_command(46,x,1,1);
+        //node->send_payload_bay_command(46,x,1,1);
     }
-    else
-        node->send_payload_bay_command(46,x,1,1);
+    else {
+        //node->send_payload_bay_command(46,x,1,1);
+    }
 }
 /*
 //Start Joystick commands
@@ -300,10 +313,11 @@ void rx_thread::setNetworkSerial(QString serial)
     int8_t link_id(0);
     mutex.lock();
     //Add serial at link id, baud rate, serial port
-    node->add_serial(&link_id, 9600, serialp);
+    //node->add_serial(&link_id, 9600, serialp);
 
     //Establish serial
-    node->establish_serial(link_id,1);
+    //node->establish_serial(link_id,1);
+    // CommProto nodes can only use one protocol at a time for now.
     mutex.unlock();
     qDebug() << "node serial set is: " << serialp;
 }
@@ -320,7 +334,7 @@ void rx_thread::ManualToAuto()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0x12);
+    //node->send_vehicle_mode_command(46,x,46,0x12);
 }
 
 void rx_thread::AutoToManual()
@@ -328,7 +342,7 @@ void rx_thread::AutoToManual()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0x10);
+    //node->send_vehicle_mode_command(46,x,46,0x10);
 }
 
 void rx_thread::Reset()
@@ -336,7 +350,7 @@ void rx_thread::Reset()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0x00);
+    //node->send_vehicle_mode_command(46,x,46,0x00);
 }
 
 //Function motor commands
@@ -349,7 +363,11 @@ void rx_thread::DisableMotor()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0xFF);
+    //node->send_vehicle_mode_command(46,x,46,0xFF);
+    ngcp::VehicleModeCommand command;
+    command.vehicle_id = 46;
+    command.vehicle_mode = 0xff;
+    node->Send(command, 46);
 }
 
 void rx_thread::ToggleMotor()
@@ -357,7 +375,11 @@ void rx_thread::ToggleMotor()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0xF7);
+    //node->send_vehicle_mode_command(46,x,46,0xF7);
+    ngcp::VehicleModeCommand command;
+    command.vehicle_id = 46;
+    command.vehicle_mode = 0xf7;
+    node->Send(command, 46);
 }
 
 void rx_thread::EnableMotor()
@@ -365,7 +387,12 @@ void rx_thread::EnableMotor()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
-    node->send_vehicle_mode_command(46,x,46,0xF0);
+    //node->send_vehicle_mode_command(46,x,46,0xF0);
+    ngcp::VehicleModeCommand command;
+    command.vehicle_id = 46;
+    command.vehicle_mode = 0xf0;
+    // TODO(): Not sure if your destination it should be 46, who is that?
+    node->Send(command, 46);
 }
 
 /** Test to see if need to wait after sending message
@@ -383,7 +410,16 @@ void rx_thread::send_GPS()
     float64_t x = UTC.toMSecsSinceEpoch();
     double lat = 3109.45;
     double lon = -117.8215;
-    node->send_vehicle_global_position(1, x, 69, (int32_t)lat, (int32_t)lon*1E6, 0, 0, 4, 35, 7);
+    //node->send_vehicle_global_position(1, x, 69, (int32_t)lat, (int32_t)lon*1E6, 0, 0, 4, 35, 7);
+    // Send State of the vehicle. Default constructor called, which zeroes all values
+    // (Should you wish to add data, you can modify the values inside).
+    ngcp::VehicleInertialState status;
+    status.latitude = lat;
+    status.longitude = lon * 1e6;
+    status.vertical_speed = 0;
+    status.altitude = 0;
+    // Send the packet.
+    node->Send(status, 1);
     //node->send_target_designation_command(1,1,x,69,1,1,0,1109.45, 452.821, 0);
     //node->send_target_status(1,x,1109.45,.452,3578.9);
     qDebug() << "sent GPS";
@@ -716,7 +752,7 @@ void rx_thread::process() {
    // allocate resources using new here
 
     //Create comnet Node
-   node = new comnet::node(node_id);
+   node = new comnet::Comms(node_id);
 
    //Have the methods outside of class (i.e. callbacks) be able to have access to node
    np = node;
@@ -735,26 +771,29 @@ void rx_thread::process() {
    //NOTE: ip is self IP for testing purposes
    qDebug() << "Self port for GCS: " << self_port;
    char  ip[] = "127.0.0.1";
-   node->add_udp(&link_id,self_port, ip);
+   char port_str[4];
+   sprintf(port_str, "%d", self_port);
+   //node->add_udp(&link_id,self_port, ip);
+   node->InitConnection(transport_protocol_t::UDP_LINK, port_str, ip);
    qDebug() << "Dest port for GCS: " << dest_port;
    //Add endpoint for udp using link id, dest_id, destinition port, destinition address
    //NOTE: ip is self IP for testing purposes
    //Dest id is for the node id that we want to send to
-   node->establish_udp(link_id,1,dest_port,ip);
-
+   //node->establish_udp(link_id,1,dest_port,ip);
+   node->AddAddress(link_id, ip, self_port);
    //Start Node
    //node->start(); <- no longer needed due to comnet update
 
    /*Begin Callback Register functions*/
-   node->register_on_ping(*ping_callback);
-   node->register_on_enter(*enter_callback);
-   node->register_on_pong(*pong_callback);
-   node->register_on_vehicle_global_position(*vehicle_global_position_callback);
-   node->register_on_vehicle_system_status(*vehicle_system_status_callback);
-   node->register_on_vehicle_attitude(*vehicle_attitude_callback);
-   node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
-   node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);   
-   node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
+   //node->register_on_ping(*ping_callback);
+   //node->register_on_enter(*enter_callback);
+   //node->register_on_pong(*pong_callback);
+   //node->register_on_vehicle_global_position(*vehicle_global_position_callback);
+   //node->register_on_vehicle_system_status(*vehicle_system_status_callback);
+   //node->register_on_vehicle_attitude(*vehicle_attitude_callback);
+   //node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
+   //node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
+   //node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
    //ack vehicle got t
    //request list
 
@@ -769,6 +808,26 @@ void rx_thread::process() {
     * Ignoring as if emit it will close the thread prematurely, we will instead close
     * the thread upon the closing of the program. Network's deconstructor will close the thread
     */
+
+
+   // This will initialize packets at runtime, which won't be a hassle to have things set up before hand.
+   // Removes all of the rigid structures of comnet v1.
+   // Looks complicated, but you don't have to LinkCallback lambda expressions! You can do it the old fashioned
+   // way...
+   node->LinkCallback(new ngcp::VehicleModeCommand(), new comnet::Callback(
+                      [] (const comnet::Header &header, comnet::ABSPacket &packet, comnet::CommNode &node) -> error_t {
+     ngcp::VehicleModeCommand &command = comnet::ABSPacket::GetValue<ngcp::VehicleModeCommand>(packet);
+     qDebug() << "Received Vehicle Mode command";
+     return comnet::CALLBACK_SUCCESS | comnet::CALLBACK_DESTROY_PACKET;
+   }));
+
+   node->LinkCallback(new ngcp::VehicleInertialState(), new comnet::Callback(
+                      [] (const comnet::Header &header, comnet::ABSPacket &packet, comnet::CommNode &node) -> error_t {
+     ngcp::VehicleInertialState &state = comnet::ABSPacket::GetValue<ngcp::VehicleInertialState>(packet);
+     qDebug() << "Received GPS coords!";
+     return comnet::CALLBACK_SUCCESS | comnet::CALLBACK_DESTROY_PACKET;
+   }));
+   node->Run();
 }
 //-----------------------------------------------------------------
 /*Setting up callbacks
