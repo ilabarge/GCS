@@ -1,5 +1,5 @@
 /**
-TargetDesignationCommand
+VehicleTelemetryCommand
 
 Copyright (C) 2016-2017 Northrup Grumman Collaboration Project.
 
@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef NGCP_TARGET_DESIGNATION_COMMAND_HPP
-#define NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#ifndef NGCP_VEHICLE_TELEMETRY_COMMAND_HPP
+#define NGCP_VEHICLE_TELEMETRY_COMMAND_HPP
 
 
 #include <CommProto/commproto.h>
@@ -25,25 +25,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace ngcp {
 
-  struct TargetDesignationCommand : INHERITS_ABSPACKET {
+  struct VehicleTelemetryCommand : INHERITS_ABSPACKET {
     /**
     Creates an instance
     */
-    TargetDesignationCommand(uint16_t vehicle_id = 0,
-      uint8_t payload_id = 0,
-      uint8_t target_id = 0,
-      uint8_t target_type = 0,
-      int32_t longitude = 0,
-      int32_t latitude = 0,
-      int32_t altitude = 0)
-      : CHAIN_ABSPACKET(TargetDesignationCommand),
+    VehicleTelemetryCommand(uint16_t vehicle_id = 0,
+      uint8_t telemetry_select = 0,
+      uint8_t telemetry_rate = 0)
+      : CHAIN_ABSPACKET(VehicleTelemetryCommand),
       vehicle_id(vehicle_id),
-      payload_id(payload_id),
-      target_id(target_id),
-      target_type(target_type),
-      longitude(longitude),
-      latitude(latitude),
-      altitude(altitude)
+      telemetry_select(telemetry_select),
+      telemetry_rate(telemetry_rate)
     {
     }
 
@@ -53,12 +45,8 @@ namespace ngcp {
     */
     void Pack(comnet::ObjectStream &obj) override {
       obj << vehicle_id;
-      obj << payload_id;
-      obj << target_id;
-      obj << target_type;
-      obj << longitude;
-      obj << latitude;
-      obj << altitude;
+      obj << telemetry_select;
+      obj << telemetry_rate;
     }
 
 
@@ -66,35 +54,28 @@ namespace ngcp {
     Unpack data back into this packet when receiving data.
     */
     void Unpack(comnet::ObjectStream &obj) override {
-      obj >> altitude;
-      obj >> latitude;
-      obj >> longitude;
-      obj >> target_type;
-      obj >> target_id;
-      obj >> payload_id;
+      obj >> telemetry_rate;
+      obj >> telemetry_select;
       obj >> vehicle_id;
     }
 
 
     /**
-    Tells CommProtocol how to recreate the TargetDesignationCommand packet
+    Tells CommProtocol how to recreate the VehicleTelemetryCommand packet
     when receiving data.
     */
     comnet::AbstractPacket *Create() override {
-      return new TargetDesignationCommand();
+      return new VehicleTelemetryCommand();
     }
 
     /**
     Data.
     */
     uint16_t vehicle_id;
-    uint8_t payload_id;
-    uint8_t target_id;
-    uint8_t target_type;
-    int32_t longitude;
-    int32_t latitude;
-    int32_t altitude;
+    uint8_t telemetry_select;
+    //In milliseconds
+    uint8_t telemetry_rate;
   };
 } // ngcp
-#endif // NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#endif // NGCP_VEHICLE_TELEMETRY_COMMAND_HPP
 

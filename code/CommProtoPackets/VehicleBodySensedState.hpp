@@ -1,5 +1,5 @@
 /**
-TargetDesignationCommand
+VehicleBodySensedState
 
 Copyright (C) 2016-2017 Northrup Grumman Collaboration Project.
 
@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef NGCP_TARGET_DESIGNATION_COMMAND_HPP
-#define NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#ifndef NGCP_VEHICLE_BODY_SENSED_STATE_HPP
+#define NGCP_VEHICLE_BODY_SENSED_STATE_HPP
 
 
 #include <CommProto/commproto.h>
@@ -25,25 +25,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace ngcp {
 
-  struct TargetDesignationCommand : INHERITS_ABSPACKET {
+  struct VehicleBodySensedState : INHERITS_ABSPACKET {
     /**
     Creates an instance
     */
-    TargetDesignationCommand(uint16_t vehicle_id = 0,
-      uint8_t payload_id = 0,
-      uint8_t target_id = 0,
-      uint8_t target_type = 0,
-      int32_t longitude = 0,
-      int32_t latitude = 0,
-      int32_t altitude = 0)
-      : CHAIN_ABSPACKET(TargetDesignationCommand),
+    VehicleBodySensedState(uint16_t vehicle_id = 0,
+      int16_t x_accel = 0,
+      int16_t y_accel = 0,
+      int16_t z_accel = 0,
+      int16_t roll_rate = 0,
+      int16_t pitch_rate = 0,
+      int16_t yaw_rate = 0)
+      : CHAIN_ABSPACKET(VehicleBodySensedState),
       vehicle_id(vehicle_id),
-      payload_id(payload_id),
-      target_id(target_id),
-      target_type(target_type),
-      longitude(longitude),
-      latitude(latitude),
-      altitude(altitude)
+      x_accel(x_accel),
+      y_accel(y_accel),
+      z_accel(z_accel),
+      roll_rate(roll_rate),
+      pitch_rate(pitch_rate),
+      yaw_rate(yaw_rate)
     {
     }
 
@@ -53,12 +53,12 @@ namespace ngcp {
     */
     void Pack(comnet::ObjectStream &obj) override {
       obj << vehicle_id;
-      obj << payload_id;
-      obj << target_id;
-      obj << target_type;
-      obj << longitude;
-      obj << latitude;
-      obj << altitude;
+      obj << x_accel;
+      obj << y_accel;
+      obj << z_accel;
+      obj << roll_rate;
+      obj << pitch_rate;
+      obj << yaw_rate;
     }
 
 
@@ -66,35 +66,35 @@ namespace ngcp {
     Unpack data back into this packet when receiving data.
     */
     void Unpack(comnet::ObjectStream &obj) override {
-      obj >> altitude;
-      obj >> latitude;
-      obj >> longitude;
-      obj >> target_type;
-      obj >> target_id;
-      obj >> payload_id;
+      obj >> yaw_rate;
+      obj >> pitch_rate;
+      obj >> roll_rate;
+      obj >> z_accel;
+      obj >> y_accel;
+      obj >> x_accel;
       obj >> vehicle_id;
     }
 
 
     /**
-    Tells CommProtocol how to recreate the TargetDesignationCommand packet
+    Tells CommProtocol how to recreate the VehicleBodySensedState packet
     when receiving data.
     */
     comnet::AbstractPacket *Create() override {
-      return new TargetDesignationCommand();
+      return new VehicleBodySensedState();
     }
 
     /**
     Data.
     */
     uint16_t vehicle_id;
-    uint8_t payload_id;
-    uint8_t target_id;
-    uint8_t target_type;
-    int32_t longitude;
-    int32_t latitude;
-    int32_t altitude;
+    int16_t x_accel;
+    int16_t y_accel;
+    int16_t z_accel;
+    int16_t roll_rate;
+    int16_t pitch_rate;
+    int16_t yaw_rate;
   };
 } // ngcp
-#endif // NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#endif // NGCP_VEHICLE_BODY_SENSED_STATE_HPP
 
