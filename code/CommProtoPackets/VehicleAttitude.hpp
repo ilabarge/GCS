@@ -1,5 +1,5 @@
 /**
-TargetDesignationCommand
+VehicleAttitude
 
 Copyright (C) 2016-2017 Northrup Grumman Collaboration Project.
 
@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef NGCP_TARGET_DESIGNATION_COMMAND_HPP
-#define NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#ifndef NGCP_VEHICLE_ATTITUDE_HPP
+#define NGCP_VEHICLE_ATTITUDE_HPP
 
 
 #include <CommProto/commproto.h>
@@ -25,25 +25,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace ngcp {
 
-  struct TargetDesignationCommand : INHERITS_ABSPACKET {
+  struct VehicleAttitude : INHERITS_ABSPACKET {
     /**
     Creates an instance
     */
-    TargetDesignationCommand(uint16_t vehicle_id = 0,
-      uint8_t payload_id = 0,
-      uint8_t target_id = 0,
-      uint8_t target_type = 0,
-      int32_t longitude = 0,
-      int32_t latitude = 0,
-      int32_t altitude = 0)
-      : CHAIN_ABSPACKET(TargetDesignationCommand),
+    VehicleAttitude(uint16_t vehicle_id = 0,
+      real32_t roll = 0,
+      real32_t pitch = 0,
+      real32_t yaw = 0)
+      : CHAIN_ABSPACKET(VehicleAttitude),
       vehicle_id(vehicle_id),
-      payload_id(payload_id),
-      target_id(target_id),
-      target_type(target_type),
-      longitude(longitude),
-      latitude(latitude),
-      altitude(altitude)
+      roll(roll),
+      pitch(pitch),
+      yaw(yaw)
     {
     }
 
@@ -53,12 +47,9 @@ namespace ngcp {
     */
     void Pack(comnet::ObjectStream &obj) override {
       obj << vehicle_id;
-      obj << payload_id;
-      obj << target_id;
-      obj << target_type;
-      obj << longitude;
-      obj << latitude;
-      obj << altitude;
+      obj << roll;
+      obj << pitch;
+      obj << yaw;
     }
 
 
@@ -66,35 +57,29 @@ namespace ngcp {
     Unpack data back into this packet when receiving data.
     */
     void Unpack(comnet::ObjectStream &obj) override {
-      obj >> altitude;
-      obj >> latitude;
-      obj >> longitude;
-      obj >> target_type;
-      obj >> target_id;
-      obj >> payload_id;
+      obj >> yaw;
+      obj >> pitch;
+      obj >> roll;
       obj >> vehicle_id;
     }
 
 
     /**
-    Tells CommProtocol how to recreate the TargetDesignationCommand packet
+    Tells CommProtocol how to recreate the VehicleAttitude packet
     when receiving data.
     */
     comnet::AbstractPacket *Create() override {
-      return new TargetDesignationCommand();
+      return new VehicleAttitude();
     }
 
     /**
     Data.
     */
     uint16_t vehicle_id;
-    uint8_t payload_id;
-    uint8_t target_id;
-    uint8_t target_type;
-    int32_t longitude;
-    int32_t latitude;
-    int32_t altitude;
+    real32_t roll;
+    real32_t pitch;
+    real32_t yaw;
   };
 } // ngcp
-#endif // NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#endif // NGCP_VEHICLE_ATTITUDE_HPP
 

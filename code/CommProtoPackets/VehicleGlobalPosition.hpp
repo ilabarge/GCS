@@ -1,5 +1,5 @@
 /**
-TargetDesignationCommand
+VehicleGlobalPosition
 
 Copyright (C) 2016-2017 Northrup Grumman Collaboration Project.
 
@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef NGCP_TARGET_DESIGNATION_COMMAND_HPP
-#define NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#ifndef NGCP_VEHICLE_GLOBAL_POSITION_HPP
+#define NGCP_VEHICLE_GLOBAL_POSITION_HPP
 
 
 #include <CommProto/commproto.h>
@@ -25,25 +25,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace ngcp {
 
-  struct TargetDesignationCommand : INHERITS_ABSPACKET {
+  struct VehicleGlobalPosition : INHERITS_ABSPACKET {
     /**
     Creates an instance
     */
-    TargetDesignationCommand(uint16_t vehicle_id = 0,
-      uint8_t payload_id = 0,
-      uint8_t target_id = 0,
-      uint8_t target_type = 0,
+    VehicleGlobalPosition(uint16_t vehicle_id = 0,
       int32_t longitude = 0,
       int32_t latitude = 0,
-      int32_t altitude = 0)
-      : CHAIN_ABSPACKET(TargetDesignationCommand),
+      int32_t altitude = 0,
+      int16_t x_speed = 0,
+      int16_t y_speed = 0,
+      int16_t z_speed = 0)
+      : CHAIN_ABSPACKET(VehicleGlobalPosition),
       vehicle_id(vehicle_id),
-      payload_id(payload_id),
-      target_id(target_id),
-      target_type(target_type),
       longitude(longitude),
       latitude(latitude),
-      altitude(altitude)
+      altitude(altitude),
+      x_speed(x_speed),
+      y_speed(y_speed),
+      z_speed(z_speed)
     {
     }
 
@@ -53,12 +53,12 @@ namespace ngcp {
     */
     void Pack(comnet::ObjectStream &obj) override {
       obj << vehicle_id;
-      obj << payload_id;
-      obj << target_id;
-      obj << target_type;
       obj << longitude;
       obj << latitude;
       obj << altitude;
+      obj << x_speed;
+      obj << y_speed;
+      obj << z_speed;
     }
 
 
@@ -66,35 +66,35 @@ namespace ngcp {
     Unpack data back into this packet when receiving data.
     */
     void Unpack(comnet::ObjectStream &obj) override {
+      obj >> z_speed;
+      obj >> y_speed;
+      obj >> x_speed;
       obj >> altitude;
       obj >> latitude;
       obj >> longitude;
-      obj >> target_type;
-      obj >> target_id;
-      obj >> payload_id;
       obj >> vehicle_id;
     }
 
 
     /**
-    Tells CommProtocol how to recreate the TargetDesignationCommand packet
+    Tells CommProtocol how to recreate the VehicleGlobalPosition packet
     when receiving data.
     */
     comnet::AbstractPacket *Create() override {
-      return new TargetDesignationCommand();
+      return new VehicleGlobalPosition();
     }
 
     /**
     Data.
     */
     uint16_t vehicle_id;
-    uint8_t payload_id;
-    uint8_t target_id;
-    uint8_t target_type;
     int32_t longitude;
     int32_t latitude;
     int32_t altitude;
+    int16_t x_speed;
+    int16_t y_speed;
+    int16_t z_speed;
   };
 } // ngcp
-#endif // NGCP_TARGET_DESIGNATION_COMMAND_HPP
+#endif // NGCP_VEHICLE_GLOBAL_POSITION_HPP
 
