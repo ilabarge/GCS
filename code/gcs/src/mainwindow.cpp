@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget* parent) :
     centralWidget->setLayout( mainLayout );
     setCentralWidget( centralWidget );
     showMaximized();
+    windowHandle()->setScreen(qApp->screens().first());
 
     //Map Interation
     //Sets coordinate positions for waypoint baised off of click on map
@@ -44,11 +45,6 @@ MainWindow::MainWindow(QWidget* parent) :
     }catch(...){
         qDebug() << "Error caught";
     }
-
-    // Second screen
-    //QWidget* secondWindow = new QWidget();
-    //secondWindow->show();
-    //secondWindow->windowHandle()->setScreen(qApp->screens().last());
 }
 
 double MainWindow::getLatitude(){
@@ -376,6 +372,7 @@ void MainWindow::initWidgets(){
     UGV_States = new UGV_state();
     UAV_Payload = new UAVPayload();
     targeting = new targetingGUI();
+
 
     sendcmd = new QPushButton();
     sendcmd->setText("Drop payload");

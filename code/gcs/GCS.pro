@@ -126,7 +126,8 @@ SOURCES += \
     vehiclelistdisplay.cpp \
     src/targetinfo.cpp \
     src/Joystick.cpp \
-    src/joystickinput.cpp
+    src/joystickinput.cpp \
+    mainwindow2.cpp
 
 
 HEADERS += \
@@ -389,13 +390,16 @@ HEADERS += \
     vehiclelistdisplay.h \
     src/targetinfo.h \
     src/Joystick.h \
-    src/joystickinput.h
+    src/joystickinput.h \
+    mainwindow2.h
 
 
 FORMS += \
     forms/gcs_toolbar.ui \
     forms/WidgetADI.ui \
-    forms/WidgetSix.ui
+    forms/WidgetSix.ui \
+    forms/MainWindowADI.ui \
+    mainwindow2.ui
 
 RESOURCES += \
     images/sidebar_icons.qrc \

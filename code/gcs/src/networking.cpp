@@ -13,7 +13,7 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
     //create new thread
     network_thread = new QThread;
     //Create class to put in thread
-    rx = new rx_thread(node_id,self_port, dest_port, v,tgt);
+    rx = new rx_thread(node_id, self_port, dest_port, v,tgt);
     //Put class in thread
     rx->moveToThread(network_thread);
     //Map error strings
@@ -103,7 +103,7 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
 networking::networking(vehicle_list* v, TargetList* targ)
 {
     //qDebug() << "Invoking thread with: " << port;
-    invokeThread(v,targ,1, 1338, 1337);
+    invokeThread(v, targ, 1, 1338, 1337);
 }
 
 //Network send message signal/slots

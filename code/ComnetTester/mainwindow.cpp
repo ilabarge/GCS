@@ -11,19 +11,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     QGridLayout *lay = new QGridLayout();
-    //Buttons
-    QPushButton *ping = new QPushButton();
-    QPushButton *GPS = new QPushButton();
+    QPushButton *btn = new QPushButton();
 
-    ping->setText("Send ping");
-    GPS->setText("Send GPS");
+    btn->setText("Send");
     QPushButton *setSerial = new QPushButton();
     setSerial->setText("Serial set");
     networking *network = new networking();
 
     //Positioning Buttons
-    lay->addWidget(ping,1,1);
-    lay->addWidget(GPS,2,1);
+    lay->addWidget(btn,1,1);
 
 //    lay->addWidget(setSerial,2,1);
     QWidget* display = new QWidget();
@@ -31,8 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(display);
     showMaximized();
 
-    connect(ping,SIGNAL(clicked()),network,SLOT(send_Ping()));
-    connect(GPS,SIGNAL(clicked()),network,SLOT(send_GPS()));
+    connect(btn,SIGNAL(clicked()),network,SLOT(send_GPS()));
 
     //network->network_serial_set("COM5");
     //ui->setupUi(this);

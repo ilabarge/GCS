@@ -21,7 +21,7 @@
 #include <string>
 
 //GCS Includes
-#include "comnet.h"
+//#include "comnet.h"
 // interface conflicts with a namespace inside CommProto
 #undef interface
 #include <CommProto/commproto.h>
@@ -51,12 +51,12 @@ private:
     //QThread *joystick_thread;
     //JoystickInput *joystick;
     //vehicle_list* vList;
-    boolean send;
+    bool send;
     void hold();
 public slots:
+    void send_Ping();
     void send_GPS();
     void process();
-    void send_Ping();
 
     //Communicates vehicle updating
     void update_vech_queue();
@@ -89,7 +89,6 @@ public slots:
     //UGV state change
     void ManualToAuto();
     void AutoToManual();
-    void Reset();
 
     //UGV MOTOR state
     void DisableMotor();
@@ -99,9 +98,6 @@ public slots:
     //Changing Networking Settings
     void setNetworkSerial(QString);
     void update(int);
-
-    //Send message with int vehicle id to airweb
-    void sendMessage(int);
 
 signals:
     void finished();

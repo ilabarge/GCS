@@ -14,7 +14,7 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
     network_thread = new QThread;
     //Create class to put in thread
     QString serial = "a";
-    rx = new rx_thread(69, 1337, 1338, serial);
+    rx = new rx_thread(node_id, 1337, 1338, serial);
     //Put class in thread
     rx->moveToThread(network_thread);
     //Map error strings
@@ -72,8 +72,6 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
     connect(this,SIGNAL(ATM()),rx,SLOT(AutoToManual()));
     //Mantual to auto
     connect(this,SIGNAL(MTA()),rx,SLOT(ManualToAuto()));
-    //Reset UGV state
-    connect(this,SIGNAL(R()),rx,SLOT(Reset()));
 
     //UGV Motor State
     connect(this,SIGNAL(DisableM()),rx,SLOT(DisableMotor()));
@@ -102,7 +100,7 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
 networking::networking()
 {
     //qDebug() << "Invoking thread with: " << port;
-    invokeThread(69, 1337, 1338);
+    invokeThread(3, 1337, 1338);
 }
 
 void networking::send_GPS(){ emit sendGPS();}

@@ -18,7 +18,7 @@ using namespace ngcp;
 #define END_CALLBACK_REGISTER_BLOCK
 
 // set 0 to disable XBEE, 1 to switch to xbee connections. This is for debugging!!
-#define XBEE 1
+#define XBEE 0
 
 TargetList* targetList;
 vehicle_list* vp;
@@ -105,12 +105,6 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
     QDateTime UTC(local.toUTC());
     float64_t x = UTC.toMSecsSinceEpoch();
      int vehicle = id;
-    //send t to vehicle
-    //For Testing purposes
-    //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)4*1E7,(int32_t)-8*1E7,(int32_t)4*1E7,0,0,2);
-    //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)-3*1E7,(int32_t)9*1E7,(int32_t)3*1E7,0,1,0);
-    //node->send_vehicle_t_command(vehicle,x,vehicle, (int32_t)-4*1E7,(int32_t)5*1E7,(int32_t)1*1E7,0,2,2);
-   //update vehicle localy to have t
    qDebug() << "vehicle ID " << id;
    qDebug() << "waypoint type" << waypoint->getType();
    if(vList->get(id) != 0){
@@ -127,22 +121,20 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
                mutex.lock();
                vList->get(id)->appendWaypoint(waypoint, vList->get(id)->getColor() );
 
-               //node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-               //                                   (int32_t)(waypoint->getLatitude()*1E7),
-               //                                   (int32_t)(waypoint->getLongitude()*1E7),
-               //                                   (int32_t)(waypoint->getAltitude())//*1E7)
-                //                                   );
                VehicleWaypointCommand command;
-               command.longitude = waypoint->getLongitude() * 1e7; // no need to cast to int (retains precision)
-               command.latitude = waypoint->getLatitude() * 1e7;
+               command.longitude = waypoint->getLongitude(); // no need to cast to int (retains precision)
+               command.latitude = waypoint->getLatitude();
                command.altitude = waypoint->getAltitude();
-               command.vehicle_id = vehicle;
-               // assuming vehicle is also the dest_id.
-               node->Send(command, vehicle);
-                                                   //0,
-                                                  //waypoint->getID(),
-                                                  //waypoint->getType());
 
+//                qDebug() << "Longitude = " << waypoint->getLongitude();
+//                qDebug() << "Latitude = " << waypoint->getLatitude();
+//                qDebug() << "Altitude = " << waypoint->getAltitude();
+
+//               command.vehicle_id = vehicle;
+               // vehicle_id is not the same as dest_id
+               // setting as 3 for now
+               command.vehicle_id = 3;
+               node->Send(command, 3);
 
                mutex.unlock();
                emit message(QString("Added waypoint"));
@@ -195,21 +187,15 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
               if((type == 1) || (type == 2))
               {
                   mutex.lock();
-
-                  //node->send_vehicle_waypoint_command(vehicle,x,vehicle,
-                  //                                   (int32_t)(waypoint->getLatitude()*1E7),
-                  //                                   (int32_t)(waypoint->getLongitude()*1E7),
-                  //                                   (int32_t)(waypoint->getAltitude()*1E3));
-                                                      //0,
-                                                     //waypoint->getType(),
-                                                     //waypoint->getID());
                   VehicleWaypointCommand command;
-                  command.longitude = waypoint->getLongitude() * 1e7; // no need to cast to int (this retains precision)
-                  command.latitude = waypoint->getLatitude() * 1e7;
+                  command.longitude = waypoint->getLongitude(); // no need to cast to int (this retains precision)
+                  command.latitude = waypoint->getLatitude();
                   command.altitude = waypoint->getAltitude();
-                  command.vehicle_id = vehicle;
-                  // assuming vehicle is also the dest_id.
-                  node->Send(command, vehicle);
+//                  command.vehicle_id = vehicle;
+                  // vehicle_id is not the same as dest_id
+                  // setting as 3 for now
+                  command.vehicle_id = 3;
+                  node->Send(command, 3);
 
 
                   mutex.unlock();
@@ -465,6 +451,7 @@ int checkVehicles(uint32_t vehicle_ID)
 }
 
 // --------- COMNET CALLBACKS ---------
+
 //Clean up code!!
 void* enter_callback(int8_t id, com_header_t header, enter_t enter, comnet::node* node)
 {
@@ -602,17 +589,21 @@ void* vehicle_system_status_callback(int8_t, com_header_t header, vehicle_system
     return 0;
 }
 
-void* vehicle_inertial_state_callback(int8_t id, com_header_t header, vehicle_inertial_state_t inertial, comnet::node* node_ptr)
+//void* vehicle_inertial_state_callback(int8_t id, com_header_t header, vehicle_inertial_state_t inertial, comnet::node* node_ptr)
+error_t VehicleInertialStateCallback(
+const comnet::Header &header, VehicleInertialState &packet, comnet::Comms &node)
 {
-    int ID = header.node_src_id;
+    //int ID = header.source_id;
+    int ID = packet.vehicle_id;
+
     //Is the vehicle id in list?
     if(!(vp->inList(ID))){
         qDebug() << "bad id " << ID;
         return 0; //Bad ID
     }
     printf("==========\ninternal State\n");
-    printf("longitude: %f\n",((float)inertial.longitude)/1E7);
-    printf("longitude: %f\n", ((float)inertial.latitude)/1E7);
+    printf("longitude: %f\n",((float)packet.longitude)/1E7);
+    printf("longitude: %f\n", ((float)packet.latitude)/1E7);
     printf("===============");
     mutex.lock();
     /*
@@ -622,21 +613,22 @@ void* vehicle_inertial_state_callback(int8_t id, com_header_t header, vehicle_in
     inertial.north_accel();
     inertial.north_speed();
     */
-    inertial.vertical_accel; //Missing?
-    inertial.vertical_speed; //Missing?
-    vp->set(ID)->setRoll(inertial.roll);
+    packet.vertical_accel; //Missing?
+    packet.vertical_speed; //Missing?
+    vp->set(ID)->setRoll(packet.roll);
     //std::string s = std::to_string(inertial.roll_rate);
-    vp->set(ID)->setRollRate(inertial.roll_rate);
-    vp->set(ID)->setHeading(inertial.heading);
-    vp->set(ID)->setAltitude(inertial.altitude/1E6);
-    vp->set(ID)->setLatitude(((float)inertial.latitude)/1E7);
-    vp->set(ID)->setLongitude(((float)inertial.longitude)/1E7);
-    vp->set(ID)->setPitch(inertial.pitch);
-    vp->set(ID)->setPitchRate(inertial.pitch_rate);
+    vp->set(ID)->setRollRate(packet.roll_rate);
+    vp->set(ID)->setHeading(packet.heading);
+    vp->set(ID)->setAltitude(packet.altitude);
+    vp->set(ID)->setLatitude(((float)packet.latitude));
+    vp->set(ID)->setLongitude(((float)packet.longitude)/1E6);
+    vp->set(ID)->setPitch(packet.pitch);
+    vp->set(ID)->setPitchRate(packet.pitch_rate);
     mutex.unlock();
-    vp->update(header.node_src_id);
+    vp->update(ID);
 //    /nq->enqueue(header.node_src_id);
-    return 0;
+    //return 0;
+    return comnet::CALLBACK_SUCCESS | comnet::CALLBACK_DESTROY_PACKET;
 }
 
 void* vehicle_global_position_callback(int8_t id, com_header_t header, vehicle_global_position_t position, comnet::node* node_ptr)
@@ -869,10 +861,11 @@ const comnet::Header &header, VehicleAuthorizationRequest &packet, comnet::Comms
 void rx_thread::process() {
    // allocate resources using new here
     //Create comnet Node
-   node = new comnet::Comms(1);
+   node = new comnet::Comms(node_id);
 
    //Have the methods outside of class (i.e. callbacks) be able to have access to node
    np = node;
+//   node->LoadKey("123456789ABCDEF");
 
    //Joystick Handling
    /*
@@ -881,12 +874,9 @@ void rx_thread::process() {
    joystick -> moveToThread(joystick_thread);
    joystick_thread->start();*/
 
-   //Set link_id to 0
-   int8_t link_id;
-
-   //Add udp at link id, self port, self ip
    //NOTE: ip is self IP for testing purposes
    qDebug() << "Self port for GCS: " << self_port;
+   qDebug() << "Dest port for GCS: " << dest_port;
 
 #if !XBEE
    char  ip[] = "127.0.0.1";
@@ -894,13 +884,15 @@ void rx_thread::process() {
    sprintf(port_str, "%d", self_port);
    node->InitConnection(UDP_LINK, port_str, ip);
    // testing a connection to yourself.
-   node->AddAddress(6, ip, self_port);
+//   node->AddAddress(3, ip, self_port);
+   node->AddAddress(3, ip, dest_port);
 #else
    char  ip[] = "0013A20040917A31";
-   char  ipUGV[] = "0013A2004067E4A0";
+//   char  ipUGV[] = "0013A2004067E4A0";
+   char  ipUGV[] = "0013A200409BD79C";
    // this value might change depending on your machine. Check which port your xbee is connected to and
    // make sure this value is the xbee port.
-   char commport[] = "COM4";
+   char commport[] = "COM3";
    // Will initialize YOUR home address. This is your sender/receiver.
    qDebug() << "Initializing xbee home";
    if (!node->InitConnection(ZIGBEE_LINK, commport, ip, 57600)) {
@@ -908,27 +900,10 @@ void rx_thread::process() {
    }
    // What is ugv node id again?
    // Add the address you wish to talk to.
-   if (!node->AddAddress(6, ipUGV)) {
+   if (!node->AddAddress(3, ipUGV)) {
      qDebug() << "Failed to connect to ugv xbee!";
    }
 #endif
-
-   //node->add_udp(&link_id,self_port, ip);
-
-//   try {
-//    node->add_zigBee(&link_id,57600, comport);
-//   } catch (comnet::error::ConnectionException e) {
-//       printf("%s", e.what());
-//   }
-    qDebug() << "Dest port for GCS: " << dest_port;
-   //Add endpoint for udp using link id, dest_id, destinition port, destinition address
-   //NOTE: ip is self IP for testing purposes
-   //Dest id is for the node id that we want to send to
-   //node->establish_udp(link_id,1,dest_port,ip);
-//   node->establish_zigBee(link_id,5,ip);
-   //node->establish_zigBee(link_id,6,ipUGV);
-//   printf("INIT COMPLETED\n");
-//   qDebug() << "INIT COMPLETED\n";
 
    //Start Node
    //node->start(); <- no longer needed due to comnet update
@@ -941,32 +916,12 @@ void rx_thread::process() {
 
    CALLBACK_REGISTER_BLOCK
    node->LinkCallback(new VehicleAuthorizationRequest(),  new comnet::Callback((comnet::callback_t )VehicleAuthorizationRequestCallback));
-   node->LinkCallback(new VehicleInertialState(),         new comnet::Callback(nullptr)); // <- replace nullptr with function callback that handles the corresponding Packet.
+   node->LinkCallback(new VehicleInertialState(),         new comnet::Callback((comnet::callback_t )VehicleInertialStateCallback)); // <- replace nullptr with function callback that handles the corresponding Packet.
    node->LinkCallback(new VehicleModeCommand(),           new comnet::Callback(nullptr));
    node->LinkCallback(new VehicleWaypointCommand(),       new comnet::Callback(nullptr));
    node->LinkCallback(new VehicleAuthorizationReply(),    new comnet::Callback(nullptr));
-   node->LinkCallback(new VehicleInertialState(),         new comnet::Callback(nullptr));
    node->LinkCallback(new VehicleSystemStatus(),          new comnet::Callback(nullptr));
    END_CALLBACK_REGISTER_BLOCK
-
-   //node->register_on_enter(enter_callback);
-   //node->register_on_ping(ping_callback);
-   //node->register_on_pong(pong_callback);
-   //node->register_on_vehicle_authorization_request(*vehicle_authorization_request_callback);
-   //node->register_on_vehicle_authorization_reply(*vehicle_authorization_reply_callback);
-   //node->register_on_vehicle_waypoint_command(*vehicle_waypoint_command_callback);
-   //node->register_on_vehicle_system_status(*vehicle_system_status_callback);
-   //node->register_on_vehicle_inertial_state(*vehicle_inertial_state_callback);
-   //node->register_on_vehicle_global_position(*vehicle_global_position_callback);
-  // node->register_on_vehicle_attitude(*vehicle_attitude_callback);
-
-   //node->register_on_target_status(*target_status_callback);
-   //ack vehicle got t
-   //request list
-
-   //UGV Sends when
-   //node->register_on_target_designation_command(*target_designation_command_callback);
-
 
    //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
    //connect(this, SIGNAL(startUGVJoystick()), joystick, SLOT(process()));
@@ -986,84 +941,3 @@ void rx_thread::process() {
  * We use void* and (*--) due to the fact that the typedefs were
  * void* (*---), meaning that we are going to have a pointer to a pointer
 */
-
-//UNUSED CALLBACKS
-/* REMOVE AS NEEDED SOME ARE MORE COMPLETE THAN OTHERS
- *
-
-//Payload operation command
-void send_payload_operation_command()
-{
-   node->send_payload_operation_command(dest_id,timestamp,payloadID,payloadCommand);
-}
-//Vehicle Mode
-void send_vehicle_mode_command()
-{
-   node->send_vehicle_mode_command(dest_id,timestamp,vehicle_id,vehicle_mode);
-}
-
-void* connection_request_callback(int8_t, com_header_t header, connection_request_t
-connection, comnet::node* node_ptr)
-{
-   printf("got request for connection");
-   qDebug() << "Trace node1" << connection.tracenode_1;
-   qDebug() << "Trace nodeN" << connection.tracenode_N;
-   //Missing inorder timestamp, connection, tracenode_Npre
-   //Is sending out connection id, n previous.
-   node_ptr->send_connection_reply
-(header.node_src_id,999,999,connection.tracenode_1,connection.tracenode_N,999);
-   return 0;
-}
-
-void* connection_reply_callback(int8_t, com_header_t header, connection_reply_t
-reply, comnet::node* node_ptr)
-{
-   printf("got connection reply");
-   //qDebug()<< "Connection id:" << reply.connection_ID << "Timestamp:" <<
-reply.timestamp;
-   //qDebug() << reply.tracenode_1 << reply.tracenode_N << reply.tracenode_NPrev;
-   return 0;
-}
-
-typedef void* (*exit_callback)(int8_t, com_header_t, exit_t, comnet::node*
-node_ptr);
-
-typedef void* (*vehicle_identification_callback)(int8_t, com_header_t,
-vehicle_identification_t, comnet::node* node_ptr);
-
-
-void* air_vehicle_ground_relative_state_callback(int8_t, com_header_t header,
-air_vehicle_ground_relative_state_t air_ground, comnet::node* node_ptr)
-{
-   qDebug() << "Vehicle ID:" << air_ground.vehicle_ID << "Timestamp:" <<
-air_ground.timestamp;
-   qDebug() << "Sideslip angle:" << air_ground.sideslip_angle;
-   qDebug() << "Angle of attack:" << air_ground.angle_of_attack;
-   qDebug() << "Baro altitude:" << air_ground.baro_altitude;
-   qDebug() << "East Ground Speed:" << air_ground.east_ground_speed;
-   qDebug() << "East Wind Speed:" << air_ground.east_wind_speed;
-   qDebug() << "Indicated air Speed:" << air_ground.indicated_air_speed;
-   qDebug() << "North Ground Speed:" << air_ground.north_ground_speed;
-   qDebug() << "North Wind Speed:" << air_ground.north_wind_speed;
-   qDebug() << "True air Speed:" << air_ground.true_air_speed;
-   return 0;
-}
-
-
-void* vehicle_body_sensed_state_callback(int8_t id, com_header_t header,
-vehicle_body_sensed_state_t state, comnet::node* node_ptr)
-{
-
-   qDebug() << "Vehicle ID:" << state.vehicle_ID << " Timestamp:" << state.timestamp;
-   qDebug() << "\nRates";
-   qDebug() << "Pitch Rate:" << state.pitch_rate;
-   qDebug() << "Roll Rate:" << state.roll_rate;
-   qDebug() << "Yaw Rate:" << state.yaw_rate;
-   qDebug() << "\nAccelerations";
-   qDebug() << "X acceleration:" << state.x_accel;
-   qDebug() << "Y acceleration:" << state.y_accel;
-   qDebug() << "Z acceleration:" << state.z_accel;
-   return 0;
-}
-*/
-
