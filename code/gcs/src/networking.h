@@ -39,7 +39,9 @@ public slots:
     void updateTargDisplay(int);
 
     //Basic Comnet
+    /* @TODO not being used in CommPorotocol
     void send_ping(int);
+    */
 
     //Comnet Setup
     void network_serial_set(QString);

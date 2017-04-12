@@ -15,6 +15,7 @@ Vehicle22* vehicle_list::at(int pos)
 {
     qDebug() << "at vechID" << pos;
     //If vehicle not found
+
     if(pos < 0 || pos > vlist.size() - 1)
     {
       qDebug() << "No such vehicle at pos" << pos;

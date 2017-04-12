@@ -50,6 +50,7 @@ public:
     void setYVelocity(double yVelocity);
     void setZVelocity(double zVelocity);
     void setDepth(double depth);
+
     /* END SETTERS */
 
     /* START GETTERS */
@@ -78,6 +79,7 @@ public:
     double getZVelocity(){ return zVel; }
     bool getNeedsUpdate(){ return needsUpdate; }
     double getDepth();
+
 
     // Waypoints
     Waypoint22* getWaypoint(int index);
@@ -123,6 +125,7 @@ private:
     double zVel;
     double depth;
     bool needsUpdate;
+    int destNodeCommunication;
     /* END DATA VARIABLES */
 
     /* BEGIN FUNCTIONS */

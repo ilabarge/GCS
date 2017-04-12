@@ -4,6 +4,8 @@
 #include <chrono>
 #include <thread>
 #include <QDateTime>
+
+/*
 JoystickInput::JoystickInput(QObject *parent, comnet::node *n) :
     QObject(parent)
 {
@@ -60,7 +62,7 @@ void JoystickInput::process()
               }
          }
      }
-     /*
+
     qDebug() << "started ugv";
         //SFML joystick
 
@@ -94,7 +96,7 @@ void JoystickInput::process()
         if(i == 100)
             break;
        }
-   */
+
 }
 
 void JoystickInput::stop()
@@ -102,3 +104,4 @@ void JoystickInput::stop()
     qDebug() << "changed bool";
     send = false;
 }
+*/

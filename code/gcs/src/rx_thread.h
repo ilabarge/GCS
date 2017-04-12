@@ -21,7 +21,6 @@
 #include <string>
 
 //GCS Includes
-#include "comnet.h"
 // New CommProto library.
 // Qt is a troll...
 #undef interface
@@ -45,23 +44,28 @@ private:
     //Comnet node setup
     uint8_t node_id;
     uint16_t self_port;
-    uint16_t dest_port;
+    uint16_t dest_port;    
     char serial_port[25];
     comnet::Comms *node;
     QThread *joystick_thread;
-    JoystickInput *joystick;
-    vehicle_list* vList;
+    //JoystickInput *joystick;
+    vehicle_list* vList;    
     bool send;
     void hold();
 public slots:
     void process();
+
+    /* @TODO not being used in CommPorotocol
     void send_ping(int id);
+    */
 
     //Communicates vehicle updating
     void update_vech_queue();
 
     //Comnet send messages
+    /* @TODO swithc to CommProtocol
     void send_vehicle_auth_request(int);
+    */
     void send_vehicle_waypoint(Waypoint22*,int);
     void send_telemetry_command(int);
     void send_targeting(int, float, float, float);
@@ -82,8 +86,10 @@ public slots:
     void disarm_uav(int);
 
     //UGV Joystick
+    /* @TODO swithc to CommProtocol
     void start_UGV_Joystick();
     void stop_UGV_Joystick();
+    */
 
     //UGV state change
     void ManualToAuto();

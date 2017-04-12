@@ -5,8 +5,11 @@
 #include <QObject>
 #include <QDebug>
 
+//CommProtocol includes
+#include <CommProto/commproto.h>
+
+/*
 //GCS Includes
-#include <comnet/include/comnet.h>
 #include <Joystick.h>
 
 class JoystickInput : public QObject
@@ -26,7 +29,7 @@ private:
     comnet::node* node;
 
 };
-/*
+
 enum InputType
 {
     JoystickInput
@@ -36,5 +39,6 @@ struct MyKeys
 {
     InputType myInputType;
     sf::Event::EventType myEventType;
-};*/
+};
+*/
 #endif // JOYSTICKINPUT_H
