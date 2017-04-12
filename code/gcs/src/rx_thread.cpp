@@ -9,7 +9,10 @@
 #include "qdebug.h"
 
 // CommProto Default Packets.
-#include <Packets.hpp>
+#include "VehicleGlobalPosition.hpp"
+#include "VehicleWaypointCommand.hpp"
+#include "VehicleInertialState.hpp"
+#include "VehicleAuthorizationRequest.hpp"
 
 
 using namespace ngcp;
@@ -18,8 +21,7 @@ using namespace ngcp;
 #define END_CALLBACK_REGISTER_BLOCK
 
 // set 0 to disable XBEE, 1 to switch to xbee connections. This is for debugging!!
-#define XBEE 1
-
+#define XBEE 0
 TargetList* targetList;
 vehicle_list* vp;
 QMutex mutex;
@@ -670,18 +672,18 @@ error_t  vehicle_global_position_callback(const comnet::Header &header, VehicleG
     printf("==============\nGlobal position\n");
     float ftest = header.source_id;
     qDebug() << ftest;
-    //printf("longitude: %f\n",((real32_t)packet.longitude));  //137
-    //printf("latitude: %f\n", ((real32_t)packet.latitude));
-    //printf("altitude: %d\n",packet.altitude);
+    printf("longitude: %f\n",(packet.longitude));  //137
+    printf("latitude: %f\n", (packet.latitude));
+    printf("altitude: %f\n",packet.altitude);
     //heading 1E6
     //everything else strieght
     printf("===============\n");
 
     mutex.lock();
     //Setting variables
-    vp->set(ID)->setAltitude(packet.altitude);
-    vp->set(ID)->setLongitude(((real32_t)packet.longitude));
-    vp->set(ID)->setLatitude(((float)packet.latitude));
+    vp->set(ID)->setAltitude((double)packet.altitude);
+    vp->set(ID)->setLongitude((double)packet.longitude);
+    vp->set(ID)->setLatitude((double)packet.latitude);
 //    qDebug() << "position.latitude = " << (float)position.latitude;
 //    qDebug() << "latitude/1E7 = " << (float)position.latitude/1E7;
     vp->set(ID)->setXVelocity(packet.x_speed);

@@ -171,3 +171,5 @@ else:unix: LIBS += -L$$PWD/../CommProtocol/build/libxbee3/ -llibxbee3
 
 INCLUDEPATH += $$PWD/../CommProtocol/build/libxbee3/Debug
 DEPENDPATH += $$PWD/../CommProtocol/build/libxbee3/Debug
+
+INCLUDEPATH += $$PWD/../CommProto-MessageStandards2017/packets/cpp
