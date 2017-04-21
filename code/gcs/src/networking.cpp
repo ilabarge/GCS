@@ -29,7 +29,9 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
     connect(network_thread, SIGNAL(finished()), network_thread, SLOT(deleteLater()));
 
     //Basic network actions
+    /* @TODO not beind use in CommProtocol
     connect(this,SIGNAL(ping(int)),rx,SLOT(send_ping(int)));
+    */
 
     //Send waypoint command
     connect(this,SIGNAL(waypoint(Waypoint22*, int)), rx,SLOT(send_vehicle_waypoint(Waypoint22*, int)));
@@ -39,7 +41,8 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
 
     //Vehicle Auhorization request
     //To allow C&C over vehicle
-    connect(this,SIGNAL(vehicle_auth_request(int)),rx,SLOT(send_vehicle_auth_request(int)));
+    //@TODO change to CommProtocl
+    //connect(this,SIGNAL(vehicle_auth_request(int)),rx,SLOT(send_vehicle_auth_request(int)));
 
     //Update vehicle update queue (OLD NEED TO REMOVE DEPENDENCY)
     connect(rx,SIGNAL(update_queue()),this,SLOT(update_vehicle_queue()));
@@ -84,8 +87,9 @@ void networking::invokeThread(vehicle_list* v, TargetList* tgt, uint8_t node_id,
     connect(this,SIGNAL(ToggleM()),rx,SLOT(ToggleMotor()));
 
     //UGV joystick
-    connect(this,SIGNAL(UGV_joystick_start()), rx,SLOT(start_UGV_Joystick()));
-    connect(this,SIGNAL(UGV_joystick_stop()),rx,SLOT(stop_UGV_Joystick()));
+    //@TODO change to CommProtocl
+    //connect(this,SIGNAL(UGV_joystick_start()), rx,SLOT(start_UGV_Joystick()));
+    //connect(this,SIGNAL(UGV_joystick_stop()),rx,SLOT(stop_UGV_Joystick()));
 
     //Updating netowrk set up
     connect(this,SIGNAL(network_set_serial(QString)),rx,SLOT(setNetworkSerial(QString)));
@@ -107,7 +111,9 @@ networking::networking(vehicle_list* v, TargetList* targ)
 }
 
 //Network send message signal/slots
+/* @TODO Not being used in CommProtocol
 void networking::send_ping(int id){ emit ping(id); }
+*/
 
 //Update Vehicle (OLD NEED TO REMOVE DEPENDENCY)
 void networking::update_vehicle_queue() { emit update_queue(); }

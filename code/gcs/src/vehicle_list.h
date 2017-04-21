@@ -4,6 +4,9 @@
 #include <qdebug.h>
 #include <vector>
 #include <Qobject>
+
+#define UGV_ID  5
+
 class vehicle_list : public QObject
 {
     Q_OBJECT

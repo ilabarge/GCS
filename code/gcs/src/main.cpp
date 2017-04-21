@@ -14,7 +14,7 @@
 #include <QApplication>
 
 #include <CommProto/commproto.h>
-#include <Packets.hpp>
+
 
 //Our headers
 #include "mainwindow.h"
@@ -23,10 +23,7 @@
 //-------------TEST PACKET----------------------
 //GCS IS ID 1
 
-using namespace ngcp;
-// Callback function that we will be using to link to Ping packet.
-extern error_t VehicleAuthorizationRequestCallback(
-        const comnet::Header &header, VehicleAuthorizationRequest &packet, comnet::Comms &node);
+
 
 int main(int argc, char *argv[])
 {

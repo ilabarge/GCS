@@ -126,7 +126,7 @@ private:
     //DataDaemon* database;
 
     vehicle_list *vList22;
-    Vehicle22 *v1251, *v35, *v46, *v69, *v103, *v101, *v102;
+    Vehicle22 *v1251, *v35, *v5, *v69, *v103, *v101, *v102;
 
     QPushButton* sendcmd;
     QPushButton* ugvDrop;

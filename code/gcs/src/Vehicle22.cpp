@@ -37,6 +37,7 @@ Vehicle22::Vehicle22(int vehicleID,    int vehicleType,  double altitude,
     this->pitch = pitch;
     this->yaw = yaw;
 
+
     needsUpdate = true;
 
     color = Qt::black;
