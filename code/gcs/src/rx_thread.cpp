@@ -13,11 +13,15 @@
 #include "VehicleWaypointCommand.hpp"
 #include "VehicleInertialState.hpp"
 #include "VehicleAuthorizationRequest.hpp"
+<<<<<<< HEAD
 #include "VehicleSystemStatus.hpp"
 #include "VehicleAuthorizationReply.hpp"
 #include "VehicleAttitude.hpp"
 #include "TargetDesignationCommand.hpp"
 
+=======
+#include "TargetDesignationCommand.hpp"
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
 
 
 using namespace ngcp;
@@ -247,7 +251,7 @@ void rx_thread::send_telemetry_command(int vehicle)
 }
 
 //Send targeting informaiton to vehicle
-void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
+void rx_thread::send_targeting(int vehicle, float lat,float longi)
 {
     qDebug() << "received target";
     //Target id = 1, Payload ID = 1
@@ -268,7 +272,7 @@ void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 void rx_thread::target(float lat,float longi) { emit sendTarget(lat,longi);}
 
 //Send manual targeting to UAV (static ID)
-void rx_thread::send_manTargeting(double latitude, double longitude, double altitude)
+void rx_thread::send_manTargeting(double latitude, double longitude)
 {
     qDebug() << "sent manual targeting";
     //Target id = 1, Payload ID = 1
@@ -800,8 +804,12 @@ const comnet::Header &header, VehicleAttitude &packet, comnet::Comms &node)
     return 0;
 }
 
+<<<<<<< HEAD
 //Need to Fix a Little
 // @TODO swithc to CommProtocol
+=======
+
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
 //void* target_designation_command_callback(int8_t, com_header_t header, target_designation_command_t target, comnet::node* node)
 error_t TargetDesignationCommandCallback(
 const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &node)
@@ -809,6 +817,7 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     qDebug() << "target received";
     //Add target to the target list
 
+<<<<<<< HEAD
     targetList->addTarget(&Target(((float)packet.latitude)/1E7,
                               ((float)packet.longitude)/1E7,
                               packet.altitude,
@@ -817,11 +826,26 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     //int ID = header.node_src_id;
 
     int ID = packet.target_id;
+=======
+    int ID = packet.target_id;
+
+    targetList->addTarget(&Target(((float)packet.latitude),
+                              ((float)packet.longitude),
+                              packet.payload_id,packet.target_id,packet.target_type, ID));
+
+    //int ID = header.node_src_id;
+
+
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
 
     mutex.lock();
     if(!(targetList->inList(ID))){
     //Add target to the target list
+<<<<<<< HEAD
         targetList->addTarget(new Target((float)packet.latitude/1E7, (float)packet.longitude/1E7, (float)packet.altitude/1E6, packet.payload_id, packet.target_id, packet.target_type, header.source_id));
+=======
+        targetList->addTarget(new Target((float)packet.latitude, (float)packet.longitude, packet.payload_id, packet.target_id, packet.target_type, header.source_id));
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
         //Target* t = new Target();
 //        t->setTargetID(ID);
 //        t->setLatitude(target.latitude/1E7);
@@ -835,14 +859,22 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     }
     else
     {
+<<<<<<< HEAD
         targetList->getTarget(ID)->setLatitude((float)packet.latitude/1E7);
         targetList->getTarget(ID)->setLongitude((float)packet.longitude/1E7);
         targetList->getTarget(ID)->setAltitude((float)packet.altitude/1E6);
+=======
+        targetList->getTarget(ID)->setLatitude((float)packet.latitude);
+        targetList->getTarget(ID)->setLongitude((float)packet.longitude);
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
         targetList->getTarget(ID)->setPayloadID(packet.payload_id);
         targetList->getTarget(ID)->setTargetID(packet.target_id);
         targetList->getTarget(ID)->setTargetType(packet.target_type);
         targetList->getTarget(ID)->setVehicleID(header.source_id);
+<<<<<<< HEAD
         //targetList->getTarget(ID)->setVehicleID(header.node_src_id);
+=======
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
         targetList->update(ID);
     }
     mutex.unlock();
@@ -853,6 +885,7 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     real64_t x = UTC.toMSecsSinceEpoch();
     qDebug() << "latitude" << ((float)packet.latitude)/1E7;
     qDebug() << "longitude" << ((float)packet.longitude)/1E7;
+<<<<<<< HEAD
 
     //Not really sure how to the "send_target_designation_command"
   /*np->send_target_designation_command(69,69,x,69,1,1,0,
@@ -860,12 +893,21 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
                                           ((float)packet.longitude)/1E7,
                                           packet.altitude);
 */
+=======
+//    np->send_target_designation_command(69,69,x,69,1,1,0,
+//                                          ((float)packet.latitude)/1E7,
+//                                          ((float)packet.longitude)/1E7,
+//                                          packet.altitude);
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
     //???
     //nq->targetRec(((float)target.latitude)/1E7,
                   //((float)target.longitude)/1E7);
     return 0;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
 
 /*
 void* target_status_callback(int8_t link_id, com_header_t header, target_status_t target_status, comnet::node* node_ptr)
@@ -951,12 +993,12 @@ void rx_thread::process() {
    sprintf(port_str, "%d", self_port);
    node->InitConnection(UDP_LINK, port_str, ipGCS);
    // testing a connection to yourself.
-//   node->AddAddress(3, ip, self_port);
+//   node->AddAddress(Valiant_ID, ipGCS, dest_port);
    node->AddAddress(UGV_ID, ipGCS, dest_port);
 #else
    // this value might change depending on your machine. Check which port your xbee is connected to and
    // make sure this value is the xbee port.
-   char commport[] = "COM20";
+   char commport[] = "COM3";
 
    // Will initialize YOUR home address. This is your sender/receiver.
    qDebug() << "Initializing xbee home";
@@ -966,6 +1008,12 @@ void rx_thread::process() {
 
    //add address for corrsponding node
    qDebug() << "Adding Address";
+   if (!node->AddAddress(Sidkidat_ID, "0013A200406067E49F")) {
+     qDebug() << "Failed to connect to sidkidat xbee!";
+   }
+   if (!node->AddAddress(Valiant_ID, "0013A20040917974")) {
+     qDebug() << "Failed to connect to valiant xbee!";
+   }
    if (!node->AddAddress(UGV_ID, "0013A20040917A31")) {
      qDebug() << "Failed to connect to ugv xbee!";
    }
@@ -982,6 +1030,7 @@ void rx_thread::process() {
    //  node->LinkCallback() is the call to register. allocated values are taken care of by the CommProto state machine.
 
    CALLBACK_REGISTER_BLOCK
+<<<<<<< HEAD
    node->LinkCallback(new VehicleAuthorizationRequest(),new comnet::Callback((comnet::callback_t )VehicleAuthorizationRequestCallback));
    node->LinkCallback(new VehicleAuthorizationReply(),  new comnet::Callback((comnet::callback_t )VehicleAuthorizationReplyCallback));
    node->LinkCallback(new VehicleSystemStatus(),        new comnet::Callback((comnet::callback_t )VehicleSystemStatusCallback));
@@ -994,6 +1043,16 @@ void rx_thread::process() {
    //node->LinkCallback(new VehicleWaypointCommand(),   new comnet::Callback(nullptr));
 
    node->LinkCallback(new VehicleSystemStatus(),          new comnet::Callback((comnet::callback_t )VehicleSystemStatusCallback));
+=======
+   node->LinkCallback(new VehicleAuthorizationRequest(),  new comnet::Callback((comnet::callback_t )VehicleAuthorizationRequestCallback));
+   node->LinkCallback(new VehicleInertialState(),         new comnet::Callback((comnet::callback_t )VehicleInertialStateCallback)); // <- replace nullptr with function callback that handles the corresponding Packet.
+   node->LinkCallback(new VehicleGlobalPosition(),        new comnet::Callback((comnet::callback_t )vehicle_global_position_callback));
+   node->LinkCallback(new TargetDesignationCommand(),     new comnet::Callback((comnet::callback_t)TargetDesignationCommandCallback));
+   //node->LinkCallback(new VehicleModeCommand(),           new comnet::Callback(nullptr));
+   //node->LinkCallback(new VehicleWaypointCommand(),       new comnet::Callback(nullptr));
+  //node->LinkCallback(new VehicleAuthorizationReply(),    new comnet::Callback(nullptr));
+   //node->LinkCallback(new VehicleSystemStatus(),          new comnet::Callback(nullptr));
+>>>>>>> ef4e6f8f1c0150d72807a41dbe83c77b9a9adfc9
    END_CALLBACK_REGISTER_BLOCK
 
    //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
