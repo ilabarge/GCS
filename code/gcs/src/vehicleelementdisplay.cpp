@@ -61,12 +61,12 @@ void VehicleElementDisplay::setText(){
     if(vechicle->getVehicleType() == 0){
         if(vechicle->getVehicleID() == 101)
             VehicleType->setText("Telemaster");
-        else if(vechicle->getVehicleID() == 69)
+        else if(vechicle->getVehicleID() == 2)
             VehicleType->setText("Sigkadet");
         else if(vechicle->getVehicleID() == 102)
             VehicleType->setText("QUAD 1");
         else
-            VehicleType->setText("QUAD 2");
+            VehicleType->setText("Valiant");
     }else if(vechicle->getVehicleType() == 1){
         VehicleType->setText("UGV");
     }else if(vechicle->getVehicleType() == 2){

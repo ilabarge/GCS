@@ -23,7 +23,7 @@ targetingGUI::targetingGUI(QWidget *parent) :
  */
 void targetingGUI::targetsend()
 {
-    emit target(latitude->text().toFloat(),longitude->text().toFloat(),altitude->text().toFloat());
+    emit target(latitude->text().toFloat(),longitude->text().toFloat());
 }
 
 void targetingGUI::initGUIElements()
@@ -33,10 +33,8 @@ void targetingGUI::initGUIElements()
     //Create user inputs for latitude, longitude and altitude
     latitude = new QLineEdit();
     longitude = new QLineEdit();
-    altitude = new QLineEdit();
     lat = new QLabel();
     longi = new QLabel();
-    alt = new QLabel();
 }
 
 void targetingGUI::setGUIElementText()
@@ -45,10 +43,8 @@ void targetingGUI::setGUIElementText()
     //Labels mouse overs for user input
     latitude->setToolTip("Latitude");
     longitude->setToolTip("Longitude");
-    altitude->setToolTip("Altitude");
     lat->setText("Latitude");
     longi->setText("Longitude");
-    alt->setText("Altitude");
 }
 
 void targetingGUI::addGUIElementToLayout()
@@ -58,6 +54,4 @@ void targetingGUI::addGUIElementToLayout()
     mainLayout->addWidget(latitude,0,2);
     mainLayout->addWidget(longi,0,3);
     mainLayout->addWidget(longitude,0,4);
-    mainLayout->addWidget(alt,0,5);
-    mainLayout->addWidget(altitude,0,6);
 }

@@ -38,8 +38,16 @@ MainWindow::MainWindow(QWidget* parent) :
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout( mainLayout );
     setCentralWidget( centralWidget );
-    showMaximized();
-    windowHandle()->setScreen(qApp->screens().first());
+//    showFullScreen();
+//    if(qApp->screens().size() > 1)
+//    {
+//    show();
+//    wsindowHandle()->setScreen(qApp->screens().first());
+    showFullScreen();
+//    }
+//    else{
+//        showFullScreen();
+//    }
 
     //Map Interation
     //Sets coordinate positions for waypoint baised off of click on map
@@ -127,7 +135,7 @@ void MainWindow::initMap(){
 
 
 
-     v69 =  new Vehicle22(69, 0, 0,
+     v69 =  new Vehicle22(Sidkidat_ID, 0, 0,
                 0, 0, 0,
                 0, 0, 0,
                 0, 0, 0,
@@ -142,7 +150,7 @@ void MainWindow::initMap(){
      vehicleList->addWidget(element, 2,0);
      elementList->push_back(element);
 
-     v103 = new Vehicle22(103, 0, 0,
+     v103 = new Vehicle22(Valiant_ID, 0, 0,
                 0, 0, 0,
                 0, 0, 0,
                 0, 0, 0,
@@ -203,7 +211,7 @@ void MainWindow::updateVech(int ID)
     int vehicle_ID = ID;
     qDebug() << "ID is" << vehicle_ID;
     //Temporary code=========================
-    if(vehicle_ID == 2)
+    if(vehicle_ID == Valiant_ID)
     {
         qDebug() << "vehicle 2";
 //       qDebug() << (std::to_string(v3->getLatitude())).c_str();
@@ -213,7 +221,7 @@ void MainWindow::updateVech(int ID)
          mv->moveVehicleGraphic(*v103, EsriRuntimeQt::Point(v103->getPoint().x(), v103->getPoint().y(), mv->getSpatialRef()));
          v103->setAngle(v103->getZVelocity());
      }
-    if(vehicle_ID == 69)
+    if(vehicle_ID == Sidkidat_ID)
     {
         qDebug() << "vehicle 2";
 //       qDebug() << (std::to_string(v3->getLatitude())).c_str();
@@ -303,7 +311,7 @@ void MainWindow::initNetworkingConnects(){
     connect(Telemetry,SIGNAL(telemetry(int)),network,SLOT(send_telemetry_command(int)));
     connect(way,SIGNAL(waypoint(Waypoint22*,int)),network,SLOT(send_waypoint(Waypoint22*,int)));
 //    //Manual Targeting
-    connect(targeting,SIGNAL(target(float,float,float)),network,SLOT(target(float,float,float)));
+    connect(targeting,SIGNAL(target(float,float)),network,SLOT(target(float,float)));
 
 //    //UAV
 //    //Drop
@@ -721,9 +729,9 @@ void MainWindow::updateADI(int ID)
 /* BEGIN SLOTS */
 
 void MainWindow::addTarget(float lat, float lon){
-    Target target(lat, lon, 0, 0, 0, 0, 0);
+    Target target(lat, lon, 0, 0, 0, 0);
     target.setGraphic(Qt::red, EsriRuntimeQt::SimpleMarkerSymbolStyle::X, mv->getVehicleLayer()->decimalDegreesToPoint(lat, lon), 10);
-    mv->addGraphicToLayer((target.getGraphic()));
+    mv->addGraphicToLayer(target.getGraphic());
 }
 
 void MainWindow::showCommand(){

@@ -3,6 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// CommProto Default Packets.
+#include "VehicleGlobalPosition.hpp"
+#include "VehicleWaypointCommand.hpp"
+#include "VehicleInertialState.hpp"
+#include "VehicleAuthorizationRequest.hpp"
+#include "TargetDesignationCommand.hpp"
+#include "VehicleModeCommand.hpp"
+
 //TargetList* targetList;
 //vehicle_list* vp;
 QMutex mutex;
@@ -55,20 +63,22 @@ void rx_thread::send_GPS()
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     double x = UTC.toMSecsSinceEpoch();
-    double lat = 3109.45;
-    double lon = -117.8215;
+    double lat = 31945;
+    double lon = 178215;
 
     // Send State of the vehicle. Default constructor called, which zeroes all values
     // (Should you wish to add data, you can modify the values inside).
-    ngcp::VehicleInertialState status;
-    status.latitude = lat;
-    status.longitude = lon * 1e6;
-    status.vertical_speed = 0;
-    status.altitude = 0;
-    status.vehicle_id = 46;
+    ngcp::VehicleGlobalPosition p;
+    p.longitude = lon;
+    p.latitude = lat;
+    p.altitude = 0;
+    p.x_speed = 250;
+    p.y_speed = 350;
+    p.z_speed = 450;
+    p.vehicle_id = 5;
 
     // Send the packet.
-    node->Send(status, 1);
+    node->Send(p, 1);
     qDebug() << "sent GPS";
 }
 

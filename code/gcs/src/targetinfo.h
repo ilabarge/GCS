@@ -35,7 +35,6 @@ private:
     QLabel *targetType;
     QLabel *latitude;
     QLabel *longitude;
-    QLabel *altitude;
 
     QLabel *vechUp;
     QLabel *payUp;
@@ -43,7 +42,6 @@ private:
     QLabel *typeUp;
     QLabel *latUp;
     QLabel *lonUp;
-    QLabel *altUp;
 };
 
 #endif // TARGETINFO_H

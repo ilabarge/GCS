@@ -15,7 +15,7 @@ public:
     explicit targetingGUI(QWidget *parent = 0);
 
 signals:
-    void target(float,float,float);
+    void target(float,float);
 
 public slots:
     void targetsend();
@@ -28,10 +28,8 @@ private:
    QPushButton* targets;
    QLineEdit* latitude;
    QLineEdit* longitude;
-   QLineEdit* altitude;
    QLabel* lat;
    QLabel* longi;
-   QLabel* alt;
 
 };
 

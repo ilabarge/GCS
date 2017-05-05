@@ -13,6 +13,7 @@
 #include "VehicleWaypointCommand.hpp"
 #include "VehicleInertialState.hpp"
 #include "VehicleAuthorizationRequest.hpp"
+#include "TargetDesignationCommand.hpp"
 
 
 using namespace ngcp;
@@ -241,7 +242,7 @@ void rx_thread::send_telemetry_command(int vehicle)
 }
 
 //Send targeting informaiton to vehicle
-void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
+void rx_thread::send_targeting(int vehicle, float lat,float longi)
 {
     qDebug() << "received target";
     //Target id = 1, Payload ID = 1
@@ -262,7 +263,7 @@ void rx_thread::send_targeting(int vehicle, float lat,float longi,float alt)
 void rx_thread::target(float lat,float longi) { emit sendTarget(lat,longi);}
 
 //Send manual targeting to UAV (static ID)
-void rx_thread::send_manTargeting(double latitude, double longitude, double altitude)
+void rx_thread::send_manTargeting(double latitude, double longitude)
 {
     qDebug() << "sent manual targeting";
     //Target id = 1, Payload ID = 1
@@ -773,25 +774,28 @@ void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t 
 }
 */
 
-/* @TODO swithc to CommProtocol
-void* target_designation_command_callback(int8_t, com_header_t header, target_designation_command_t target, comnet::node* node)
+
+//void* target_designation_command_callback(int8_t, com_header_t header, target_designation_command_t target, comnet::node* node)
+error_t TargetDesignationCommandCallback(
+const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &node)
 {
     qDebug() << "target received";
     //Add target to the target list
 
-    targetList->addTarget(&Target(((float)target.latitude)/1E7,
-                              ((float)target.longitude)/1E7,
-                              target.altitude,
-                              target.payload_ID,target.target_ID,target.target_type));
+    int ID = packet.target_id;
+
+    targetList->addTarget(&Target(((float)packet.latitude),
+                              ((float)packet.longitude),
+                              packet.payload_id,packet.target_id,packet.target_type, ID));
 
     //int ID = header.node_src_id;
 
-    int ID = target.target_ID;
+
 
     mutex.lock();
     if(!(targetList->inList(ID))){
     //Add target to the target list
-        targetList->addTarget(new Target((float)target.latitude/1E7, (float)target.longitude/1E7, (float)target.altitude/1E6, target.payload_ID, target.target_ID, target.target_type, header.node_src_id));
+        targetList->addTarget(new Target((float)packet.latitude, (float)packet.longitude, packet.payload_id, packet.target_id, packet.target_type, header.source_id));
         //Target* t = new Target();
 //        t->setTargetID(ID);
 //        t->setLatitude(target.latitude/1E7);
@@ -805,13 +809,12 @@ void* target_designation_command_callback(int8_t, com_header_t header, target_de
     }
     else
     {
-        targetList->getTarget(ID)->setLatitude((float)target.latitude/1E7);
-        targetList->getTarget(ID)->setLongitude((float)target.longitude/1E7);
-        targetList->getTarget(ID)->setAltitude((float)target.altitude/1E6);
-        targetList->getTarget(ID)->setPayloadID(target.payload_ID);
-        targetList->getTarget(ID)->setTargetID(target.target_ID);
-        targetList->getTarget(ID)->setTargetType(target.target_type);
-        targetList->getTarget(ID)->setVehicleID(header.node_src_id);
+        targetList->getTarget(ID)->setLatitude((float)packet.latitude);
+        targetList->getTarget(ID)->setLongitude((float)packet.longitude);
+        targetList->getTarget(ID)->setPayloadID(packet.payload_id);
+        targetList->getTarget(ID)->setTargetID(packet.target_id);
+        targetList->getTarget(ID)->setTargetType(packet.target_type);
+        targetList->getTarget(ID)->setVehicleID(header.source_id);
         targetList->update(ID);
     }
     mutex.unlock();
@@ -820,12 +823,12 @@ void* target_designation_command_callback(int8_t, com_header_t header, target_de
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toUTC());
     real64_t x = UTC.toMSecsSinceEpoch();
-    qDebug() << "latitude" << ((float)target.latitude)/1E7;
-    qDebug() << "longitude" << ((float)target.longitude)/1E7;
-    np->send_target_designation_command(69,69,x,69,1,1,0,
-                                          ((float)target.latitude)/1E7,
-                                          ((float)target.longitude)/1E7,
-                                          target.altitude);
+    qDebug() << "latitude" << ((float)packet.latitude)/1E7;
+    qDebug() << "longitude" << ((float)packet.longitude)/1E7;
+//    np->send_target_designation_command(69,69,x,69,1,1,0,
+//                                          ((float)packet.latitude)/1E7,
+//                                          ((float)packet.longitude)/1E7,
+//                                          packet.altitude);
     //???
     //nq->targetRec(((float)target.latitude)/1E7,
                   //((float)target.longitude)/1E7);
@@ -833,7 +836,6 @@ void* target_designation_command_callback(int8_t, com_header_t header, target_de
 
     return 0;
 }
-    */
 
 /*
 void* target_status_callback(int8_t link_id, com_header_t header, target_status_t target_status, comnet::node* node_ptr)
@@ -919,12 +921,12 @@ void rx_thread::process() {
    sprintf(port_str, "%d", self_port);
    node->InitConnection(UDP_LINK, port_str, ipGCS);
    // testing a connection to yourself.
-//   node->AddAddress(3, ip, self_port);
+//   node->AddAddress(Valiant_ID, ipGCS, dest_port);
    node->AddAddress(UGV_ID, ipGCS, dest_port);
 #else
    // this value might change depending on your machine. Check which port your xbee is connected to and
    // make sure this value is the xbee port.
-   char commport[] = "COM20";
+   char commport[] = "COM3";
 
    // Will initialize YOUR home address. This is your sender/receiver.
    qDebug() << "Initializing xbee home";
@@ -934,6 +936,12 @@ void rx_thread::process() {
 
    //add address for corrsponding node
    qDebug() << "Adding Address";
+   if (!node->AddAddress(Sidkidat_ID, "0013A200406067E49F")) {
+     qDebug() << "Failed to connect to sidkidat xbee!";
+   }
+   if (!node->AddAddress(Valiant_ID, "0013A20040917974")) {
+     qDebug() << "Failed to connect to valiant xbee!";
+   }
    if (!node->AddAddress(UGV_ID, "0013A20040917A31")) {
      qDebug() << "Failed to connect to ugv xbee!";
    }
@@ -952,7 +960,8 @@ void rx_thread::process() {
    CALLBACK_REGISTER_BLOCK
    node->LinkCallback(new VehicleAuthorizationRequest(),  new comnet::Callback((comnet::callback_t )VehicleAuthorizationRequestCallback));
    node->LinkCallback(new VehicleInertialState(),         new comnet::Callback((comnet::callback_t )VehicleInertialStateCallback)); // <- replace nullptr with function callback that handles the corresponding Packet.
-   node->LinkCallback(new VehicleGlobalPosition(),           new comnet::Callback((comnet::callback_t )vehicle_global_position_callback));
+   node->LinkCallback(new VehicleGlobalPosition(),        new comnet::Callback((comnet::callback_t )vehicle_global_position_callback));
+   node->LinkCallback(new TargetDesignationCommand(),     new comnet::Callback((comnet::callback_t)TargetDesignationCommandCallback));
    //node->LinkCallback(new VehicleModeCommand(),           new comnet::Callback(nullptr));
    //node->LinkCallback(new VehicleWaypointCommand(),       new comnet::Callback(nullptr));
   //node->LinkCallback(new VehicleAuthorizationReply(),    new comnet::Callback(nullptr));
