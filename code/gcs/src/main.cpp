@@ -120,6 +120,7 @@ int main(int argc, char *argv[])
         {
         w2.show();
         w2.windowHandle()->setScreen(qApp->screens()[1]);
+
         w2.showFullScreen();
         }
     return application.exec();

@@ -68,8 +68,8 @@ public slots:
     */
     void send_vehicle_waypoint(Waypoint22*,int);
     void send_telemetry_command(int);
-    void send_targeting(int, float, float, float);
-    void send_manTargeting(double,double,double);
+    void send_targeting(int, float, float);
+    void send_manTargeting(double,double);
     void target_added(Target *);
 
     //target recieved

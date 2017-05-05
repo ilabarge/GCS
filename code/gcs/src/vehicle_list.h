@@ -5,6 +5,8 @@
 #include <vector>
 #include <Qobject>
 
+#define Sidkidat_ID 2
+#define Valiant_ID 3
 #define UGV_ID  5
 
 class vehicle_list : public QObject

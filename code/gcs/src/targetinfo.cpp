@@ -16,7 +16,6 @@ TargetInfo::TargetInfo(QWidget *parent) :
     targetType = new QLabel("Target Type", this);
     latitude = new QLabel("Target Latitude", this);
     longitude = new QLabel("Target Longitude", this);
-    altitude = new QLabel("Target Altitude",this);
 
     vechUp = new QLabel("Not set");
     payUp = new QLabel("Not set");
@@ -24,7 +23,6 @@ TargetInfo::TargetInfo(QWidget *parent) :
     typeUp = new QLabel("Not set");
     latUp = new QLabel("Not set");
     lonUp = new QLabel("Not set");
-    altUp = new QLabel("Not set");
 
     info->addWidget(vehicleID, 0, 0);
     info->addWidget(payloadID, 1, 0);
@@ -32,7 +30,6 @@ TargetInfo::TargetInfo(QWidget *parent) :
     info->addWidget(targetType, 3, 0);
     info->addWidget(latitude, 4, 0);
     info->addWidget(longitude, 5, 0);
-    info->addWidget(altitude, 6, 0);
 
     info->addWidget(vechUp, 0, 1);
     info->addWidget(payUp, 1, 1);
@@ -40,7 +37,6 @@ TargetInfo::TargetInfo(QWidget *parent) :
     info->addWidget(typeUp, 3, 1);
     info->addWidget(latUp, 4, 1);
     info->addWidget(lonUp, 5, 1);
-    info->addWidget(altUp, 6, 1);
 
     window->setLayout(info);
     setCentralWidget(window);
@@ -55,9 +51,8 @@ void TargetInfo::tStatus(int tID) {
         payUp->setText(QString::number(t->getPayloadID()));
         targUp->setText(QString::number(t->getTargetID()));
         typeUp->setText(QString::number(t->getTargetType()));
-        latUp->setText(QString::number(t->getLatitude()));
-        lonUp->setText(QString::number(t->getLongitude()));
-        altUp->setText(QString::number(t->getAltitude()));
+        latUp->setText(QString("%1").QString::number(t->getLatitude()));
+        lonUp->setText(QString("%1").QString::number(t->getLongitude()));
     }
 }
 
@@ -69,9 +64,8 @@ void TargetInfo::displayTargetInfo(int tID) {
         payUp->setText(QString::number(t->getPayloadID()));
         targUp->setText(QString::number(t->getTargetID()));
         typeUp->setText(QString::number(t->getTargetType()));
-        latUp->setText(QString::number(t->getLatitude()));
-        lonUp->setText(QString::number(t->getLongitude()));
-        altUp->setText(QString::number(t->getAltitude()));
+        latUp->setText(QString("%1").QString::number(t->getLatitude()));
+        lonUp->setText(QString("%1").QString::number(t->getLongitude()));
     }
     else
         vechUp->setText(QString::number(tID));

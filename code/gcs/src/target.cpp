@@ -11,9 +11,8 @@ Target::Target()
     vehicle_id = NULL;
 }
 
-Target::Target(double lat,double longi,double alt, int payid, int targid, int targtype, int vechid)
+Target::Target(double lat,double longi, int payid, int targid, int targtype, int vechid)
 {
-    altitude = alt;
     latitude = lat;
     longitude = longi;
     payload_id = payid;

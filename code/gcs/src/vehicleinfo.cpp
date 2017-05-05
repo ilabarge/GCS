@@ -72,13 +72,13 @@ void VehicleInfo::status(int vID) {
     if (currentVehicle == vID) {
         idUp->setText(QString::number(vID));
         typeUp->setText(QString::number(vp->getVehicleType()));
-        altUp->setText(QString::number(vp->getAltitude()));
+        altUp->setText( QString("%1").QString::number(vp->getAltitude()));
         modeUp->setText(QString::number(vp->getMode()));
         stateUp->setText(QString::number(vp->getState()));
-        latUp->setText(QString::number(vp->getLatitude()));
-        longUp->setText(QString::number(vp->getLongitude()));
-        headingUp->setText(QString::number(vp->getHeading()));
-        velocityUp->setText(QString::number(vp->getVelocity()));
+        latUp->setText(QString("%1").QString::number(vp->getLatitude()));
+        longUp->setText(QString("%1").QString::number(vp->getLongitude()));
+        headingUp->setText(QString("%1").QString::number(vp->getHeading()));
+        velocityUp->setText(QString("%1").QString::number(vp->getVelocity()));
         depthUp->setText(QString::number(vp->getDepth()));
     }
 }
@@ -88,13 +88,13 @@ void VehicleInfo::displayVech(int vID) {
     Vehicle22 *vp = vl->get(vID);
     idUp->setText(QString::number(vID));
     typeUp->setText(QString::number(vp->getVehicleType()));
-    altUp->setText(QString::number(vp->getAltitude()));
+    altUp->setText(QString("%1").QString::number(vp->getAltitude()));
     modeUp->setText(QString::number(vp->getMode()));
     stateUp->setText(QString::number(vp->getState()));
-    latUp->setText(QString::number(vp->getLatitude()));
-    longUp->setText(QString::number(vp->getLongitude()));
-    headingUp->setText(QString::number(vp->getHeading()));
-    velocityUp->setText(QString::number(vp->getVelocity()));
+    latUp->setText(QString("%1").QString::number(vp->getLatitude()));
+    longUp->setText(QString("%1").QString::number(vp->getLongitude()));
+    headingUp->setText(QString("%1").QString::number(vp->getHeading()));
+    velocityUp->setText(QString("%1").QString::number(vp->getVelocity()));
     depthUp->setText(QString::number(vp->getDepth()));
 
 }

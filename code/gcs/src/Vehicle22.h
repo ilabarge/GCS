@@ -29,7 +29,7 @@ public:
     /* BEGIN SETTERS */
     void setVehicleID(int vehicleID);
     void setVehicleType(int vehicleType);
-    void setAltitude(int altitude);
+    void setAltitude(double altitude);
     void setMode(int mode);
     void setState(int state);
     void setBatteryStatus(int batteryStatus);

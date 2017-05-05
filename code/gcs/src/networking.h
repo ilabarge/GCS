@@ -49,13 +49,13 @@ public slots:
     //General commands
     void send_vehicle_auth_request(int);
     void send_telemetry_command(int);
-    void send_targeting(float,float,float);
+    void send_targeting(float,float);
     void send_waypoint(Waypoint22*,int);
 
     //Passes target found from vehicle
     void newTarget(float,float);
     //targeting manual
-    void target(float,float,float);
+    void target(float,float);
 
     //UAV commands
     //Drop
@@ -104,10 +104,10 @@ signals:
     void waypoint(Waypoint22*, int);
     void vehicle_auth_request(int);
     void telemetry_command(int);
-    void targeting(float,float,float);
+    void targeting(float,float);
 
     //targeting
-    void manTargeting(double,double,double);
+    void manTargeting(double,double);
 
     //from vech
     void vTarget(float,float);

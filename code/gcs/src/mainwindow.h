@@ -78,6 +78,9 @@ public:
     virtual void keyPressEvent(QKeyEvent *);
     virtual void keyReleaseEvent(QKeyEvent *);
 
+
+    QGridLayout lowerBar;
+
 private:
     QGridLayout* mainLayout;
 
@@ -106,7 +109,6 @@ private:
     QWidget commandLayoutWidget;
     QWidget controlLayoutWidget;
     QPushButton control;
-    QGridLayout lowerBar;
     QWidget lowerBarWidget;
     QGridLayout command_box;
     QGridLayout command_control;

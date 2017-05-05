@@ -135,7 +135,7 @@ void networking::send_vehicle_auth_request(int i){emit vehicle_auth_request(i);}
 void networking::send_telemetry_command(int i){ emit telemetry_command(i);}
 
 //Send manual targeting
-void networking::send_targeting(float lat, float longi, float alt){emit targeting(lat,longi,alt);}
+void networking::send_targeting(float lat, float longi){emit targeting(lat,longi);}
 
 //UAV drop
 void networking::UDrop(int v) { emit drop(v); }
@@ -147,7 +147,7 @@ void networking::arm(int x) { emit armUAV(x); }
 void networking::disarm(int x) { emit disarmUAV(x); }
 
 //targeting
-void networking::target(float lat, float longi, float alt) {emit manTargeting(lat,longi,alt);}
+void networking::target(float lat, float longi) {emit manTargeting(lat,longi);}
 
 void networking::newTarget(float lat,float longi) { emit vTarget(lat,longi);}
 

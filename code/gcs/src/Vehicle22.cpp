@@ -53,7 +53,7 @@ void Vehicle22::setVehicleType(int vehicleType){
     vType = vehicleType;
     needsUpdate = true;
 }
-void Vehicle22::setAltitude(int altitude) {
+void Vehicle22::setAltitude(double altitude) {
     QMutexLocker l(&mx);
     alt = altitude;
     needsUpdate = true;
