@@ -57,3 +57,5 @@ else:unix: LIBS += -L$$PWD/../CommProtocol/build/libxbee3/ -llibxbee3
 
 INCLUDEPATH += $$PWD/../CommProtocol/build/libxbee3/Release
 DEPENDPATH += $$PWD/../CommProtocol/build/libxbee3/Release
+
+INCLUDEPATH += $$PWD/../CommProto-MessageStandards2017/packets/cpp

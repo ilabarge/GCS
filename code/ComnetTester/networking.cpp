@@ -100,7 +100,7 @@ void networking::invokeThread(uint8_t node_id, uint16_t self_port, uint16_t dest
 networking::networking()
 {
     //qDebug() << "Invoking thread with: " << port;
-    invokeThread(3, 1337, 1338);
+    invokeThread(5, 1337, 1338);
 }
 
 void networking::send_GPS(){ emit sendGPS();}

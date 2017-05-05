@@ -3,6 +3,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// CommProto Default Packets.
+#include "VehicleGlobalPosition.hpp"
+#include "VehicleWaypointCommand.hpp"
+#include "VehicleInertialState.hpp"
+#include "VehicleAuthorizationRequest.hpp"
+#include "VehicleSystemStatus.hpp"
+#include "VehicleAuthorizationReply.hpp"
+#include "VehicleAttitude.hpp"
+#include "TargetDesignationCommand.hpp"
+#include "VehicleModeCommand.hpp"
+
 //TargetList* targetList;
 //vehicle_list* vp;
 QMutex mutex;
@@ -60,12 +71,12 @@ void rx_thread::send_GPS()
 
     // Send State of the vehicle. Default constructor called, which zeroes all values
     // (Should you wish to add data, you can modify the values inside).
-    ngcp::VehicleInertialState status;
-    status.latitude = lat;
-    status.longitude = lon * 1e6;
-    status.vertical_speed = 0;
-    status.altitude = 0;
-    status.vehicle_id = 46;
+    ngcp::VehicleAuthorizationRequest status;
+    status.vehicle_type = 100 ;
+    status.authorized_services = 200;
+    status.granted_services = 300;
+    status.vehicle_id = 5;
+
 
     // Send the packet.
     node->Send(status, 1);

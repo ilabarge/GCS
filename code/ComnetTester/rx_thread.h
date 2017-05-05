@@ -25,13 +25,13 @@
 // interface conflicts with a namespace inside CommProto
 #undef interface
 #include <CommProto/commproto.h>
-#include <Packets.hpp>
+
 //#include "Vehicle22.h"
 //#include "nodequeue.h"
 //#include "joystickinput.h"
+
 //#include "targetlist.h"
 //#include "vehicle_list.h"
-
 class rx_thread : public QObject
 {
     Q_OBJECT
