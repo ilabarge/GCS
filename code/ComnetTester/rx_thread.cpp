@@ -10,6 +10,7 @@
 #include "VehicleAuthorizationRequest.hpp"
 #include "TargetDesignationCommand.hpp"
 #include "VehicleModeCommand.hpp"
+#include "VehicleAuthorizationReply.hpp"
 
 //TargetList* targetList;
 //vehicle_list* vp;
@@ -68,13 +69,9 @@ void rx_thread::send_GPS()
 
     // Send State of the vehicle. Default constructor called, which zeroes all values
     // (Should you wish to add data, you can modify the values inside).
-    ngcp::VehicleGlobalPosition p;
-    p.longitude = lon;
-    p.latitude = lat;
-    p.altitude = 0;
-    p.x_speed = 250;
-    p.y_speed = 350;
-    p.z_speed = 450;
+    ngcp::VehicleAuthorizationReply p;
+    p.authorized_services = 11;
+    p.granted_services = 12;
     p.vehicle_id = 5;
 
     // Send the packet.

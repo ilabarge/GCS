@@ -27,6 +27,8 @@ public:
 signals:
     //Vehicle id to update
     void update(int);
+    //Send messages to print in console
+    void sendMessage(QString);
     //Incorect vehicle ID
     void incorrect(int);
 

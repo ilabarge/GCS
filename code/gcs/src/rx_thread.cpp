@@ -14,7 +14,7 @@
 #include "VehicleInertialState.hpp"
 #include "VehicleAuthorizationRequest.hpp"
 #include "TargetDesignationCommand.hpp"
-
+#include "VehicleAuthorizationReply.hpp"
 
 using namespace ngcp;
 // These don't do anything, only make it easier to read.
@@ -49,6 +49,7 @@ rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, ve
     connect(tgt,SIGNAL(update(int)),this,SLOT(updateTarget(int)));
     connect(tgt,SIGNAL(updateDisplay(int)),this,SLOT(updateTargetDisplay(int)));
     connect(v,SIGNAL(update(int)),this,SLOT(sendMessage(int)));
+    connect(v,SIGNAL(sendMessage(QString)),this,SLOT(sendMessageToConsole(QString)));
 }
 
 void rx_thread::update_vech_queue() { emit update_queue();}
@@ -56,6 +57,10 @@ void rx_thread::update_vech_queue() { emit update_queue();}
 void rx_thread::print_port() {  qDebug() << serial_port; }
 
 void rx_thread::update(int vechID) { emit updateVech(vechID);}
+
+void rx_thread::sendMessageToConsole(QString) {
+ //   emit message(QString("  Source node: " + QString::number(header.source_id)));
+       emit messageConfirm(QString("Switching to manual")); }
 
 void rx_thread::updateTarget(int targID) { emit updateTarg(targID);}
 
@@ -217,7 +222,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
        }
    }
-   qDebug() << "Vehicle not found";
+//   qDebug() << "Vehicle not found";
 }
 
 //Need to send before vehicle will stream info
@@ -451,6 +456,8 @@ void rx_thread::sendMessage(int ID){
 //    if( _pSocket->waitForConnected() ) {
 //        _pSocket->write( data );
 //    }
+
+    emit messageConfirm(QString("Test2"));
 }
 
 // -------- CHECKING VEHICLE --------
@@ -523,13 +530,12 @@ void* vehicle_authorization_request_callback(int8_t id, com_header_t header, veh
    return 0;
 }
 */
-
-/* @TODO swithc to CommProtocol
 //Runs after we send a request to a vehicle
-void* vehicle_authorization_reply_callback(int8_t id, com_header_t header, vehicle_authorization_reply_t vehicle, comnet::node* node_ptr)
+error_t VehicleAuthorizationReplyCallback(
+const comnet::Header &header, VehicleAuthorizationReply &packet, comnet::Comms &node)
 {
    printf("Got Vehicle Authorization Reply");
-   int ID = header.node_src_id;
+   int ID = header.source_id;
    //Is the vehicle id in list?
    if(!(vp->inList(ID))){
        qDebug() << "bad id " << ID;
@@ -539,6 +545,9 @@ void* vehicle_authorization_reply_callback(int8_t id, com_header_t header, vehic
    //Add behavior to results recieved?
    //qDebug() << vehicle.authorized_services;
    //qDebug() << vehicle.granted_services;
+
+\
+
    mutex.lock();
    //Settting Varibles
    //NOTE: Add to vechicle object?
@@ -547,12 +556,15 @@ void* vehicle_authorization_reply_callback(int8_t id, com_header_t header, vehic
    //v->at(i)->setGrantedServices(vehicle.granted_services);
    //Sets vehicle update value to true
    mutex.unlock();
+
+     vp->sendMessage(QString("Switching to manual"));
+
    //Debug
-     qDebug() << vehicle.authorization_services;  sbmitted right key
-        qDebug() << vehicle.granted_services;      granted service
+     qDebug() << packet.authorized_services; // sbmitted right key
+        qDebug() << packet.granted_services;      //granted service
    return 0;
 }
-*/
+
 
 //Gives system status
 /* @TODO swithc to CommProtocol
@@ -964,7 +976,7 @@ void rx_thread::process() {
    node->LinkCallback(new TargetDesignationCommand(),     new comnet::Callback((comnet::callback_t)TargetDesignationCommandCallback));
    //node->LinkCallback(new VehicleModeCommand(),           new comnet::Callback(nullptr));
    //node->LinkCallback(new VehicleWaypointCommand(),       new comnet::Callback(nullptr));
-  //node->LinkCallback(new VehicleAuthorizationReply(),    new comnet::Callback(nullptr));
+   node->LinkCallback(new VehicleAuthorizationReply(),    new comnet::Callback((comnet::callback_t)VehicleAuthorizationReplyCallback));
    //node->LinkCallback(new VehicleSystemStatus(),          new comnet::Callback(nullptr));
    END_CALLBACK_REGISTER_BLOCK
 

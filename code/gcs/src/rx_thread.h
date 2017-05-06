@@ -111,6 +111,9 @@ public slots:
     //Send message with int vehicle id to airweb
     void sendMessage(int);
 
+    //send messages to console
+    void sendMessageToConsole(QString);
+
 signals:
     void finished();
     void error(QString err);
