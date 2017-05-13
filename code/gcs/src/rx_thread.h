@@ -112,7 +112,11 @@ public slots:
     void sendMessage(int);
 
     //send messages to console
+<<<<<<< HEAD
     void sendMessageToConsole(QString s);
+=======
+    void sendMessageToConsole(QString);
+>>>>>>> 9ac2ec5159a1eabb6abc734f65e13976e0ef54ed
 
 signals:
     void finished();

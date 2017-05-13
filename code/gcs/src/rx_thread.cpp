@@ -463,6 +463,7 @@ void rx_thread::sendMessage(int ID){
 //    }
        //TO print to console saying Test2
     //emit messageConfirm(QString("Test2"));
+
 }
 
 // -------- CHECKING VEHICLE --------
@@ -565,7 +566,6 @@ const comnet::Header &header, VehicleAuthorizationReply &packet, comnet::Comms &
    mutex.unlock();
 
      vp->sendMessage(QString("Recieving Waypoint"));
-
    //Debug
      qDebug() << packet.authorized_services; // sbmitted right key
         qDebug() << packet.granted_services;      //granted service
