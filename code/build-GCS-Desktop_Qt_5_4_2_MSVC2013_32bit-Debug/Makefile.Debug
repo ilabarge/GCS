@@ -10248,10 +10248,10 @@ debug\rx_thread.obj: ..\gcs\src\rx_thread.cpp ..\gcs\src\rx_thread.h \
 		..\CommProto-MessageStandards2017\packets\cpp\VehicleWaypointCommand.hpp \
 		..\CommProto-MessageStandards2017\packets\cpp\VehicleInertialState.hpp \
 		..\CommProto-MessageStandards2017\packets\cpp\VehicleAuthorizationRequest.hpp \
+		..\CommProto-MessageStandards2017\packets\cpp\TargetDesignationCommand.hpp \
 		..\CommProto-MessageStandards2017\packets\cpp\VehicleSystemStatus.hpp \
 		..\CommProto-MessageStandards2017\packets\cpp\VehicleAuthorizationReply.hpp \
-		..\CommProto-MessageStandards2017\packets\cpp\VehicleAttitude.hpp \
-		..\CommProto-MessageStandards2017\packets\cpp\TargetDesignationCommand.hpp
+		..\CommProto-MessageStandards2017\packets\cpp\VehicleAttitude.hpp
 
 debug\SerialCombobox.obj: ..\gcs\src\SerialCombobox.cpp ..\gcs\src\SerialCombobox.h \
 		C:\Qt\Qt5.4.2\5.4\msvc2013\include\QtWidgets\QComboBox \

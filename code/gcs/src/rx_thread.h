@@ -44,12 +44,12 @@ private:
     //Comnet node setup
     uint8_t node_id;
     uint16_t self_port;
-    uint16_t dest_port;    
+    uint16_t dest_port;
     char serial_port[25];
     comnet::Comms *node;
     QThread *joystick_thread;
     //JoystickInput *joystick;
-    vehicle_list* vList;    
+    vehicle_list* vList;
     bool send;
     void hold();
 public slots:
@@ -110,6 +110,9 @@ public slots:
 
     //Send message with int vehicle id to airweb
     void sendMessage(int);
+
+    //send messages to console
+    void sendMessageToConsole(QString s);
 
 signals:
     void finished();

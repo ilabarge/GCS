@@ -13,13 +13,10 @@
 #include "VehicleWaypointCommand.hpp"
 #include "VehicleInertialState.hpp"
 #include "VehicleAuthorizationRequest.hpp"
-
+#include "TargetDesignationCommand.hpp"
 #include "VehicleSystemStatus.hpp"
 #include "VehicleAuthorizationReply.hpp"
 #include "VehicleAttitude.hpp"
-#include "TargetDesignationCommand.hpp"
-
-
 
 using namespace ngcp;
 // These don't do anything, only make it easier to read.
@@ -54,6 +51,7 @@ rx_thread::rx_thread(uint8_t node_id, uint16_t self_port, uint16_t dest_port, ve
     connect(tgt,SIGNAL(update(int)),this,SLOT(updateTarget(int)));
     connect(tgt,SIGNAL(updateDisplay(int)),this,SLOT(updateTargetDisplay(int)));
     connect(v,SIGNAL(update(int)),this,SLOT(sendMessage(int)));
+    connect(v,SIGNAL(sendMessage(QString)),this,SLOT(sendMessageToConsole(QString)));
 }
 
 void rx_thread::update_vech_queue() { emit update_queue();}
@@ -61,6 +59,10 @@ void rx_thread::update_vech_queue() { emit update_queue();}
 void rx_thread::print_port() {  qDebug() << serial_port; }
 
 void rx_thread::update(int vechID) { emit updateVech(vechID);}
+
+void rx_thread::sendMessageToConsole(QString s) {
+ //   emit message(QString("  Source node: " + QString::number(header.source_id)));
+       emit messageConfirm(QString(s)); }
 
 void rx_thread::updateTarget(int targID) { emit updateTarg(targID);}
 
@@ -223,7 +225,7 @@ void rx_thread::send_vehicle_waypoint(Waypoint22 *waypoint, int id)
         //qDebug() << "Dest size after Waypoint command" << vList->at(i)->waypoints.size();
        }
    }
-   qDebug() << "Vehicle not found";
+//   qDebug() << "Vehicle not found";
 }
 
 //Need to send before vehicle will stream info
@@ -459,6 +461,8 @@ void rx_thread::sendMessage(int ID){
 //    if( _pSocket->waitForConnected() ) {
 //        _pSocket->write( data );
 //    }
+       //TO print to console saying Test2
+    //emit messageConfirm(QString("Test2"));
 }
 
 // -------- CHECKING VEHICLE --------
@@ -469,17 +473,16 @@ int checkVehicles(uint32_t vehicle_ID)
             return i;
         }
     }
+
     return -1;
 }
 
 // --------- COMNET CALLBACKS ---------
-//Clean up code!!
 
 //Dont think we use this
-// @TODO swithc to CommProtocol
-//void* enter_callback(int8_t id, com_header_t header, enter_t enter, comnet::node* node)
-/*error_t EnterCallback(
-const comnet::Header &header, Enter &packet, comnet::Comms &node)
+/* @TODO swithc to CommProtocol
+//Clean up code!!
+void* enter_callback(int8_t id, com_header_t header, enter_t enter, comnet::node* node)
 {
     printf("got enter");
     qDebug() << "got enter";
@@ -523,42 +526,35 @@ void* pong_callback(int8_t, com_header_t header, pong_t pong, comnet::node* node
    //node_ptr->send_ping(header.node_src_id,0);
    return 0;
 }
+*/
 
-//@TODO swithc to CommProtocol
-//Doesnt do anything,already have a different version of "VehicleAuthorizationRequestCallback"
-//void* vehicle_authorization_request_callback(int8_t id, com_header_t header, vehicle_authorization_request_t vehicle, comnet::node* node_ptr)
-/*error_t VehicleAuthorizationRequestCallback(
-const comnet::Header &header, VehicleAuthorizationRequest &packet, comnet::Comms &node)
+/* @TODO swithc to CommProtocol
+//Doesnt do anything,already have a different version
+void* vehicle_authorization_request_callback(int8_t id, com_header_t header, vehicle_authorization_request_t vehicle, comnet::node* node_ptr)
 {
    printf("Got Vehicle Authorization Request");
    //node_ptr->send_vehicle_authorization_reply(header.node_src_id,99,vehicle.vehicle_ID,99 ,vehicle.request_services,99);
    return 0;
 }
 */
-
-//Done:Switched to COMMPROTO
 //Runs after we send a request to a vehicle
-//void* vehicle_authorization_reply_callback(int8_t id, com_header_t header, vehicle_authorization_reply_t vehicle, comnet::node* node_ptr)
 error_t VehicleAuthorizationReplyCallback(
 const comnet::Header &header, VehicleAuthorizationReply &packet, comnet::Comms &node)
 {
-   std::cout<<"Got Vehicle Authorization Reply"<<std::endl;
-
+   printf("Got Vehicle Authorization Reply");
    int ID = header.source_id;
    //Is the vehicle id in list?
    if(!(vp->inList(ID))){
        qDebug() << "bad id " << ID;
        return 0; //Bad ID
    }
-
-   std::cout << std::endl << "Source node: " <<
-   (int32_t)header.source_id << std::endl;
-    std::cout<<"Switiching to manual."<<std::endl;
-
    //Begin setting reply information
    //Add behavior to results recieved?
    //qDebug() << vehicle.authorized_services;
    //qDebug() << vehicle.granted_services;
+
+\
+
    mutex.lock();
    //Settting Varibles
    //NOTE: Add to vechicle object?
@@ -567,11 +563,15 @@ const comnet::Header &header, VehicleAuthorizationReply &packet, comnet::Comms &
    //v->at(i)->setGrantedServices(vehicle.granted_services);
    //Sets vehicle update value to true
    mutex.unlock();
+
+     vp->sendMessage(QString("Recieving Waypoint"));
+
    //Debug
-     qDebug() << packet.authorized_services; //sbmitted right key
-     qDebug() << packet.granted_services;      //granted service
-     return 0;
+     qDebug() << packet.authorized_services; // sbmitted right key
+        qDebug() << packet.granted_services;      //granted service
+   return 0;
 }
+
 
 //Done:Switched to COMMPROTO
 //Gives system status
@@ -636,6 +636,7 @@ const comnet::Header &header, VehicleSystemStatus &packet, comnet::Comms &node)
     return 0;
 }
 
+
 //Done
 //void* vehicle_inertial_state_callback(int8_t id, com_header_t header, vehicle_inertial_state_t inertial, comnet::node* node_ptr)
 error_t VehicleInertialStateCallback(
@@ -680,9 +681,7 @@ const comnet::Header &header, VehicleInertialState &packet, comnet::Comms &node)
 }
 
 
-//Done
-error_t  VehicleGlobalPositionCallback(
- const comnet::Header &header, VehicleGlobalPosition &packet, comnet::Comms &node)
+error_t  vehicleGlobalPositionCallback(const comnet::Header &header, VehicleGlobalPosition &packet, comnet::Comms &node)
 {
     qDebug() << "globalpos" << header.source_id;
     int ID = header.source_id;
@@ -702,6 +701,7 @@ error_t  VehicleGlobalPositionCallback(
     //everything else strieght
     printf("===============\n");
 
+
     mutex.lock();
     //Setting variables
     vp->set(ID)->setAltitude((double)packet.altitude);
@@ -716,6 +716,9 @@ error_t  VehicleGlobalPositionCallback(
     mutex.unlock();
     vp->update(header.source_id);
 
+
+      vp->sendMessage(QString("Recieving Global Position"));
+      vp->sendMessage(QString(QString::number(ID)));
 //    int tID = 1;
 
 //    mutex.lock();
@@ -766,7 +769,6 @@ error_t  VehicleGlobalPositionCallback(
 }
 
 
-
 //Done:Switched to COMMPROTO
 // @TODO swithc to CommProtocol
 //void* vehicle_attitude_callback(int8_t, com_header_t header, vehicle_attitude_t attitude, comnet::node*)
@@ -802,11 +804,6 @@ const comnet::Header &header, VehicleAttitude &packet, comnet::Comms &node)
 }
 
 
-//Need to Fix a Little
-// @TODO swithc to CommProtocol
-
-
-
 //void* target_designation_command_callback(int8_t, com_header_t header, target_designation_command_t target, comnet::node* node)
 error_t TargetDesignationCommandCallback(
 const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &node)
@@ -814,8 +811,7 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     qDebug() << "target received";
     //Add target to the target list
 
-
-     int ID = packet.target_id;
+    int ID = packet.target_id;
 
     targetList->addTarget(&Target(((float)packet.latitude),
                               ((float)packet.longitude),
@@ -828,10 +824,7 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     mutex.lock();
     if(!(targetList->inList(ID))){
     //Add target to the target list
-
-
         targetList->addTarget(new Target((float)packet.latitude, (float)packet.longitude, packet.payload_id, packet.target_id, packet.target_type, header.source_id));
-
         //Target* t = new Target();
 //        t->setTargetID(ID);
 //        t->setLatitude(target.latitude/1E7);
@@ -845,18 +838,12 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     }
     else
     {
-
         targetList->getTarget(ID)->setLatitude((float)packet.latitude);
         targetList->getTarget(ID)->setLongitude((float)packet.longitude);
-
         targetList->getTarget(ID)->setPayloadID(packet.payload_id);
         targetList->getTarget(ID)->setTargetID(packet.target_id);
         targetList->getTarget(ID)->setTargetType(packet.target_type);
         targetList->getTarget(ID)->setVehicleID(header.source_id);
-
-        //targetList->getTarget(ID)->setVehicleID(header.node_src_id);
-
-
         targetList->update(ID);
     }
     mutex.unlock();
@@ -867,28 +854,17 @@ const comnet::Header &header, TargetDesignationCommand &packet, comnet::Comms &n
     real64_t x = UTC.toMSecsSinceEpoch();
     qDebug() << "latitude" << ((float)packet.latitude)/1E7;
     qDebug() << "longitude" << ((float)packet.longitude)/1E7;
-
-
-    //Not really sure how to the "send_target_designation_command"
-  /*np->send_target_designation_command(69,69,x,69,1,1,0,
-                                          ((float)packet.latitude)/1E7,
-                                          ((float)packet.longitude)/1E7,
-                                          packet.altitude);
-*/
-
 //    np->send_target_designation_command(69,69,x,69,1,1,0,
 //                                          ((float)packet.latitude)/1E7,
 //                                          ((float)packet.longitude)/1E7,
 //                                          packet.altitude);
-
     //???
     //nq->targetRec(((float)target.latitude)/1E7,
                   //((float)target.longitude)/1E7);
+
+
     return 0;
 }
-
-
-
 
 /*
 void* target_status_callback(int8_t link_id, com_header_t header, target_status_t target_status, comnet::node* node_ptr)
@@ -923,8 +899,8 @@ void* vehicle_waypoint_command_callback(int8_t, com_header_t h, vehicle_waypoint
                               ((float)way.altitude)/1E7,
                               0,0,0));
    return 0;
-}
-*/
+}*/
+
 
 
 // Callback function that we will be using to link to Ping packet.
@@ -1011,20 +987,14 @@ void rx_thread::process() {
    //  node->LinkCallback() is the call to register. allocated values are taken care of by the CommProto state machine.
 
    CALLBACK_REGISTER_BLOCK
-
-   node->LinkCallback(new VehicleAuthorizationRequest(),new comnet::Callback((comnet::callback_t )VehicleAuthorizationRequestCallback));
-   node->LinkCallback(new VehicleAuthorizationReply(),  new comnet::Callback((comnet::callback_t )VehicleAuthorizationReplyCallback));
-   node->LinkCallback(new VehicleSystemStatus(),        new comnet::Callback((comnet::callback_t )VehicleSystemStatusCallback));
-   node->LinkCallback(new VehicleInertialState(),       new comnet::Callback((comnet::callback_t )VehicleInertialStateCallback)); // <- replace nullptr with function callback that handles the corresponding Packet.
-   node->LinkCallback(new VehicleGlobalPosition(),      new comnet::Callback((comnet::callback_t )VehicleGlobalPositionCallback));
-   node->LinkCallback(new  VehicleAttitude(),           new comnet::Callback((comnet::callback_t )VehicleAttitudeCallback));
-   node->LinkCallback(new  TargetDesignationCommand(),  new comnet::Callback((comnet::callback_t )TargetDesignationCommandCallback));
-
-   //node->LinkCallback(new VehicleModeCommand(),       new comnet::Callback(nullptr));
-   //node->LinkCallback(new VehicleWaypointCommand(),   new comnet::Callback(nullptr));
-
-
-
+   node->LinkCallback(new VehicleAuthorizationRequest(),  new comnet::Callback((comnet::callback_t )VehicleAuthorizationRequestCallback));
+   node->LinkCallback(new VehicleInertialState(),         new comnet::Callback((comnet::callback_t )VehicleInertialStateCallback)); // <- replace nullptr with function callback that handles the corresponding Packet.
+   node->LinkCallback(new VehicleGlobalPosition(),        new comnet::Callback((comnet::callback_t )vehicleGlobalPositionCallback));
+   node->LinkCallback(new TargetDesignationCommand(),     new comnet::Callback((comnet::callback_t)TargetDesignationCommandCallback));
+   //node->LinkCallback(new VehicleModeCommand(),           new comnet::Callback(nullptr));
+   //node->LinkCallback(new VehicleWaypointCommand(),       new comnet::Callback(nullptr));
+   node->LinkCallback(new VehicleAuthorizationReply(),    new comnet::Callback((comnet::callback_t)VehicleAuthorizationReplyCallback));
+   //node->LinkCallback(new VehicleSystemStatus(),          new comnet::Callback(nullptr));
    END_CALLBACK_REGISTER_BLOCK
 
    //connect(this,SIGNAL(endUGVJoystick()),joystick,SLOT(stop()));
